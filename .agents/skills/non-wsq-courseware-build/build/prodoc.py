@@ -61,10 +61,11 @@ def _img(doc, path, width_in):
     return False
 
 def add_cover_page(doc, kind, title, version, conducted_by=ORG,
-                   org_logo=None, course_logo=None, course_code=None):
+                   org_logo=None, course_logo=None, course_code=None, edition=None):
     """kind: 'Learner Guide' or 'LESSON PLAN'.
     org_logo: Tertiary Infotech Academy logo path; course_logo: course logo path.
-    course_code: the non-WSQ course code, e.g. 'C524' (omitted if not given)."""
+    course_code: the non-WSQ course code, e.g. 'C524' (omitted if not given).
+    edition: an edition label shown under the title, e.g. 'Threads Edition'."""
     code_line = f"Course Code: {course_code}" if course_code else None
     doc.add_paragraph()
     _img(doc, org_logo, 2.1)                              # Tertiary Infotech Academy logo
@@ -74,6 +75,7 @@ def add_cover_page(doc, kind, title, version, conducted_by=ORG,
     _line(doc, "For", 12, color=GREY, before=4, after=8)
     _img(doc, course_logo, 1.0)                           # course logo
     _line(doc, title, 20, bold=True, color=DARK, before=4, after=2)   # Course Title
+    if edition: _line(doc, edition, 14, bold=True, color=BRAND, before=2, after=2)
     if code_line: _line(doc, code_line, 12, color=DARK, before=4, after=14)
     _line(doc, "Conducted by", 11, color=GREY, after=2)
     _line(doc, conducted_by, 13, bold=True, color=DARK, after=2)

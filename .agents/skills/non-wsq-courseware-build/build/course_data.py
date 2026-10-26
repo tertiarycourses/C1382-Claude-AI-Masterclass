@@ -17,11 +17,25 @@ NON-WSQ: no assessment, no funding content, no attendance rules. Learning is
 reinforced through the labs and a recap per topic.
 """
 
+import os, copy
+
+# ------------------------------------------------------------------ edition
+# Two editions build from this one source (see edition_classic.py):
+#   classic  Projects as most accounts show them — Instructions, Context, Folder,
+#            Scheduled. The default, and the edition published to Drive and the LMS.
+#   threads  the redesigned Projects beta — a lead agent and parallel threads.
+# Select with COURSE_EDITION=classic|threads.
+EDITION = os.environ.get("COURSE_EDITION", "classic")
+if EDITION not in ("classic", "threads"):
+    raise SystemExit(f"COURSE_EDITION must be classic or threads, not {EDITION!r}")
+THREADS = EDITION == "threads"
+EDITION_LABEL = "Threads Edition"
+
 # ------------------------------------------------------------------ metadata
 TITLE        = "Claude AI Masterclass"
-SHORT_TITLE  = "Claude AI Masterclass"
+SHORT_TITLE  = "Claude AI Masterclass - Threads Edition" if THREADS else "Claude AI Masterclass"
 COURSE_CODE  = "C1382"
-VERSION      = "v5.0"
+VERSION      = "v5.1"
 VERSION_DATE = "27 October 2026"
 TAGLINE      = "Projects, threads, artefacts, connectors, skills and content — for marketing teams"
 ORG          = "Tertiary Infotech Academy Pte Ltd"
@@ -32,7 +46,16 @@ DAYS         = 1
 MODE         = "Instructor-led, hands-on practical labs"
 REGISTRATION = "https://www.tertiarycourses.com.sg/claude-ai-masterclass.html"
 REPO_URL     = "https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass"
-PROMPTS_URL  = "https://tertiarycourses.github.io/C1382-Claude-AI-Masterclass/prompts/"
+PAGES_URL    = "https://tertiarycourses.github.io/C1382-Claude-AI-Masterclass/"
+PROMPTS_URL_CLASSIC = PAGES_URL + "prompts/"
+PROMPTS_URL_THREADS = PAGES_URL + "prompts/threads/"
+PROMPTS_URL  = PROMPTS_URL_THREADS if THREADS else PROMPTS_URL_CLASSIC
+
+# Where this edition's outputs go, relative to the repo root. The classic edition
+# keeps the plain paths, which are the ones the Drive and LMS pushes read.
+COURSEWARE_SUBDIR = "courseware/threads-edition" if THREADS else "courseware"
+LABS_SUBDIR       = "labs-threads" if THREADS else "labs"
+PROMPTS_SUBDIR    = "docs/prompts/threads" if THREADS else "docs/prompts"
 
 # ------------------------------------------------------------------ scenario
 # ONE fictitious brand runs through every lab, so each lab builds on the last.
@@ -190,7 +213,7 @@ TOPICS = [
 DAY_THEMES = {1: "From a blank project to a researched, branded, scheduled product launch"}
 
 # ------------------------------------------------------------------ schedule
-def SCHEDULE(lab_titles):
+def _SCHEDULE_BASE(lab_titles):
     """The one-day timetable, 9:00–18:00.
 
     Lunch is fixed at 12:30–13:30 and both tea breaks are 15 minutes. 315 of the
@@ -227,6 +250,13 @@ def SCHEDULE(lab_titles):
         ("17:45","18:00", 15, "recap", "Recap, your reusable launch project and Q&A"),
      ]),
     }
+
+def SCHEDULE(lab_titles):
+    """The one-day timetable for this edition (see _SCHEDULE_BASE)."""
+    sched = _SCHEDULE_BASE(lab_titles)
+    swaps = {} if THREADS else _CLASSIC_SCHEDULE_TEXT
+    return {d: (theme, [r[:4] + (swaps.get(r[4], r[4]),) for r in rows])
+            for d, (theme, rows) in sched.items()}
 
 # ------------------------------------------------------------------ deck content
 # Chat and Cowork are now one app, "Claude" — matching the Agentic AI
@@ -286,14 +316,17 @@ PRICING_BAND = ("Parallel threads multiply usage: four threads cost roughly four
 PRICING_TIP = ("A free plan is also available, but it does not include Cowork or Projects. "
                "Prices as of October 2026 — verify at claude.com/pricing.")
 
+# Matches "A Brief History of AI, 2023–2026" in the Agentic AI Applications with
+# Claude Code deck (v19).
 AI_EVOLUTION = [
-    ("Prompt Engineering",  "2023", "Craft the wording of a single prompt to get good output."),
-    ("Context Engineering", "2024", "Curate what the model sees — files, memory and tools."),
-    ("Harness Engineering", "2025", "Build the system around the model: loop, tools, verification."),
-    ("Agent Teams",         "2026", "A lead agent runs parallel threads toward one goal — Claude Projects."),
+    ("Prompt Engineering",  "2023", "ChatGPT goes mainstream; results depend on the prompt wording."),
+    ("Context Engineering", "2024", "Models call tools and MCP launches; results depend on context."),
+    ("Harness Engineering", "2025", "Claude Code & Codex: systems that plan, act and check their work."),
+    ("AI Agents",           "2026", "Always-on agents work 24/7 — OpenClaw, Hermes Agent, agent teams."),
 ]
-AI_EVOLUTION_FOOT = ("More capable models shift the work from wording prompts → curating "
-                     "context → directing a team of agents toward a goal.")
+AI_EVOLUTION_TITLE = "A Brief History of AI, 2023–2026"
+AI_EVOLUTION_FOOT = ("From wording one prompt → curating context → engineering the harness → "
+                     "AI agents that work around the clock.")
 
 # Two trainer profile slides: a blank template the delivering trainer fills in,
 # then Alfred's — with the Claude Certified Associate badge, as on the Agentic AI
@@ -427,6 +460,10 @@ PROJECT_MODELS_ROWS = [
 ]
 PROJECT_MODELS_FOOT = ("Defaults vary by account and change over time — read yours in "
                        "Project settings → General → Models.")
+
+# Only the classic edition teaches what is coming (edition_classic.UPCOMING_THREADS);
+# the threads edition already teaches it.
+UPCOMING_THREADS = None
 
 # Instructions, context and memory are easy to confuse — the difference matters
 # for what you edit when the output is wrong.
@@ -1017,7 +1054,7 @@ VERSION_HISTORY = [
      "Lab 4: recovery step for the Google Drive connector's \"insufficient scope\" error.", TRAINER),
     ("4.2", "18 September 2026",
      "Moved the Skills vs. Plugins diagram to sit immediately before the plugin lab.", TRAINER),
-    ("5.0", VERSION_DATE,
+    ("5.0", "27 October 2026",
      "Renamed Claude AI Masterclass and rebuilt for marketing teams on the redesigned "
      "Claude Projects: one fictitious brand launch (Lumo Kopi Co.) run in a single "
      "project across ten labs, with a lead agent and parallel threads, Live Artefacts, "
@@ -1026,3 +1063,63 @@ VERSION_HISTORY = [
      "instructions are in the Learner Guide and every prompt is on a copy-ready prompts "
      "page. Trainer profile adds the Claude Certified Associate certification.", TRAINER),
 ]
+VERSION_HISTORY.append(
+    ("5.1", VERSION_DATE,
+     "Issued in two editions from one source. The Classic Projects Edition teaches "
+     "Projects as most accounts show them today — Instructions, Context, Folder and "
+     "Scheduled panels, with parallel tasks started by the learner and a project memory "
+     "file — and is the edition distributed to learners. The Threads Edition keeps the "
+     "redesigned Projects with a lead agent and parallel threads. The prompts page adds "
+     "a lab index and links the two editions; the AI history slide follows the Agentic "
+     "AI Applications with Claude Code deck.", TRAINER))
+
+# ------------------------------------------------------------------ apply edition
+_CLASSIC_SCHEDULE_TEXT = {}
+
+
+def apply_edition(labs):
+    """Return a domain's lab list adjusted for this edition. Threads is the base
+    wording, so it is returned unchanged; classic gets edition_classic's
+    per-lab replacements and phrase swaps."""
+    if THREADS:
+        return labs
+    import edition_classic as E
+    out = []
+    for a in labs:
+        a = copy.deepcopy(a)
+        over = E.LAB_OVERRIDES.get(a["num"], {})
+        if "prompt_blocks" in over:
+            a.pop("prompt", None); a.pop("prompt_step", None)
+        a.update(copy.deepcopy(over))
+        swaps = sorted(E.LAB_SWAPS.get(a["num"], []), key=lambda x: -len(x[0]))
+
+        def _swap(v):
+            if isinstance(v, str):
+                for old, new in swaps:
+                    v = v.replace(old, new)
+                return v
+            if isinstance(v, list):
+                return [_swap(x) for x in v]
+            if isinstance(v, tuple):
+                return tuple(_swap(x) for x in v)
+            if isinstance(v, dict):
+                return {k: _swap(x) for k, x in v.items()}
+            return v
+        out.append(_swap(a) if swaps else a)
+    return out
+
+
+if not THREADS:
+    import edition_classic as _E
+    _o = copy.deepcopy(_E.OVERRIDES)
+    for _num, _t in _o.pop("TOPIC_OVERRIDES").items():
+        next(t for t in TOPICS if t["num"] == _num).update(_t)
+    _CLASSIC_SCHEDULE_TEXT = _o.pop("SCHEDULE_TEXT")
+    LG_SETUP["verify_text"] = _o.pop("LG_SETUP_VERIFY")
+    _repl = _o.pop("LG_GLOSSARY_REPLACE")
+    LG_GLOSSARY = [(g[0], _repl.get(g[0], g[1])) for g in LG_GLOSSARY]
+    _drop = _o.pop("LG_GLOSSARY_DROP")
+    LG_GLOSSARY = sorted([g for g in LG_GLOSSARY if g[0] not in _drop] + _o.pop("LG_GLOSSARY_ADD"))
+    globals().update(_o)
+    LAB_SLUGS.update(_E.SLUG_OVERRIDES)
+

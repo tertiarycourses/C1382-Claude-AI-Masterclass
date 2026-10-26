@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-"""Generate labs/README.md, the labs index, from the same single source as the
-deck and guide.
+"""Generate <LABS_SUBDIR>/README.md, the labs index, from the same single source
+as the deck and guide. The edition (COURSE_EDITION=classic|threads) picks the
+folder: labs/ for the Classic Projects Edition, labs-threads/ for the Threads
+Edition.
 
 From v5.0 a lab folder holds only two things: the lab's prompt PDF
 (build_lab_pdfs.py) and, where the lab needs it, a data/ folder of mock data
@@ -11,7 +13,7 @@ The shared helpers below (ACTS, REPO, lab_dir, ...) are imported by
 build_lab_pdfs.py, build_prompts_page.py and build_readme.py, so every lab
 artifact names its folders and files the same way.
 """
-import os, sys, glob, re, importlib
+import os, sys, glob, re, importlib, json, subprocess
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -43,17 +45,57 @@ def find_repo(start):
 
 
 REPO = find_repo(HERE)
-LABS = os.path.join(REPO, "labs")
+LABS = os.path.join(REPO, C.LABS_SUBDIR)
+GH = C.REPO_URL.rstrip("/")
 ACTS = load_domains()
 TOPIC = {t["num"]: t for t in C.TOPICS}
 _NUMWORDS = {1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six",
              7: "Seven", 8: "Eight", 9: "Nine", 10: "Ten"}
 
 
+# ------------------------------------------------------------------ editions
+# How each edition is named where a learner chooses between them (the prompts
+# page switch, the README).
+EDITION_CHOICE = {"classic": "Classic Projects (most accounts)",
+                  "threads": "Threads (new Projects beta)"}
+EDITION_HINT = ("Not sure? If your Projects page shows a Goal and threads, use Threads; "
+                "otherwise Classic.")
+_INFO_KEYS = ("EDITION", "EDITION_LABEL", "SHORT_TITLE", "VERSION", "VERSION_DATE",
+              "COURSEWARE_SUBDIR", "LABS_SUBDIR", "PROMPTS_SUBDIR", "PROMPTS_URL")
+
+
+def edition_info(edition):
+    """The naming keys of either edition. course_data picks its edition at
+    import time, so the other edition is read in a child process."""
+    if edition == C.EDITION:
+        return {k: getattr(C, k) for k in _INFO_KEYS}
+    code = ("import json, course_data as C; "
+            f"print(json.dumps({{k: getattr(C, k) for k in {_INFO_KEYS!r}}}))")
+    out = subprocess.run([sys.executable, "-c", code], cwd=HERE, check=True,
+                         capture_output=True, text=True,
+                         env={**os.environ, "COURSE_EDITION": edition})
+    return json.loads(out.stdout)
+
+
 # ------------------------------------------------------------------ naming
 def lab_folder(a):
-    """labs/<this>/ — e.g. lab-01-set-up-the-launch-project."""
+    """<LABS_SUBDIR>/<this>/ — e.g. lab-01-set-up-the-launch-project."""
     return f"lab-{a['num']:02d}-{C.LAB_SLUGS[a['num']]}"
+
+
+def lab_rel(a, *parts):
+    """A lab path relative to the repo root: labs/lab-01-…/… or labs-threads/…"""
+    return "/".join((C.LABS_SUBDIR, lab_folder(a)) + parts)
+
+
+def gh_path(*parts):
+    """A GitHub URL path, with spaces (e.g. "Lumo Launch/") encoded."""
+    return "/".join(p.replace(" ", "%20") for p in parts)
+
+
+def gh_lab_url(a, *parts, kind="tree"):
+    """This edition's lab folder (or a file in it) on GitHub."""
+    return f"{GH}/{kind}/main/{gh_path(lab_rel(a, *parts))}"
 
 
 def lab_dir(a):
@@ -116,8 +158,20 @@ def scenario_md(level="##"):
 
 # ------------------------------------------------------------------ README
 def readme():
+    other = edition_info("threads" if C.EDITION == "classic" else "classic")
+    up = "../" * C.LABS_SUBDIR.count("/") + "../"
+    if C.THREADS:
+        which = ("For the redesigned Claude Projects beta — a project with a Goal, a lead agent "
+                 "and parallel threads.")
+    else:
+        which = ("For Claude Projects as most accounts show them today — a Cowork project with "
+                 "Instructions, Context, Folder and Scheduled panels.")
     out = [
         f"# {C.TITLE} — Labs",
+        "",
+        f"**{C.EDITION_LABEL}** · {C.VERSION} · {C.VERSION_DATE}. {which}",
+        f"{EDITION_HINT} The other edition: [{other['EDITION_LABEL']} labs]"
+        f"({up}{other['LABS_SUBDIR']}/README.md).",
         "",
         C.COMPANY_BLURB,
         "",
@@ -165,9 +219,9 @@ def readme():
 
 def main():
     write(os.path.join(LABS, "README.md"), readme())
-    print(f"  index  labs/README.md  ({len(ACTS)} labs)")
+    print(f"  index  {C.LABS_SUBDIR}/README.md  ({len(ACTS)} labs)")
 
 
 if __name__ == "__main__":
-    print("Generating labs index")
+    print(f"Generating labs index ({C.EDITION_LABEL})")
     main()

@@ -2,12 +2,18 @@
 """Generate the copy-ready Lab Prompts web page (GitHub Pages) from the SAME
 single source (course_data.py + data_domainN.py) that drives the lab PDFs:
 
-  docs/prompts/index.html   the course scenario, then every lab grouped by
-                            topic: scenario, objective, what you build, data
-                            files, then ONE numbered list of steps with each
-                            prompt (lead line, Copy button, after line) placed
-                            under the step that sends it, and the check
-  docs/index.html           a small landing page: prompts, repo, registration
+  <PROMPTS_SUBDIR>/index.html   one page per edition — docs/prompts/ (Classic
+                            Projects) and docs/prompts/threads/ (Threads). An
+                            edition switch, the course scenario, the lab number
+                            bar and a "Which lab are you on?" index, then every
+                            lab grouped by topic: scenario, objective, what you
+                            build, data files, then ONE numbered list of steps
+                            with each prompt (lead line, Copy button, after
+                            line) placed under the step that sends it, and the
+                            check. Lab links point at the edition's own lab
+                            folders (labs/ or labs-threads/) on GitHub.
+  docs/index.html           (--landing) a small landing page offering both
+                            editions, plus the repo and registration
   docs/.nojekyll
 
 Self-contained HTML/CSS/JS (no external scripts or fonts), in the Claude Style
@@ -19,10 +25,12 @@ import datetime, html, os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import course_data as C
-from build_labs import ACTS, REPO, TOPIC, lab_folder, pdf_name, blocks, steps_with_prompts
+from build_labs import (ACTS, REPO, TOPIC, GH, lab_folder, lab_rel, pdf_name, blocks,
+                        steps_with_prompts, gh_lab_url, edition_info, EDITION_CHOICE,
+                        EDITION_HINT)
 
 DOCS = os.path.join(REPO, "docs")
-GH = C.REPO_URL.rstrip("/")
+OUT_DIR = os.path.join(REPO, C.PROMPTS_SUBDIR)
 
 
 # ------------------------------------------------------------------ text helpers
@@ -44,11 +52,6 @@ def md(s):
 def marked(s):
     """Escape a prompt, then highlight <PLACEHOLDERS> the learner must replace."""
     return re.sub(r"&lt;([A-Z][^&\n]*?)&gt;", r"<mark>&lt;\1&gt;</mark>", esc(s))
-
-
-def gh_path(*parts):
-    """A GitHub URL path segment, with spaces (e.g. "Lumo Launch/") encoded."""
-    return "/".join(p.replace(" ", "%20") for p in parts)
 
 
 def copy_btn(text, what):
@@ -74,12 +77,13 @@ def prompt_card(a, b, multi):
 
 
 def render_lab(a):
-    n, folder = a["num"], lab_folder(a)
+    n = a["num"]
     t = TOPIC[a["topic"]]
-    links = [f'<a href="{GH}/blob/main/labs/{folder}/{pdf_name(a)}">Prompt PDF</a>']
+    links = [f'<a href="{gh_lab_url(a, pdf_name(a), kind="blob")}">Prompt PDF</a>',
+             f'<a href="{gh_lab_url(a)}">Lab folder on GitHub</a>']
     if a.get("data"):
-        links.append(f'<a href="{GH}/tree/main/labs/{folder}/data">Data folder on GitHub</a>')
-        data = ", ".join(f'<a href="{GH}/blob/main/labs/{gh_path(folder, "data", f)}"><code>{esc(f)}</code></a>'
+        links.append(f'<a href="{gh_lab_url(a, "data")}">Data folder</a>')
+        data = ", ".join(f'<a href="{gh_lab_url(a, "data", f, kind="blob")}"><code>{esc(f)}</code></a>'
                          for f in a["data"])
     else:
         data = "None — this lab works from what the project already holds."
@@ -245,6 +249,22 @@ padding:4px 16px 10px;margin:10px 0}
 @media (max-width:600px){ol.steps>li{padding-left:38px}ol.steps>li::before{width:28px;height:28px;line-height:25px;font-size:14px}
 ol.steps>li::after{left:13px;top:32px}ol.steps .prompt{margin-left:-38px}.prompt pre{font-size:13.5px}}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.edition{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:10px 0 14px}
+.edition .elabel{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-right:2px}
+.edition a{display:inline-block;padding:6px 14px;border:1.5px solid var(--rule);border-radius:999px;
+background:var(--panel);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px}
+.edition a:hover{border-color:var(--accent)}
+.edition a[aria-current="page"]{background:var(--btn);border-color:var(--btn);color:var(--on-accent)}
+.edition .ehint{flex-basis:100%;margin:2px 0 0;color:var(--muted);font-size:14.5px}
+.pick{margin:22px 0 6px;padding:18px 20px;border:2px dashed var(--accent);border-radius:12px}
+.pick p{font-size:18px;font-weight:600;margin:0 0 10px;line-height:1.4}
+.pick h4{margin:14px 0 4px;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.pick ul{margin:0;padding-left:20px}.pick li{margin:4px 0}
+.ed-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:18px 0 6px}
+.ed-card{background:var(--panel);border:1px solid var(--rule);border-top:4px solid var(--accent);border-radius:12px;padding:16px 18px}
+.ed-card h2{border:0;margin:0 0 6px;padding:0;font-size:21px}
+.ed-card p{margin:0 0 12px;font-size:15.5px;color:var(--muted)}
+.ed-card .btn{margin-right:6px}
 """
 
 JS = """
@@ -289,14 +309,48 @@ def page(title, desc, body, script=True):
 """
 
 
-def footer():
+def footer(edition=True):
     today = datetime.date.today().strftime("%-d %B %Y")
-    return (f"<footer>{esc(C.TITLE)} ({C.COURSE_CODE}) · courseware {C.VERSION}, {esc(C.VERSION_DATE)}. "
+    ed = f" · {esc(C.EDITION_LABEL)}" if edition else ""
+    return (f"<footer>{esc(C.TITLE)} ({C.COURSE_CODE}){ed} · courseware {C.VERSION}, {esc(C.VERSION_DATE)}. "
             f"Built from the course source on {today}. {esc(C.COMPANY)} and all lab data are fictitious, "
             f"for training only. {esc(C.LAB_NOTE)} © {esc(C.ORG)} · {esc(C.UEN)}.</footer>")
 
 
 # ------------------------------------------------------------------ pages
+def _rel(target_subdir):
+    """Relative link from this edition's prompts folder to another docs folder,
+    so the page works from a local checkout as well as on GitHub Pages."""
+    r = os.path.relpath(target_subdir, C.PROMPTS_SUBDIR)
+    return "./" if r == "." else r + "/"
+
+
+def edition_switch():
+    """Classic | Threads, the current one marked, with the one-line hint."""
+    links = []
+    for ed in ("classic", "threads"):
+        info = edition_info(ed)
+        cur = ' aria-current="page"' if ed == C.EDITION else ""
+        links.append(f'<a href="{_rel(info["PROMPTS_SUBDIR"])}"{cur}>{esc(EDITION_CHOICE[ed])}</a>')
+    return (f'<div class="edition" role="group" aria-label="Course edition">'
+            f'<span class="elabel">Edition</span>{"".join(links)}'
+            f'<p class="ehint">{esc(EDITION_HINT)}</p></div>')
+
+
+def lab_index():
+    """C34's dashed "Which lab are you on?" box: every lab, grouped by topic."""
+    parts = ['<div id="pick" class="pick"><p>Which lab are you on? Click its number above — every '
+             'prompt is labelled with its lab, so check it before you copy.</p>']
+    for t in C.TOPICS:
+        labs = [a for a in ACTS if a["topic"] == t["num"]]
+        if not labs:
+            continue
+        parts.append(f'<h4>Topic {t["num"]} · {esc(t["title"])}</h4><ul>'
+                     + "".join(f'<li><a href="#lab-{a["num"]}">Lab {a["num"]} · {esc(a["title"])}</a></li>'
+                               for a in labs) + "</ul>")
+    return "".join(parts) + "</div>"
+
+
 def prompts_page():
     nav = "".join(f'<a href="#lab-{a["num"]}" aria-label="Lab {a["num"]}">{a["num"]}</a>' for a in ACTS)
     sections = []
@@ -309,45 +363,65 @@ def prompts_page():
             f'<p class="topic-sub">{esc(t["subtitle"])}</p>{"".join(render_lab(a) for a in labs)}</section>')
     body = f"""<a class="skip" href="#main">Skip to the prompts</a>
 <div class="wrap" id="top">
-<p class="eyebrow">{C.COURSE_CODE} · {esc(C.TITLE)} · {C.VERSION}</p>
+<p class="eyebrow">{C.COURSE_CODE} · {esc(C.TITLE)} · {esc(C.EDITION_LABEL)} · {C.VERSION}</p>
 <h1>Lab Prompts</h1>
+{edition_switch()}
 <p class="sub">All {len(ACTS)} labs, step by step. Each lab reads top to bottom — step, prompt, step, prompt.
 When a step has a prompt, click <b>Copy</b> and paste it into your <b>{esc(C.PROJECT_NAME)}</b> project in Claude.
 Every prompt card is labelled with its lab — check it before you copy.</p>
-<p class="links"><a href="{GH}">Course repository</a> · <a href="{GH}/tree/main/labs">Lab folders</a> ·
-<a href="../">Course home</a></p>
+<p class="links"><a href="{GH}">Course repository</a> · <a href="{GH}/tree/main/{C.LABS_SUBDIR}">Lab folders ({esc(C.EDITION_LABEL)})</a> ·
+<a href="{_rel("docs")}">Course home</a></p>
 {scenario_html()}
 <nav aria-label="Jump to lab"><span>Lab</span>{nav}</nav>
+{lab_index()}
 <main id="main">{"".join(sections)}</main>
 <p id="live" class="sr" aria-live="polite"></p>
 {footer()}
 </div>"""
-    return page(f"Lab Prompts · {C.TITLE}",
-                f"Copy-ready prompts for every lab of {C.TITLE} ({C.COURSE_CODE}).", body)
+    return page(f"Lab Prompts · {C.TITLE} · {C.EDITION_LABEL}",
+                f"Copy-ready prompts for every lab of {C.TITLE} ({C.COURSE_CODE}), {C.EDITION_LABEL}.", body)
 
 
 def landing_page():
+    """docs/index.html — edition-independent: both editions' prompts pages."""
     first, last = _day_bounds()
     rows = [
         ("Course code", C.COURSE_CODE),
         ("Programme", "Non-WSQ"),
         ("Duration", f"{C.DAYS} day · {first}–{last}"),
         ("Format", f"{C.MODE} · {len(ACTS)} labs"),
-        ("Courseware", f"{C.VERSION} · {C.VERSION_DATE}"),
+        ("Courseware", f"{C.VERSION} · {C.VERSION_DATE} · two editions"),
     ]
     facts = "".join(f"<tr><th scope='row'>{esc(k)}</th><td>{esc(v)}</td></tr>" for k, v in rows)
+    blurb = {
+        "classic": "Projects as most accounts show them today: a Cowork project with Instructions, "
+                   "Context, Folder and Scheduled panels. Start here if you are unsure.",
+        "threads": "The redesigned Projects beta: a project with a Goal, and a lead agent that "
+                   "splits each job into parallel threads.",
+    }
+    cards = []
+    for ed in ("classic", "threads"):
+        info = edition_info(ed)
+        href = os.path.relpath(info["PROMPTS_SUBDIR"], "docs") + "/"
+        cards.append(
+            f'<div class="ed-card"><h2>{esc(info["EDITION_LABEL"])}</h2><p>{esc(blurb[ed])}</p>'
+            f'<a class="btn primary" href="{href}">Open the lab prompts</a>'
+            f'<a class="btn" href="{GH}/tree/main/{info["LABS_SUBDIR"]}">Lab files</a></div>')
     body = f"""<div class="wrap">
 <p class="eyebrow">{C.COURSE_CODE} · {C.VERSION}</p>
 <h1>{esc(C.TITLE)}</h1>
-<p class="sub">{esc(C.TAGLINE)}</p>
+<p class="sub">Claude Projects, artefacts, connectors, skills and content — for marketing teams.</p>
 <p>{esc(C.COMPANY_BLURB)}</p>
-<div class="btns"><a class="btn primary" href="prompts/">Open the lab prompts</a>
-<a class="btn" href="{GH}">Course repository</a>
+<h2>Choose your edition</h2>
+<p class="sub">The same ten labs come in two editions. {esc(EDITION_HINT)}</p>
+<div class="ed-cards">{"".join(cards)}</div>
+<div class="btns"><a class="btn" href="{GH}">Course repository</a>
 <a class="btn" href="{attr(C.REGISTRATION)}">Course details and registration</a></div>
 <div class="card"><table class="facts"><caption class="sr">Course details</caption>{facts}</table></div>
-{footer()}
+{footer(edition=False)}
 </div>"""
-    return page(C.TITLE, f"{C.TITLE} ({C.COURSE_CODE}) — lab prompts and course materials.", body, script=False)
+    return page(C.TITLE, f"{C.TITLE} ({C.COURSE_CODE}) — lab prompts and course materials, in two editions.",
+                body, script=False)
 
 
 def _day_bounds():
@@ -364,17 +438,22 @@ def _ampm(hhmm):
 
 
 def main():
-    os.makedirs(os.path.join(DOCS, "prompts"), exist_ok=True)
-    with open(os.path.join(DOCS, "prompts", "index.html"), "w", encoding="utf-8") as f:
+    """Default: this edition's prompts page. --landing: docs/index.html and
+    docs/.nojekyll, which are edition-independent and written once per build."""
+    if "--landing" in sys.argv[1:]:
+        os.makedirs(DOCS, exist_ok=True)
+        with open(os.path.join(DOCS, "index.html"), "w", encoding="utf-8") as f:
+            f.write(landing_page())
+        open(os.path.join(DOCS, ".nojekyll"), "a").close()
+        print("  docs/index.html, docs/.nojekyll  (both editions)")
+        return
+    os.makedirs(OUT_DIR, exist_ok=True)
+    with open(os.path.join(OUT_DIR, "index.html"), "w", encoding="utf-8") as f:
         f.write(prompts_page())
-    with open(os.path.join(DOCS, "index.html"), "w", encoding="utf-8") as f:
-        f.write(landing_page())
-    open(os.path.join(DOCS, ".nojekyll"), "a").close()
     n = sum(len(blocks(a)) for a in ACTS)
-    print(f"  docs/prompts/index.html  ({len(ACTS)} labs, {n} prompt blocks)")
-    print("  docs/index.html, docs/.nojekyll")
+    print(f"  {C.PROMPTS_SUBDIR}/index.html  ({len(ACTS)} labs, {n} prompt blocks)")
 
 
 if __name__ == "__main__":
-    print("Generating prompts page")
+    print(f"Generating prompts page ({'landing' if '--landing' in sys.argv[1:] else C.EDITION_LABEL})")
     main()

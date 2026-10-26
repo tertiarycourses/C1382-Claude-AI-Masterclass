@@ -123,9 +123,19 @@ class Deck:
         self.txt(s, Inches(0.6), Inches(0.72), Inches(12.1), Inches(0.8),
                  [[(title, size, INK, True, HEAD_FONT)]], anchor=MSO_ANCHOR.MIDDLE)
         if intro:
-            self.txt(s, Inches(0.6), Inches(1.85), Inches(12.1), Inches(0.5),
+            self.txt(s, Inches(0.6), Inches(1.85), Inches(12.1),
+                     Inches(0.5) + self.intro_extra(intro),
                      [[(intro, 16, INK, False)]])
         return s
+
+    @staticmethod
+    def intro_extra(intro):
+        """Extra height a wrapped intro needs: about 115 characters of 16pt
+        Calibri fit on one 12.1in line, and each extra line takes 0.3in."""
+        if not intro:
+            return 0
+        lines = -(-len(intro) // 115)
+        return Inches(0.3) * max(0, lines - 1)
 
     # ------------------------------------------------------------ templates
     def cover(self):
@@ -142,7 +152,13 @@ class Deck:
                  [[(f"Version {C.VERSION}  ·  {C.VERSION_DATE}", 12, DIM, False)]])
         self.txt(s, Inches(0.85), Inches(2.45), Inches(9.6), Inches(1.9),
                  [[(C.TITLE, 52, WHITE, True, HEAD_FONT)]], anchor=MSO_ANCHOR.MIDDLE)
-        self.txt(s, Inches(0.9), Inches(4.45), Inches(9.0), Inches(0.5),
+        # The edition (two editions build from one source) as the subtitle line,
+        # then the tagline under it.
+        _ed = getattr(C, "EDITION_LABEL", None)
+        if _ed:
+            self.txt(s, Inches(0.9), Inches(4.30), Inches(9.0), Inches(0.5),
+                     [[(_ed, 22, CLAY, True, HEAD_FONT)]])
+        self.txt(s, Inches(0.9), Inches(4.85) if _ed else Inches(4.45), Inches(9.0), Inches(0.5),
                  [[(C.TAGLINE, 16, DIM, False)]])
         self.txt(s, Inches(0.9), Inches(5.7), Inches(11.0), Inches(0.7),
                  [[(C.ORG, 15, WHITE, True)], [(C.UEN, 13, DIM, False)]], space=3)
@@ -287,7 +303,7 @@ class Deck:
         """Numbered white tiles: (heading, body) — the workhorse content slide.
         An optional `foot` line sits under the grid, which shortens it to make room."""
         s = self.head(title, kicker, intro)
-        y0 = Inches(2.35) if intro else Inches(1.95)
+        y0 = (Inches(2.35) + self.intro_extra(intro)) if intro else Inches(1.95)
         avail = (Inches(6.05) if foot else Inches(6.45)) - y0
         rows = (len(items) + cols - 1) // cols
         gut = Inches(0.18)
@@ -597,13 +613,15 @@ class Deck:
         return s
 
     def table(self, title, head, rows, kicker=None, intro=None, foot=None,
-              highlight_last=True):
+              highlight_last=True, first=None):
         """A rule-separated table. Three columns is the numeric layout — for
         command output such as /context, where the numbers are the point. Any
-        other width is a text comparison grid (see _text_table)."""
+        other width is a text comparison grid (see _text_table); `first` sets
+        that grid's label-column share of the width (0-1), for a two-column
+        mapping whose left cells are sentences rather than labels."""
         if len(head) != 3:
             return self._text_table(title, head, rows, kicker, intro, foot,
-                                    highlight_last)
+                                    highlight_last, first)
         s = self.head(title, kicker, intro)
         y = Inches(2.40) if intro else Inches(2.05)
         x0, w = Inches(0.9), Inches(11.5)
@@ -633,7 +651,7 @@ class Deck:
         self.footer(s)
         return s
 
-    def _text_table(self, title, head, rows, kicker, intro, foot, highlight_last):
+    def _text_table(self, title, head, rows, kicker, intro, foot, highlight_last, first_share=None):
         """Text comparison grid: a bold label column, then equal-width columns
         of short wrapped phrases, all left-aligned. Each row is as tall as its
         longest cell needs, and leftover height is shared out so a three-row
@@ -643,7 +661,7 @@ class Deck:
         x0, w = Inches(0.9), Inches(11.5)
         n = len(head)
         gut = Inches(0.25)
-        first = Inches(2.3)
+        first = Inches(2.3) if not first_share else int((w - gut * (n - 1)) * first_share)
         # Share the remaining width by each column's longest entry, with a
         # floor, so a column of one-word values does not take as much room as
         # a column of sentences.

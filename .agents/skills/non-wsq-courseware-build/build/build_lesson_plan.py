@@ -59,7 +59,7 @@ prodoc.style_headings(doc)
 
 prodoc.add_cover_page(doc,"LESSON PLAN",C.TITLE,f"{C.VERSION.lstrip('v')} · {C.VERSION_DATE}",
                       org_logo=os.path.join(ASSETS,"tertiary-infotech-logo.png"),
-                      course_logo=None, course_code=C.COURSE_CODE)
+                      course_logo=None, course_code=C.COURSE_CODE, edition=C.EDITION_LABEL)
 prodoc.add_version_control(doc,getattr(C,"VERSION_HISTORY",[(C.VERSION.lstrip("v"),C.VERSION_DATE,"Initial release.",C.TRAINER)]))
 prodoc.add_toc(doc)
 
@@ -88,7 +88,7 @@ _inst_min=sum(d for _s,_e,d,k,_t in _day_rows if k not in ("lunch","break"))
 _lab_min=sum(d for _t,rows_ in SCHEDULE.values() for _s,_e,d,k,_x in rows_ if k=="lab")
 _day_min=sum(d for _t,rows_ in SCHEDULE.values() for _s,_e,d,k,_x in rows_)
 
-info=[("Course Title",C.TITLE),("Course Code",C.COURSE_CODE),
+info=[("Course Title",C.TITLE),("Edition",C.EDITION_LABEL),("Course Code",C.COURSE_CODE),
       ("Training Provider",C.ORG+"  ("+C.UEN.replace('UEN: ','UEN ')+")"),
       ("Duration",f"{C.DAYS} day{'s' if C.DAYS>1 else ''} · {_inst_min/60:g} instructional hours per day "
                   f"({C.DAYS*_inst_min/60:g} hours)"),
@@ -209,7 +209,8 @@ for _i,_row in enumerate(tt.rows):
 
 prodoc.add_page_numbers(doc)
 prodoc.enable_update_fields(doc)
-OUT=os.path.join(REPO,"courseware",f"LP-{C.SHORT_TITLE}.docx")
+OUT=os.path.join(REPO,C.COURSEWARE_SUBDIR,f"LP-{C.SHORT_TITLE}.docx")   # courseware/ or courseware/threads-edition/
+os.makedirs(os.path.dirname(OUT),exist_ok=True)
 prodoc.set_properties(doc, f"Lesson Plan — {C.TITLE}", C.COURSE_CODE)
 doc.save(OUT)
 print("Saved",OUT)

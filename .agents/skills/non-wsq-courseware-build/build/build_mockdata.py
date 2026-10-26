@@ -6,7 +6,8 @@ seed) so every learner's research brief, dashboard and calendar shows the same
 figures and the lab check steps can state exact numbers.
 
 For every lab in data_domain1..3, each entry in the lab's `data` list is written
-to labs/lab-NN-<slug>/data/<entry>. A file used by several labs (the survey and
+to <LABS_SUBDIR>/lab-NN-<slug>/data/<entry> (labs/ or labs-threads/,
+by COURSE_EDITION). A file used by several labs (the survey and
 competitor CSVs in Labs 2 and 3) is written to each. A `data` entry with no
 generator below fails the build, so the lab text can never name a missing file.
 
@@ -72,9 +73,10 @@ REPO = find_repo(HERE)
 
 
 def lab_data_dir(num):
-    """labs/lab-NN-<slug>/data, resolved from the single source so a lab
-    renumbering never leaves data written to a folder nothing reads."""
-    return os.path.join(REPO, "labs", f"lab-{num:02d}-{C.LAB_SLUGS[num]}", "data")
+    """<LABS_SUBDIR>/lab-NN-<slug>/data — labs/ for the classic edition,
+    labs-threads/ for the threads edition — resolved from the single source so
+    a lab renumbering never leaves data written to a folder nothing reads."""
+    return os.path.join(REPO, C.LABS_SUBDIR, f"lab-{num:02d}-{C.LAB_SLUGS[num]}", "data")
 
 
 # ------------------------------------------------------------------ helpers
@@ -1195,25 +1197,32 @@ def lab_text(num):
 
 
 def quoted(num, *phrases):
+    """Assert the lab text quotes each phrase. A tuple is a set of accepted
+    wordings — the two editions word some check steps differently but must
+    quote the same figures."""
     txt = lab_text(num)
     for p in phrases:
-        assert p in txt, f"Lab {num} text no longer quotes: {p!r}"
+        alts = p if isinstance(p, tuple) else (p,)
+        assert any(a in txt for a in alts), f"Lab {num} text no longer quotes: {alts[0]!r}"
 
 
 def check_lab_text(sv, comp, top3, diff):
     n = sv["n"]
     # Lab 1 — product sheet figures
     quoted(1, F["price_can"], f"{F['sugar_g']} g sugar", F["launch_sg"], F["launch_kl"], "25-34")
-    # Lab 2 — research brief figures
+    # Lab 2 — research brief figures (classic words the check as "Instagram 136 (34%)")
+    ig_ = f"{sv['channels']['Instagram']} ({pct(sv['channels']['Instagram'], n)}%)"
+    tt_ = f"{sv['channels']['TikTok']} ({pct(sv['channels']['TikTok'], n)}%)"
+    ta_ = f"{sv['drivers']['Taste']} ({pct(sv['drivers']['Taste'], n)}%)"
     quoted(2, f"{n} survey rows", "six competitors", "twelve content themes",
            f"{sv['likely']} likely to buy ({pct(sv['likely'], n)}%)",
            f"{sv['l25']} of {sv['a25']} in the 25-34 band ({pct(sv['l25'], sv['a25'])}%)",
-           f"Instagram is the top discovery channel at {sv['channels']['Instagram']} "
-           f"({pct(sv['channels']['Instagram'], n)}%)",
-           f"TikTok at {sv['channels']['TikTok']} ({pct(sv['channels']['TikTok'], n)}%)",
-           f"Taste is the top driver at {sv['drivers']['Taste']} ({pct(sv['drivers']['Taste'], n)}%)",
-           f"competitor median is {sgd(comp['median'])}",
-           f"{sv['pay']} respondents ({pct(sv['pay'], n)}%) would pay S$3.50 or more",
+           (f"Instagram is the top discovery channel at {ig_}", f"Instagram {ig_}"),
+           (f"TikTok at {tt_}", f"TikTok {tt_}"),
+           (f"Taste is the top driver at {ta_}", f"Taste {ta_}"),
+           (f"competitor median is {sgd(comp['median'])}", f"competitor median {sgd(comp['median'])}"),
+           (f"{sv['pay']} respondents ({pct(sv['pay'], n)}%) would pay S$3.50 or more",
+            f"{sv['pay']} ({pct(sv['pay'], n)}%) would pay S$3.50 or more"),
            F["top_trend"])
     # Lab 3 — dashboard
     cheap, dear = comp["cheapest"], comp["dearest"]
@@ -1291,5 +1300,5 @@ def main():
 
 
 if __name__ == "__main__":
-    print("Generating Lumo Kopi Co. mock data")
+    print(f"Generating Lumo Kopi Co. mock data ({C.EDITION_LABEL})")
     main()

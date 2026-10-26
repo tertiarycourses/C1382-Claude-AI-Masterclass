@@ -5,6 +5,11 @@ Content comes entirely from course_data.py + data_domain1..3.py, so the deck,
 Lesson Plan, Learner Guide and labs are generated from one source and cannot
 drift apart. Layout comes from claude_style.py, the component library shared
 with the Claude Code Masterclass.
+
+COURSE_EDITION=classic|threads picks the edition (course_data.EDITION). A
+course_data value of None leaves its slide out; UPCOMING_THREADS (classic only)
+adds two "coming soon" slides after the Topic 1 Projects block. The deck is
+written to <COURSEWARE_SUBDIR>/<SHORT_TITLE>-<VERSION>.pptx.
 """
 import os, sys, glob, re, importlib
 from pptx import Presentation
@@ -50,6 +55,7 @@ def find_repo(start):
 
 
 REPO = find_repo(HERE)
+TH = C.THREADS          # wording that names threads vs tasks, per edition
 # Lab output screenshots, referenced by a lab's `verify_shot` filename.
 SHOTS = os.path.join(REPO, "courseware", "assets", "screenshots")
 
@@ -174,7 +180,7 @@ TOPIC_INTRO = {
                         cols=3, tip=C.CLAUDE_PRODUCTS_TIP),
         lambda: D.compare("Claude (Chat + Cowork) and Claude Code", C.CLAUDE_THREE,
                           kicker="TOPIC 1 · OVERVIEW", foot=C.CLAUDE_THREE_FOOT),
-        lambda: D.timeline("The Evolution of AI Engineering", C.AI_EVOLUTION,
+        lambda: D.timeline(C.AI_EVOLUTION_TITLE, C.AI_EVOLUTION,
                            kicker="TOPIC 1 · OVERVIEW", foot=C.AI_EVOLUTION_FOOT),
         lambda: D.tiles("What Cowork Mode Adds", C.COWORK_CAPABILITIES,
                         kicker="TOPIC 1 · OVERVIEW", cols=2,
@@ -188,28 +194,35 @@ TOPIC_INTRO = {
         # ---- the redesigned Claude Projects: what they are, then how to set one up.
         # Lab 1 creates the project every later lab runs inside, so all of this
         # comes before it.
-        lambda: D.split("The New Claude Projects",
+        lambda: D.split("The New Claude Projects" if TH else "Claude Projects in Cowork",
                         C.PROJECTS_BEFORE_AFTER["left"], C.PROJECTS_BEFORE_AFTER["right"],
                         kicker="TOPIC 1 · PROJECTS",
-                        intro="You stop managing chats and start briefing a team."),
-        lambda: D.container("A Project Is a Team", "Claude Project", C.PROJECT_TEAM_SUBTITLE,
-                            C.PROJECT_TEAM_PARTS, kicker="TOPIC 1 · LEAD AGENT AND THREADS",
+                        intro=("You stop managing chats and start briefing a team." if TH else
+                               "Set up the brand and the rules once; every task starts from them.")),
+        lambda: D.container("A Project Is a Team" if TH else "Inside a Project", "Claude Project",
+                            C.PROJECT_TEAM_SUBTITLE, C.PROJECT_TEAM_PARTS,
+                            kicker="TOPIC 1 · LEAD AGENT AND THREADS" if TH else "TOPIC 1 · PROJECTS",
                             foot=C.PROJECT_TEAM_FOOT),
         lambda: D.tiles("When to Use a Project", C.PROJECT_WHEN, kicker="TOPIC 1 · PROJECTS",
                         cols=2, foot=C.PROJECT_WHEN_FOOT),
         lambda: D.tiles("Anatomy of a Project", C.PROJECT_ANATOMY, kicker="TOPIC 1 · PROJECTS",
-                        intro="Six parts — the first four you set up in Lab 1, the last two run the work.",
+                        intro=("Six parts — the first four you set up in Lab 1, the last two run the work."
+                               if TH else "The four panels on the project page, the tasks you run, "
+                                          "and the memory file you keep."),
                         cols=2),
         lambda: D.numbered_rows("Creating a Project, Field by Field", C.PROJECT_DIALOG,
                                 kicker="TOPIC 1 · PROJECTS",
                                 intro="New project opens the Create a project dialog.",
                                 foot=C.PROJECT_DIALOG_FOOT),
-        lambda: D.numbered_rows("Project Settings", C.PROJECT_SETTINGS,
-                                kicker="TOPIC 1 · PROJECTS", foot=C.PROJECT_SETTINGS_FOOT),
-        lambda: D.table("Models and Effort", C.PROJECT_MODELS_HEAD, C.PROJECT_MODELS_ROWS,
-                        kicker="TOPIC 1 · PROJECT SETTINGS",
-                        intro="The lead agent and the threads each have their own model and effort.",
-                        foot=C.PROJECT_MODELS_FOOT, highlight_last=False),
+        # Project settings and models exist only in the threads edition (None in classic).
+        *([lambda: D.numbered_rows("Project Settings", C.PROJECT_SETTINGS,
+                                   kicker="TOPIC 1 · PROJECTS", foot=C.PROJECT_SETTINGS_FOOT)]
+          if C.PROJECT_SETTINGS else []),
+        *([lambda: D.table("Models and Effort", C.PROJECT_MODELS_HEAD, C.PROJECT_MODELS_ROWS,
+                           kicker="TOPIC 1 · PROJECT SETTINGS",
+                           intro="The lead agent and the threads each have their own model and effort.",
+                           foot=C.PROJECT_MODELS_FOOT, highlight_last=False)]
+          if C.PROJECT_MODELS_ROWS and C.PROJECT_MODELS_HEAD else []),
         lambda: D.table("Instructions, Context or Memory?", C.MEMORY_CONTEXT_HEAD,
                         C.MEMORY_CONTEXT_ROWS, kicker="TOPIC 1 · PROJECTS",
                         intro="When the output is wrong, this tells you which one to edit.",
@@ -217,6 +230,15 @@ TOPIC_INTRO = {
         lambda: D.split("Why a Project?", C.PROJECT_VS_CHAT["left"], C.PROJECT_VS_CHAT["right"],
                         kicker="TOPIC 1 · PROJECTS",
                         intro="A dedicated place for ongoing work, where context builds over time."),
+        # What is coming to Projects (classic edition only): the new features as
+        # tiles, then how today's labs map onto them. Closes the Projects block,
+        # just before the Topic 1 key concepts.
+        *([lambda: D.tiles(C.UPCOMING_THREADS["title"], C.UPCOMING_THREADS["features"],
+                           kicker="TOPIC 1 · COMING SOON", intro=C.UPCOMING_THREADS["intro"], cols=2),
+           lambda: D.table("Today's Labs on the New Projects", C.UPCOMING_THREADS["mapping_head"],
+                           C.UPCOMING_THREADS["mapping_rows"], kicker="TOPIC 1 · COMING SOON",
+                           foot=C.UPCOMING_THREADS["foot"], highlight_last=False, first=0.5)]
+          if C.UPCOMING_THREADS else []),
     ),
     2: (
         lambda: D.tiles("What Connectors Do", C.CONNECTOR_CAPABILITIES, kicker="TOPIC 2 · CONNECTORS",
@@ -228,8 +250,10 @@ TOPIC_INTRO = {
                         foot="Files, instructions, tools and skills all have to fit inside it."),
         lambda: D.meter("What Fills the Context Window", C.CONTEXT_WINDOW_SEGMENTS,
                         kicker="TOPIC 2 · CONTEXT",
-                        intro="At the start of a thread.", foot=C.CONTEXT_WINDOW_FOOT),
-        lambda: D.meter("The Same Window, Later in the Thread", C.CONTEXT_WINDOW_SEGMENTS_FULL,
+                        intro="At the start of a thread." if TH else "At the start of a task.",
+                        foot=C.CONTEXT_WINDOW_FOOT),
+        lambda: D.meter("The Same Window, Later in the Thread" if TH else "The Same Window, Later in the Task",
+                        C.CONTEXT_WINDOW_SEGMENTS_FULL,
                         kicker="TOPIC 2 · CONTEXT",
                         intro="After reading files, calling tools and running skills.",
                         foot=C.CONTEXT_WINDOW_FULL_FOOT),
@@ -244,11 +268,14 @@ TOPIC_INTRO = {
                         foot=C.CONTEXT_COMMAND_NOTE),
     ),
     3: (
-        lambda: D.flow("One Thread per Channel", C.CONTENT_THREADS_FLOW,
-                       kicker="TOPIC 3 · CONTENT IN THREADS",
-                       foot="The same pattern as the Lab 2 research — one message, independent subjects — applied to production."),
+        lambda: D.flow("One Thread per Channel" if TH else "One Prompt, Four Platforms",
+                       C.CONTENT_THREADS_FLOW,
+                       kicker="TOPIC 3 · CONTENT IN THREADS" if TH else "TOPIC 3 · CONTENT PRODUCTION",
+                       foot=("The same pattern as the Lab 2 research — one message, independent subjects — applied to production."
+                             if TH else "One task with a precise spec per platform — the brand-voice skill keeps all four on one voice.")),
         lambda: D.tiles("What Each Platform Needs", C.SOCIAL_SPECS, kicker="TOPIC 3 · SOCIAL SPECS",
-                        intro="Each thread gets its platform's spec as its brief.",
+                        intro=("Each thread gets its platform's spec as its brief." if TH else
+                               "Each platform's spec goes into the prompt as its brief."),
                         cols=2, foot=C.SOCIAL_SPECS_FOOT),
         lambda: D.tiles("Marketing Responsibly with AI", C.RESPONSIBLE_MARKETING,
                         kicker="TOPIC 3 · GOOD PRACTICE",
@@ -260,10 +287,11 @@ TOPIC_INTRO = {
 # Theory slides tied to ONE lab, emitted immediately before it rather than in a
 # block at the top of the topic. Keyed by lab number.
 BEFORE_LAB = {
-    # Lab 2 is the first job handed to the lead agent to split.
+    # Lab 2 is the first job split into parallel work (threads, or tasks in classic).
     2: (
-        lambda: D.tiles("Market Research in Four Threads", C.RESEARCH_THREADS,
-                        kicker="TOPIC 1 · RESEARCH IN THREADS",
+        lambda: D.tiles("Market Research in Four Threads" if TH else "Market Research in Four Tasks",
+                        C.RESEARCH_THREADS,
+                        kicker="TOPIC 1 · RESEARCH IN THREADS" if TH else "TOPIC 1 · RESEARCH IN PARALLEL TASKS",
                         intro="Four subjects, none depending on another — so they can run at once.",
                         cols=2, foot=C.RESEARCH_FOOT),
     ),
@@ -333,10 +361,12 @@ BEFORE_LAB = {
                                 kicker="TOPIC 3 · SCHEDULED TASKS",
                                 intro="Each drafts for your approval — none publishes on its own.",
                                 foot=C.SCHEDULED_FOOT),
-        lambda: D.tiles("Cloud Environments", C.CLOUD_ENVIRONMENT,
-                        kicker="TOPIC 3 · SCHEDULED TASKS",
-                        intro="Project settings → Environment: let threads and tasks run with your laptop closed.",
-                        cols=1),
+        # Threads edition only (None in classic).
+        *([lambda: D.tiles("Cloud Environments", C.CLOUD_ENVIRONMENT,
+                           kicker="TOPIC 3 · SCHEDULED TASKS",
+                           intro="Project settings → Environment: let threads and tasks run with your laptop closed.",
+                           cols=1)]
+          if C.CLOUD_ENVIRONMENT else []),
     ),
 }
 
@@ -442,7 +472,7 @@ for _s in prs.slides:
     if _s.element.find(_qn('p:transition')) is None:
         _s.element.append(_et.fromstring(_TRANS))
 
-OUT = os.path.join(REPO, "courseware", f"{C.SHORT_TITLE}-{C.VERSION}.pptx")
+OUT = os.path.join(REPO, C.COURSEWARE_SUBDIR, f"{C.SHORT_TITLE}-{C.VERSION}.pptx")
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 _cp = prs.core_properties
 _cp.author = _cp.last_modified_by = C.ORG

@@ -4,7 +4,7 @@
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:,">
 <title>Claude AI Masterclass</title>
-<meta name="description" content="Claude AI Masterclass (C1382) — lab prompts and course materials.">
+<meta name="description" content="Claude AI Masterclass (C1382) — lab prompts and course materials, in two editions.">
 <style>
 :root{--bg:#FAF9F5;--panel:#fff;--ink:#21201C;--muted:#5F5B54;--rule:#E4E1D9;
 --accent:#D97757;--btn:#B85A3A;--accent-ink:#A8502F;--on-accent:#fff;--accent-bg:#FBF3EF;--ok:#3E7A52;
@@ -108,14 +108,32 @@ padding:4px 16px 10px;margin:10px 0}
 @media (max-width:600px){ol.steps>li{padding-left:38px}ol.steps>li::before{width:28px;height:28px;line-height:25px;font-size:14px}
 ol.steps>li::after{left:13px;top:32px}ol.steps .prompt{margin-left:-38px}.prompt pre{font-size:13.5px}}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.edition{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:10px 0 14px}
+.edition .elabel{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-right:2px}
+.edition a{display:inline-block;padding:6px 14px;border:1.5px solid var(--rule);border-radius:999px;
+background:var(--panel);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px}
+.edition a:hover{border-color:var(--accent)}
+.edition a[aria-current="page"]{background:var(--btn);border-color:var(--btn);color:var(--on-accent)}
+.edition .ehint{flex-basis:100%;margin:2px 0 0;color:var(--muted);font-size:14.5px}
+.pick{margin:22px 0 6px;padding:18px 20px;border:2px dashed var(--accent);border-radius:12px}
+.pick p{font-size:18px;font-weight:600;margin:0 0 10px;line-height:1.4}
+.pick h4{margin:14px 0 4px;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.pick ul{margin:0;padding-left:20px}.pick li{margin:4px 0}
+.ed-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:18px 0 6px}
+.ed-card{background:var(--panel);border:1px solid var(--rule);border-top:4px solid var(--accent);border-radius:12px;padding:16px 18px}
+.ed-card h2{border:0;margin:0 0 6px;padding:0;font-size:21px}
+.ed-card p{margin:0 0 12px;font-size:15.5px;color:var(--muted)}
+.ed-card .btn{margin-right:6px}
 </style></head><body><div class="wrap">
-<p class="eyebrow">C1382 · v5.0</p>
+<p class="eyebrow">C1382 · v5.1</p>
 <h1>Claude AI Masterclass</h1>
-<p class="sub">Projects, threads, artefacts, connectors, skills and content — for marketing teams</p>
+<p class="sub">Claude Projects, artefacts, connectors, skills and content — for marketing teams.</p>
 <p>Lumo Kopi Co. is a fictitious Singapore coffee brand about to launch Lumo Cold Kopi — a ready-to-drink oat-milk kopi cold brew in a 240 ml can — in Singapore on 1 December 2026 and Kuala Lumpur in January 2027. You are its marketing team. All brands, figures, survey answers and documents in this course are synthetic and used for training only.</p>
-<div class="btns"><a class="btn primary" href="prompts/">Open the lab prompts</a>
-<a class="btn" href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass">Course repository</a>
+<h2>Choose your edition</h2>
+<p class="sub">The same ten labs come in two editions. Not sure? If your Projects page shows a Goal and threads, use Threads; otherwise Classic.</p>
+<div class="ed-cards"><div class="ed-card"><h2>Classic Projects Edition</h2><p>Projects as most accounts show them today: a Cowork project with Instructions, Context, Folder and Scheduled panels. Start here if you are unsure.</p><a class="btn primary" href="prompts/">Open the lab prompts</a><a class="btn" href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs">Lab files</a></div><div class="ed-card"><h2>Threads Edition</h2><p>The redesigned Projects beta: a project with a Goal, and a lead agent that splits each job into parallel threads.</p><a class="btn primary" href="prompts/threads/">Open the lab prompts</a><a class="btn" href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads">Lab files</a></div></div>
+<div class="btns"><a class="btn" href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass">Course repository</a>
 <a class="btn" href="https://www.tertiarycourses.com.sg/claude-ai-masterclass.html">Course details and registration</a></div>
-<div class="card"><table class="facts"><caption class="sr">Course details</caption><tr><th scope='row'>Course code</th><td>C1382</td></tr><tr><th scope='row'>Programme</th><td>Non-WSQ</td></tr><tr><th scope='row'>Duration</th><td>1 day · 9am–6pm</td></tr><tr><th scope='row'>Format</th><td>Instructor-led, hands-on practical labs · 10 labs</td></tr><tr><th scope='row'>Courseware</th><td>v5.0 · 27 October 2026</td></tr></table></div>
-<footer>Claude AI Masterclass (C1382) · courseware v5.0, 27 October 2026. Built from the course source on 27 October 2026. Lumo Kopi Co. and all lab data are fictitious, for training only. Use only the supplied mock data and your own test accounts. Never put real customer, personal or confidential data into a training exercise, and send lab emails to yourself rather than to a real recipient. © Tertiary Infotech Academy Pte Ltd · UEN: 201200696W.</footer>
+<div class="card"><table class="facts"><caption class="sr">Course details</caption><tr><th scope='row'>Course code</th><td>C1382</td></tr><tr><th scope='row'>Programme</th><td>Non-WSQ</td></tr><tr><th scope='row'>Duration</th><td>1 day · 9am–6pm</td></tr><tr><th scope='row'>Format</th><td>Instructor-led, hands-on practical labs · 10 labs</td></tr><tr><th scope='row'>Courseware</th><td>v5.1 · 27 October 2026 · two editions</td></tr></table></div>
+<footer>Claude AI Masterclass (C1382) · courseware v5.1, 27 October 2026. Built from the course source on 27 October 2026. Lumo Kopi Co. and all lab data are fictitious, for training only. Use only the supplied mock data and your own test accounts. Never put real customer, personal or confidential data into a training exercise, and send lab emails to yourself rather than to a real recipient. © Tertiary Infotech Academy Pte Ltd · UEN: 201200696W.</footer>
 </div></body></html>

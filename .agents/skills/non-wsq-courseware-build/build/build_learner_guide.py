@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Generate the non-WSQ Learner Guide as BOTH a Markdown
-mirror (LG-*.md at repo root) and a DOCX (courseware/LG-*.docx) from one source, so they never diverge.
+mirror (LG-<SHORT_TITLE>.md at repo root) and a DOCX (<COURSEWARE_SUBDIR>/LG-*.docx)
+from one source, so they never diverge. COURSE_EDITION=classic|threads picks the
+edition; a course_data value of None leaves its section out.
 
 House format: cover page, Document Version Control Record, auto TOC, Arial 11pt
 body. From v5.0 the lab folders hold only a prompt PDF and a data folder, so this
@@ -50,7 +52,7 @@ SHOT_DIR=os.path.join(REPO,"courseware","assets","screenshots")
 SHOT_REL="courseware/assets/screenshots"          # as linked from the repo-root Markdown
 
 def lab_folder(a):
-    """labs/<this>/ — e.g. lab-01-set-up-the-launch-project (same rule as build_labs.py)."""
+    """<LABS_SUBDIR>/<this>/ — e.g. lab-01-set-up-the-launch-project (same rule as build_labs.py)."""
     slugs=getattr(C,"LAB_SLUGS",{})
     return f"lab-{a['num']:02d}-{slugs[a['num']]}" if a["num"] in slugs else f"lab-{a['num']:02d}"
 
@@ -166,7 +168,7 @@ p("Every lab in this course runs inside one Claude Project — "
   "explains how a project works and how to set up each of its parts. Come back to it whenever a "
   "lab asks you to change the goal, instructions, context, memory or a scheduled task.")
 
-h2("The lead agent and its threads")
+h2("The lead agent and its threads" if C.THREADS else "How a project is organised")
 p(C.PROJECT_TEAM_SUBTITLE + ". " + C.PROJECT_TEAM_FOOT)
 defs([(n,_oneline(d)) for n,d,_c in C.PROJECT_TEAM_PARTS])
 if getattr(C,"PROJECTS_BEFORE_AFTER",None):
@@ -198,15 +200,33 @@ for _h in getattr(C,"LG_PROJECT_HOWTO",[]):
         h4("How to do it")
         steps([(s_,None) for s_ in _h["steps"]])
 
-h2("Project settings, models and environments")
-table(("Settings page","What you find there"),C.PROJECT_SETTINGS,(1.5,4.5))
-p(C.PROJECT_SETTINGS_FOOT)
-h3("Models and effort")
-table(C.PROJECT_MODELS_HEAD,C.PROJECT_MODELS_ROWS,(1.1,1.2,1.4,2.3))
-p(C.PROJECT_MODELS_FOOT)
-h3("Cloud environments")
-p(C.SCHEDULED_FOOT)
-table(("Setting","What it controls"),C.CLOUD_ENVIRONMENT,(1.5,4.5))
+# Settings, models and cloud environments exist only in the threads edition;
+# in the classic edition these keys are None and the section is left out.
+_SETTINGS=getattr(C,"PROJECT_SETTINGS",None); _MODELS=getattr(C,"PROJECT_MODELS_ROWS",None)
+_CLOUD=getattr(C,"CLOUD_ENVIRONMENT",None)
+if _SETTINGS or _MODELS or _CLOUD:
+    h2("Project settings, models and environments")
+    if _SETTINGS:
+        table(("Settings page","What you find there"),_SETTINGS,(1.5,4.5))
+        if C.PROJECT_SETTINGS_FOOT: p(C.PROJECT_SETTINGS_FOOT)
+    if _MODELS and C.PROJECT_MODELS_HEAD:
+        h3("Models and effort")
+        table(C.PROJECT_MODELS_HEAD,_MODELS,(1.1,1.2,1.4,2.3))
+        if C.PROJECT_MODELS_FOOT: p(C.PROJECT_MODELS_FOOT)
+    if _CLOUD:
+        h3("Cloud environments")
+        p(C.SCHEDULED_FOOT)
+        table(("Setting","What it controls"),_CLOUD,(1.5,4.5))
+
+# What is coming to Projects — classic edition only (None in threads).
+_UP=getattr(C,"UPCOMING_THREADS",None)
+if _UP:
+    h2("Coming soon: the new Projects")
+    p(_UP["intro"])
+    table(("Feature","What it does"),_UP["features"],(1.7,4.3))
+    h3("What changes in the labs")
+    table(_UP["mapping_head"],_UP["mapping_rows"],(3.0,3.0),bold_first=False)
+    p(_UP["foot"])
 
 # ---------------- topic theory (placed before the lab that uses it) ----------------
 def t1_family():
@@ -216,10 +236,16 @@ def t1_family():
           (1.5,1.5,3.0))
     p(C.CLAUDE_THREE_FOOT)
 def t1_research():
-    h2("Market research in parallel threads")
-    p("In Lab 2 you hand the lead agent one research job with four independent subjects. It "
-      "starts one thread per subject:")
-    table(("Thread","What it researches"),C.RESEARCH_THREADS,(1.6,4.4))
+    if C.THREADS:
+        h2("Market research in parallel threads")
+        p("In Lab 2 you hand the lead agent one research job with four independent subjects. It "
+          "starts one thread per subject:")
+        table(("Thread","What it researches"),C.RESEARCH_THREADS,(1.6,4.4))
+    else:
+        h2("Market research in parallel tasks")
+        p("In Lab 2 you start four research tasks in the project at once, one per independent "
+          "subject, then a fifth task merges them:")
+        table(("Task","What it researches"),C.RESEARCH_THREADS,(1.6,4.4))
     p(C.RESEARCH_FOOT)
 def t1_artefacts():
     h2("Live Artefacts")
@@ -257,8 +283,12 @@ def t2_plugins():
     h3("Mods")
     defs(C.MODS)
 def t3_social():
-    h2("Social content in parallel threads")
-    p("Each platform has its own format, so Lab 8 gives every platform its own thread:")
+    if C.THREADS:
+        h2("Social content in parallel threads")
+        p("Each platform has its own format, so Lab 8 gives every platform its own thread:")
+    else:
+        h2("Social content for four platforms")
+        p("Each platform has its own format, so the Lab 8 prompt gives every platform its own spec:")
     table(("Platform","Format and rules"),C.SOCIAL_SPECS,(1.4,4.6))
     p(C.SOCIAL_SPECS_FOOT)
     h3("From brief to calendar")
@@ -297,8 +327,8 @@ def lab(a):
     lead("You will build",a["build"])
     lead("Tools",a["services"]+".")
     h3("Lab files")
-    files=[f"Prompt PDF: labs/{folder}/{folder}.pdf"]
-    files+=[f"labs/{folder}/data/{d}" for d in a.get("data",[])]
+    files=[f"Prompt PDF: {C.LABS_SUBDIR}/{folder}/{folder}.pdf"]
+    files+=[f"{C.LABS_SUBDIR}/{folder}/data/{d}" for d in a.get("data",[])]
     bullets(files)
     if not a.get("data"):
         p("This lab has no data folder — it works from what the project already holds.")
@@ -379,7 +409,7 @@ def _cell(t):
 
 def render_md():
     out=[f"# {C.TITLE} — Learner Guide",""]
-    out.append(f"**Course Code:** {C.COURSE_CODE}  |  **Conducted by:** {C.ORG} ({C.UEN.replace('UEN: ','UEN ')})  |  **Version {C.VERSION} · {C.VERSION_DATE}**")
+    out.append(f"**{C.EDITION_LABEL}**  |  **Course Code:** {C.COURSE_CODE}  |  **Conducted by:** {C.ORG} ({C.UEN.replace('UEN: ','UEN ')})  |  **Version {C.VERSION} · {C.VERSION_DATE}**")
     out.append("")
     out.append("## Contents"); out.append("")
     for kind,*rest in B:
@@ -444,7 +474,7 @@ normal=doc.styles["Normal"]; normal.font.name="Arial"; normal.font.size=Pt(11)
 prodoc.style_headings(doc)
 prodoc.add_cover_page(doc,"LEARNER GUIDE",C.TITLE,f"{C.VERSION.lstrip('v')} · {C.VERSION_DATE}",
                       org_logo=os.path.join(ASSETS,"tertiary-infotech-logo.png"),
-                      course_logo=None, course_code=C.COURSE_CODE)
+                      course_logo=None, course_code=C.COURSE_CODE, edition=C.EDITION_LABEL)
 prodoc.add_version_control(doc,getattr(C,"VERSION_HISTORY",
  [(C.VERSION.lstrip("v"),C.VERSION_DATE,"Initial release.",C.TRAINER)]))
 prodoc.add_toc(doc)
@@ -626,7 +656,8 @@ for kind,*rest in B:
 
 prodoc.add_page_numbers(doc)
 prodoc.enable_update_fields(doc)
-DOCX_OUT=os.path.join(REPO,"courseware",f"LG-{C.SHORT_TITLE}.docx")
+DOCX_OUT=os.path.join(REPO,C.COURSEWARE_SUBDIR,f"LG-{C.SHORT_TITLE}.docx")   # courseware/ or courseware/threads-edition/
+os.makedirs(os.path.dirname(DOCX_OUT),exist_ok=True)
 prodoc.set_properties(doc, f"Learner Guide — {C.TITLE}", C.COURSE_CODE)
 doc.save(DOCX_OUT)
 print("Saved",DOCX_OUT)

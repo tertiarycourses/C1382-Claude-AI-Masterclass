@@ -25,7 +25,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import course_data as C
 import prodoc
-from build_labs import ACTS, REPO, TOPIC, lab_dir, lab_folder, pdf_name, blocks, steps_with_prompts
+from build_labs import (ACTS, REPO, TOPIC, lab_dir, lab_folder, lab_rel, pdf_name, blocks,
+                        steps_with_prompts, gh_lab_url)
 
 # Claude Style palette (claude_style.py), as docx colours.
 CLAY = RGBColor(0xD9, 0x77, 0x57)
@@ -41,7 +42,8 @@ TEXT_W = 6.67             # A4 width less two 0.8in margins
 STEP_IN = 0.3             # hanging indent of the numbered steps
 
 SOFFICE = os.environ.get("SOFFICE", "soffice")
-WORK = os.path.join(REPO, ".lo-labpdf")
+# One work folder per edition: both editions share most lab folder names.
+WORK = os.path.join(REPO, ".lo-labpdf", C.EDITION)
 
 
 # ------------------------------------------------------------------ primitives
@@ -71,6 +73,29 @@ def _inline(p, text, size=10.5, color=INK, bold=False, italic=False, font=None):
         r.font.size, r.font.color.rgb = Pt(size), color
         if f:
             r.font.name = f
+    return p
+
+
+def _link(p, text, url, size=9, color=CLAY):
+    """A clickable hyperlink run (python-docx has no API for one)."""
+    part = p.part
+    rid = part.relate_to(url, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink",
+                         is_external=True)
+    h = OxmlElement("w:hyperlink")
+    h.set(qn("r:id"), rid)
+    r = OxmlElement("w:r")
+    rpr = OxmlElement("w:rPr")
+    for tag, val in (("w:color", str(color)), ("w:sz", str(int(size * 2))), ("w:u", "single")):
+        el = OxmlElement(tag)
+        el.set(qn("w:val"), val)
+        rpr.append(el)
+    r.append(rpr)
+    t = OxmlElement("w:t")
+    t.text = text
+    t.set(qn("xml:space"), "preserve")
+    r.append(t)
+    h.append(r)
+    p._p.append(h)
     return p
 
 
@@ -205,7 +230,8 @@ def lab_docx(a, path):
     num = a["num"]
 
     # Header: course eyebrow, lab title, topic line, clay rule.
-    _para(doc, f"{C.TITLE.upper()}  ·  {C.COURSE_CODE}  ·  {C.VERSION}  ·  {C.VERSION_DATE}",
+    _para(doc, f"{C.TITLE.upper()}  ·  {C.COURSE_CODE}  ·  {C.EDITION_LABEL.upper()}  ·  "
+               f"{C.VERSION}  ·  {C.VERSION_DATE}",
           size=8.5, color=CLAY, bold=True, after=2)
     p = _para(doc, after=2)
     r = p.add_run(f"Lab {num:02d} — {a['title']}")
@@ -233,6 +259,10 @@ def lab_docx(a, path):
             _inline(p, f"data/{f}", size=9.5, font=CODE_FONT)
     else:
         _para(doc, "None — this lab works from what the project already holds.")
+    # This edition's own lab folder on GitHub (labs/ or labs-threads/).
+    p = _para(doc, size=9, color=MUTED, before=3)
+    _inline(p, "Lab folder on GitHub: ", size=9, color=MUTED, bold=True)
+    _link(p, lab_rel(a), gh_lab_url(a))
 
     # ---- before you start: the prompt note and any tool notes are
     # prerequisites (attach these files, install the plugin, swap in your email)
@@ -296,7 +326,7 @@ def render(docx_path, outdir):
     another build is already running cannot swallow the conversion."""
     # as_uri() percent-encodes the spaces in the repo path; a raw "file://"
     # path with spaces makes soffice abort.
-    profile = pathlib.Path(WORK, "lo-profile").as_uri()
+    profile = pathlib.Path(os.path.dirname(WORK), "lo-profile").as_uri()
     subprocess.run([SOFFICE, f"-env:UserInstallation={profile}", "--headless",
                     "--convert-to", "pdf", "--outdir", outdir, docx_path],
                    check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -315,12 +345,12 @@ def main():
         pdf = render(docx, d)
         ok = os.path.exists(pdf) and os.path.getmtime(pdf) > before
         made += ok
-        print(f"  {'ok  ' if ok else 'FAIL'} labs/{lab_folder(a)}/{pdf_name(a)}")
+        print(f"  {'ok  ' if ok else 'FAIL'} {lab_rel(a, pdf_name(a))}")
     print(f"  {made}/{len(ACTS)} lab PDFs")
     if made != len(ACTS):
         sys.exit(1)
 
 
 if __name__ == "__main__":
-    print("Rendering lab prompt PDFs")
+    print(f"Rendering lab prompt PDFs ({C.EDITION_LABEL})")
     main()

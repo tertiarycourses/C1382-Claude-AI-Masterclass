@@ -1,5 +1,8 @@
 # Claude AI Masterclass — Labs
 
+**Classic Projects Edition** · v5.1 · 27 October 2026. For Claude Projects as most accounts show them today — a Cowork project with Instructions, Context, Folder and Scheduled panels.
+Not sure? If your Projects page shows a Goal and threads, use Threads; otherwise Classic. The other edition: [Threads Edition labs](../labs-threads/README.md).
+
 Lumo Kopi Co. is a fictitious Singapore coffee brand about to launch Lumo Cold Kopi — a ready-to-drink oat-milk kopi cold brew in a 240 ml can — in Singapore on 1 December 2026 and Kuala Lumpur in January 2027. You are its marketing team. All brands, figures, survey answers and documents in this course are synthetic and used for training only.
 
 Ten labs, one continuous build, opening with Set Up the Lumo Launch Project.
@@ -9,13 +12,13 @@ Every lab after it extends the same project, so work through them in order.
 
 **The situation.** It is late October 2026. Lumo Kopi Co. launches Lumo Cold Kopi, its first ready-to-drink canned kopi, in Singapore on 1 December — six weeks away — and in Kuala Lumpur in January. The marketing team is small, the budget is S$60,000, and nothing has been produced yet: no research, no deck, no posts, no video.
 
-**Your role.** You are the Lumo marketing team. Instead of juggling a dozen separate chats, you run the whole launch from one Claude Project. Its lead agent plans each job, starts parallel threads for the pieces, and brings the results back for you to check and approve.
+**Your role.** You are the Lumo marketing team. Instead of juggling a dozen separate chats, you run the whole launch from one Claude Project in Cowork: its instructions, brand kit and working folder are set up once, and every task you start inside it already knows the brand.
 
 **The mission.** By the end of the day the project holds everything the launch needs — verified market research, a dashboard, a deck and brief, a brand-voice skill, two weeks of social posts, a launch video — and scheduled tasks that keep it moving while you are away.
 
-All ten labs run inside **one Claude Project** — the Lumo Cold Kopi Launch project you
-create in Lab 1. Labs 2 and 8 hand a job to the project's lead agent, which splits it
-into parallel threads, one per subject.
+All ten labs run inside **one Claude Project** in Cowork — the Lumo Cold Kopi Launch
+project you create in Lab 1. Lab 2 starts several tasks in the project at once, one per
+subject, then merges their results.
 
 Each lab folder holds only the **prompt PDF** and, where the lab needs it, a **data/**
 folder of mock data and assets. The full step-by-step instructions and check steps are
@@ -27,28 +30,28 @@ with a one-click **Copy** button for each block.
 | Lab | Topic | Title | Prompt PDF | Data |
 |---:|---|---|---|---|
 | 01 | 01 Claude Projects and Market Research | Set Up the Lumo Launch Project | [PDF](lab-01-set-up-the-launch-project/lab-01-set-up-the-launch-project.pdf) | [3 files](lab-01-set-up-the-launch-project/data/) |
-| 02 | 01 Claude Projects and Market Research | Run Market Research in Parallel Threads | [PDF](lab-02-market-research-threads/lab-02-market-research-threads.pdf) | [3 files](lab-02-market-research-threads/data/) |
+| 02 | 01 Claude Projects and Market Research | Run Market Research in Parallel Tasks | [PDF](lab-02-market-research/lab-02-market-research.pdf) | [3 files](lab-02-market-research/data/) |
 | 03 | 01 Claude Projects and Market Research | Build the Market Insights Live Artefact | [PDF](lab-03-market-insights-artefact/lab-03-market-insights-artefact.pdf) | [2 files](lab-03-market-insights-artefact/data/) |
 | 04 | 02 Connectors, Skills and Plugins | Connect Google Drive and Gmail | [PDF](lab-04-connect-drive-and-gmail/lab-04-connect-drive-and-gmail.pdf) | [2 files](lab-04-connect-drive-and-gmail/data/) |
 | 05 | 02 Connectors, Skills and Plugins | Create the Launch Deck and Campaign Brief | [PDF](lab-05-launch-deck-and-brief/lab-05-launch-deck-and-brief.pdf) | — |
 | 06 | 02 Connectors, Skills and Plugins | Capture the Brand Voice as an Agent Skill | [PDF](lab-06-brand-voice-skill/lab-06-brand-voice-skill.pdf) | [1 file](lab-06-brand-voice-skill/data/) |
 | 07 | 02 Connectors, Skills and Plugins | Add the Marketing Plugin | [PDF](lab-07-marketing-plugin/lab-07-marketing-plugin.pdf) | — |
-| 08 | 03 Content Production and Scheduled Work | Create Social Media Posts in Parallel Threads | [PDF](lab-08-social-posts-threads/lab-08-social-posts-threads.pdf) | [1 file](lab-08-social-posts-threads/data/) |
+| 08 | 03 Content Production and Scheduled Work | Create Two Weeks of Social Media Posts | [PDF](lab-08-social-posts/lab-08-social-posts.pdf) | [1 file](lab-08-social-posts/data/) |
 | 09 | 03 Content Production and Scheduled Work | Produce a 15-Second Launch Video | [PDF](lab-09-launch-video/lab-09-launch-video.pdf) | [5 files](lab-09-launch-video/data/) |
 | 10 | 03 Content Production and Scheduled Work | Schedule the Posts and Review the Project | [PDF](lab-10-schedule-and-review/lab-10-schedule-and-review.pdf) | — |
 
 ## Lab objectives
 
-- **Lab 01.** By the end of this lab you can create a Claude Project with a goal, instructions, context and memory.
-- **Lab 02.** By the end of this lab you can hand a multi-subject research job to the lead agent and verify the merged brief.
+- **Lab 01.** By the end of this lab you can create a Claude Project in Cowork with instructions, context, a working folder and a memory file.
+- **Lab 02.** By the end of this lab you can split a multi-subject research job into parallel tasks and verify the merged brief.
 - **Lab 03.** By the end of this lab you can turn research data into an interactive Live Artefact dashboard and save it.
 - **Lab 04.** By the end of this lab you can connect Google Drive and Gmail, read campaign files from Drive and send an approved summary.
 - **Lab 05.** By the end of this lab you can produce a launch deck in Slides and a campaign brief in Docs from the project's research.
 - **Lab 06.** By the end of this lab you can rewrite content in the brand voice, verify it, and save the routine as a skill with /skill-creator.
 - **Lab 07.** By the end of this lab you can install a plugin and use its namespaced commands alongside your own skill.
-- **Lab 08.** By the end of this lab you can produce a two-week, four-platform social calendar with one thread per channel.
+- **Lab 08.** By the end of this lab you can produce a two-week, four-platform social calendar using the brand-voice skill.
 - **Lab 09.** By the end of this lab you can script, storyboard and render a vertical launch video from supplied brand assets.
-- **Lab 10.** By the end of this lab you can schedule recurring project tasks, edit project memory and review thread usage.
+- **Lab 10.** By the end of this lab you can schedule recurring project tasks, keep the project memory file current and review the project.
 
 ## What each lab folder holds
 

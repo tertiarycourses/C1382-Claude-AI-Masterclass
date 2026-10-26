@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en-SG"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Lab Prompts · Claude AI Masterclass · Threads Edition</title>
+<meta name="description" content="Copy-ready prompts for every lab of Claude AI Masterclass (C1382), Threads Edition.">
+<style>
+:root{--bg:#FAF9F5;--panel:#fff;--ink:#21201C;--muted:#5F5B54;--rule:#E4E1D9;
+--accent:#D97757;--btn:#B85A3A;--accent-ink:#A8502F;--on-accent:#fff;--accent-bg:#FBF3EF;--ok:#3E7A52;
+--mark:#F8E3C4;--code:#F5F3EE;--note:#F5F3EE}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+--bg:#1F1E1B;--panel:#2A2925;--ink:#F1EEE6;--muted:#BDB7AB;--rule:#3D3B36;
+--accent:#E08A6D;--btn:#E08A6D;--accent-ink:#F0A68C;--on-accent:#1F1E1B;--accent-bg:#352A25;--ok:#7CC096;
+--mark:#5C4630;--code:#23221F;--note:#2F2D29}}
+:root[data-theme="dark"]{--bg:#1F1E1B;--panel:#2A2925;--ink:#F1EEE6;--muted:#BDB7AB;--rule:#3D3B36;
+--accent:#E08A6D;--btn:#E08A6D;--accent-ink:#F0A68C;--on-accent:#1F1E1B;--accent-bg:#352A25;--ok:#7CC096;
+--mark:#5C4630;--code:#23221F;--note:#2F2D29}
+*{box-sizing:border-box}
+html{scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);
+font:17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Calibri,Roboto,sans-serif}
+.wrap{max-width:880px;margin:0 auto;padding:28px 16px 80px}
+a{color:var(--accent-ink);text-underline-offset:2px}
+a:focus-visible,button:focus-visible,summary:focus-visible,pre:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:Cambria,Georgia,"Times New Roman",serif;font-weight:600;line-height:1.2}
+h1{font-size:34px;margin:6px 0 8px}
+h2{font-size:24px;margin:44px 0 4px;padding-top:6px;border-top:3px solid var(--accent)}
+h3{font-size:25px;margin:4px 0 10px}
+h4{font-size:14px;letter-spacing:.07em;text-transform:uppercase;color:var(--accent-ink);margin:26px 0 10px}
+.eyebrow{margin:0;color:var(--accent-ink);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sub{color:var(--muted);margin:0 0 14px}
+.topic-sub{color:var(--muted);margin:0 0 6px;font-size:15px}
+.skip{position:absolute;left:-999px}.skip:focus{left:16px;top:8px;z-index:9;background:var(--panel);padding:8px 12px}
+nav{position:sticky;top:0;z-index:2;background:var(--bg);padding:10px 0;margin-top:8px;
+border-bottom:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+nav span{font-size:13px;font-weight:700;color:var(--muted);margin-right:4px}
+nav a{display:inline-block;min-width:44px;text-align:center;padding:7px 10px;border:1.5px solid var(--rule);
+border-radius:999px;color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;background:var(--panel)}
+nav a:hover{border-color:var(--accent)}
+nav a[aria-current="true"]{background:var(--btn);border-color:var(--btn);color:var(--on-accent)}
+@media (max-width:600px){nav{flex-wrap:nowrap;overflow-x:auto}nav a{flex:none}h1{font-size:28px}h3{font-size:22px}}
+.lab{padding:26px 0 8px;border-bottom:1px solid var(--rule)}
+.meta{color:var(--muted);font-size:15px}
+.links{font-size:15px;font-weight:600}
+details{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:8px 14px;margin:0 0 8px}
+summary{cursor:pointer;font-weight:600}
+details ol,details ul{margin:8px 0 4px;padding-left:22px}details li{margin:6px 0}
+details.files{font-size:15px}
+details.check{border-left:4px solid var(--ok)}
+.intro,.hint{font-size:16px}.hint{color:var(--muted)}
+mark{background:var(--mark);color:inherit;border-radius:3px;padding:0 2px}
+code{font:0.9em ui-monospace,Menlo,Consolas,monospace}
+.prompt{background:var(--panel);border:1px solid var(--rule);border-left:4px solid var(--accent);
+border-radius:10px;margin:0 0 16px;overflow:hidden}
+.prompt header{display:flex;justify-content:space-between;align-items:center;gap:12px;
+padding:9px 14px;background:var(--accent-bg)}
+.pname{font-weight:700}
+.badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+background:var(--btn);color:var(--on-accent);border-radius:999px;padding:2px 9px;margin-right:6px;vertical-align:1px}
+.lead,.after{margin:0;padding:12px 14px 0;font-size:16px}
+.after{padding:0 14px 12px;color:var(--muted)}
+.prompt pre{margin:10px 14px 12px;padding:14px;background:var(--code);border-radius:8px;
+white-space:pre-wrap;word-wrap:break-word;font:14.5px/1.55 ui-monospace,Menlo,Consolas,monospace}
+.prompt .note{margin:0 14px 12px}
+.note{background:var(--note);border-radius:8px;padding:10px 14px;font-size:15px}
+.copy{flex:none;font:inherit;font-weight:700;font-size:15px;color:var(--on-accent);background:var(--btn);
+border:0;border-radius:8px;padding:8px 18px;cursor:pointer;min-height:40px;min-width:92px}
+.copy:hover{filter:brightness(1.07)}
+.copy.done{background:var(--ok)}
+.top{font-size:14px;margin:6px 0 0}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:12px;padding:18px 20px;margin:18px 0}
+.facts{width:100%;border-collapse:collapse;font-size:16px}
+.facts th,.facts td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--rule);vertical-align:top}
+.facts th{color:var(--muted);font-weight:600;width:38%}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.btn{display:inline-block;padding:11px 18px;border-radius:10px;font-weight:700;text-decoration:none;
+border:1.5px solid var(--accent);color:var(--accent-ink)}
+.btn.primary{background:var(--btn);border-color:var(--btn);color:var(--on-accent)}
+footer{margin-top:40px;color:var(--muted);font-size:14px}
+.scenario{background:var(--panel);border:1px solid var(--rule);border-top:4px solid var(--accent);
+border-radius:12px;padding:16px 20px 8px;margin:18px 0 6px}
+.scenario h2{border:0;margin:2px 0 10px;padding:0;font-size:24px}
+.scenario dl,.facts-list{margin:0}
+.scenario dt,.facts-list dt{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink)}
+.scenario dd{margin:2px 0 12px}
+.facts-list{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:12px 16px 2px;margin:4px 0 12px}
+.facts-list dd{margin:2px 0 12px}
+.facts-list .uses{display:block;color:var(--muted);font-size:15px}
+.before .note{margin:0 0 8px}
+ol.steps{list-style:none;counter-reset:step;margin:0;padding:0}
+ol.steps>li{counter-increment:step;position:relative;padding:0 0 6px 46px;margin:0}
+ol.steps>li::before{content:counter(step);position:absolute;left:0;top:0;width:32px;height:32px;
+border-radius:50%;border:1.5px solid var(--rule);background:var(--panel);color:var(--ink);
+font-weight:700;font-size:15px;line-height:29px;text-align:center}
+ol.steps>li::after{content:"";position:absolute;left:15px;top:36px;bottom:4px;width:2px;background:var(--rule)}
+ol.steps>li:last-child::after{display:none}
+ol.steps>li.has-prompt::before{background:var(--btn);border-color:var(--btn);color:var(--on-accent)}
+.step{margin:4px 0 2px}
+li.has-prompt>.step{font-weight:600}
+.why{margin:0 0 10px;color:var(--muted);font-size:15px}
+.tag{display:inline-block;margin-left:6px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+color:var(--accent-ink);white-space:nowrap}
+ol.steps .prompt{margin:4px 0 14px;position:relative;z-index:1}  /* paint over the step rail */
+.check{background:var(--panel);border:1px solid var(--rule);border-left:4px solid var(--ok);border-radius:10px;
+padding:4px 16px 10px;margin:10px 0}
+.check h4{color:var(--ok);margin:10px 0 4px}.check p{margin:0}
+@media (max-width:600px){ol.steps>li{padding-left:38px}ol.steps>li::before{width:28px;height:28px;line-height:25px;font-size:14px}
+ol.steps>li::after{left:13px;top:32px}ol.steps .prompt{margin-left:-38px}.prompt pre{font-size:13.5px}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.edition{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:10px 0 14px}
+.edition .elabel{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-right:2px}
+.edition a{display:inline-block;padding:6px 14px;border:1.5px solid var(--rule);border-radius:999px;
+background:var(--panel);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px}
+.edition a:hover{border-color:var(--accent)}
+.edition a[aria-current="page"]{background:var(--btn);border-color:var(--btn);color:var(--on-accent)}
+.edition .ehint{flex-basis:100%;margin:2px 0 0;color:var(--muted);font-size:14.5px}
+.pick{margin:22px 0 6px;padding:18px 20px;border:2px dashed var(--accent);border-radius:12px}
+.pick p{font-size:18px;font-weight:600;margin:0 0 10px;line-height:1.4}
+.pick h4{margin:14px 0 4px;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.pick ul{margin:0;padding-left:20px}.pick li{margin:4px 0}
+.ed-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:18px 0 6px}
+.ed-card{background:var(--panel);border:1px solid var(--rule);border-top:4px solid var(--accent);border-radius:12px;padding:16px 18px}
+.ed-card h2{border:0;margin:0 0 6px;padding:0;font-size:21px}
+.ed-card p{margin:0 0 12px;font-size:15.5px;color:var(--muted)}
+.ed-card .btn{margin-right:6px}
+</style></head><body><a class="skip" href="#main">Skip to the prompts</a>
+<div class="wrap" id="top">
+<p class="eyebrow">C1382 · Claude AI Masterclass · Threads Edition · v5.1</p>
+<h1>Lab Prompts</h1>
+<div class="edition" role="group" aria-label="Course edition"><span class="elabel">Edition</span><a href="../">Classic Projects (most accounts)</a><a href="./" aria-current="page">Threads (new Projects beta)</a><p class="ehint">Not sure? If your Projects page shows a Goal and threads, use Threads; otherwise Classic.</p></div>
+<p class="sub">All 10 labs, step by step. Each lab reads top to bottom — step, prompt, step, prompt.
+When a step has a prompt, click <b>Copy</b> and paste it into your <b>Lumo Cold Kopi Launch</b> project in Claude.
+Every prompt card is labelled with its lab — check it before you copy.</p>
+<p class="links"><a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass">Course repository</a> · <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads">Lab folders (Threads Edition)</a> ·
+<a href="../../">Course home</a></p>
+<section class="scenario" aria-labelledby="scenario-title"><p class="eyebrow">The course scenario</p><h2 id="scenario-title">The Lumo Cold Kopi launch</h2><dl><dt>The situation</dt><dd>It is late October 2026. Lumo Kopi Co. launches Lumo Cold Kopi, its first ready-to-drink canned kopi, in Singapore on 1 December — six weeks away — and in Kuala Lumpur in January. The marketing team is small, the budget is S$60,000, and nothing has been produced yet: no research, no deck, no posts, no video.</dd><dt>Your role</dt><dd>You are the Lumo marketing team. Instead of juggling a dozen separate chats, you run the whole launch from one Claude Project. Its lead agent plans each job, starts parallel threads for the pieces, and brings the results back for you to check and approve.</dd><dt>The mission</dt><dd>By the end of the day the project holds everything the launch needs — verified market research, a dashboard, a deck and brief, a brand-voice skill, two weeks of social posts, a launch video — and scheduled tasks that keep it moving while you are away.</dd></dl></section>
+<nav aria-label="Jump to lab"><span>Lab</span><a href="#lab-1" aria-label="Lab 1">1</a><a href="#lab-2" aria-label="Lab 2">2</a><a href="#lab-3" aria-label="Lab 3">3</a><a href="#lab-4" aria-label="Lab 4">4</a><a href="#lab-5" aria-label="Lab 5">5</a><a href="#lab-6" aria-label="Lab 6">6</a><a href="#lab-7" aria-label="Lab 7">7</a><a href="#lab-8" aria-label="Lab 8">8</a><a href="#lab-9" aria-label="Lab 9">9</a><a href="#lab-10" aria-label="Lab 10">10</a></nav>
+<div id="pick" class="pick"><p>Which lab are you on? Click its number above — every prompt is labelled with its lab, so check it before you copy.</p><h4>Topic 1 · Claude Projects and Market Research</h4><ul><li><a href="#lab-1">Lab 1 · Set Up the Lumo Launch Project</a></li><li><a href="#lab-2">Lab 2 · Run Market Research in Parallel Threads</a></li><li><a href="#lab-3">Lab 3 · Build the Market Insights Live Artefact</a></li></ul><h4>Topic 2 · Connectors, Skills and Plugins</h4><ul><li><a href="#lab-4">Lab 4 · Connect Google Drive and Gmail</a></li><li><a href="#lab-5">Lab 5 · Create the Launch Deck and Campaign Brief</a></li><li><a href="#lab-6">Lab 6 · Capture the Brand Voice as an Agent Skill</a></li><li><a href="#lab-7">Lab 7 · Add the Marketing Plugin</a></li></ul><h4>Topic 3 · Content Production and Scheduled Work</h4><ul><li><a href="#lab-8">Lab 8 · Create Social Media Posts in Parallel Threads</a></li><li><a href="#lab-9">Lab 9 · Produce a 15-Second Launch Video</a></li><li><a href="#lab-10">Lab 10 · Schedule the Posts and Review the Project</a></li></ul></div>
+<main id="main"><section aria-labelledby="topic-1"><h2 id="topic-1">Topic 01 · Claude Projects and Market Research</h2><p class="topic-sub">The Claude family · the new Projects · lead agent and threads · market research · Live Artefacts</p><section class="lab" id="lab-1" aria-labelledby="lab-1-title"><p class="eyebrow">Lab 01 · Topic 01</p><h3 id="lab-1-title">Set Up the Lumo Launch Project</h3><dl class="facts-list"><dt>Scenario</dt><dd>Lumo Kopi Co. launches Lumo Cold Kopi in six weeks, and the marketing work will keep coming until launch day — exactly what a Claude Project is for. You create the Lumo Cold Kopi Launch project, give it a goal, add the brand kit as context, write its standing instructions, and check that its lead agent understood all three. Every later lab runs inside this project.</dd><dt>Objective</dt><dd>By the end of this lab you can create a Claude Project with a goal, instructions, context and memory.</dd><dt>You will build</dt><dd>The Lumo Cold Kopi Launch project, with a goal, instructions, three context files and a first memory entry. <span class="uses">Uses: Claude desktop app, Claude Projects</span></dd><dt>Data files</dt><dd><a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-01-set-up-the-launch-project/data/brand-kit/lumo-brand-guidelines.md"><code>brand-kit/lumo-brand-guidelines.md</code></a>, <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-01-set-up-the-launch-project/data/brand-kit/lumo-product-sheet.md"><code>brand-kit/lumo-product-sheet.md</code></a>, <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-01-set-up-the-launch-project/data/brand-kit/lumo-launch-brief.md"><code>brand-kit/lumo-launch-brief.md</code></a></dd></dl><p class="links"><a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-01-set-up-the-launch-project/lab-01-set-up-the-launch-project.pdf">Prompt PDF</a> · <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads/lab-01-set-up-the-launch-project">Lab folder on GitHub</a> · <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads/lab-01-set-up-the-launch-project/data">Data folder</a></p><div class="before"><h4>Before you start</h4><p class="note"><b>Note:</b> No Projects in your sidebar yet? The beta has not reached your account. Switch to Cowork mode, attach the three brand-kit files, paste Block 2 as your first message, then send Block 3.</p></div><h4>Steps and prompts — Create the launch project</h4><p class="intro">This lab has <b>three blocks</b>. Block 1 is the project goal, pasted into the New project dialog. Block 2 is the project instructions, pasted into Project settings. Block 3 is your first message to the lead agent.</p><ol class="steps" role="list"><li class="" id="lab-1-step-1"><p class="step">Download the course labs and open the Lab 01 data/brand-kit folder.</p><p class="why">Skim the three files — guidelines, product sheet, launch brief. You will check Claude's answers against them.</p></li><li class="" id="lab-1-step-2"><p class="step">In the Claude desktop app, open Projects from the sidebar and click New project.</p><p class="why">Projects are shared across the Claude app (Chat and Cowork) and Claude Code, so the same project is reachable from all three.</p></li><li class="has-prompt" id="lab-1-step-3"><p class="step">Name the project Lumo Cold Kopi Launch and paste Block 1 into the Goal field. <span class="tag">Prompt below</span></p><p class="why">The goal is what the lead agent steers every decision toward, so it is worth writing as an outcome with a date and a measure.</p><article class="prompt" aria-label="Lab 1 Block 1 — GOAL"><header><span class="pname"><span class="badge">Lab 1</span> Block 1 — GOAL</span><button class="copy" type="button" hidden data-copy="Launch Lumo Cold Kopi in Singapore on 1 December 2026.
+Produce the market research, a launch deck, a campaign brief,
+two weeks of social media posts and a 15-second launch video,
+within a S$60,000 budget, so that 25-34 year-olds on Instagram
+and TikTok know the product exists by launch day." aria-label="Copy Lab 1 Block 1 — GOAL">Copy</button></header><p class="lead">Paste this into the Goal field of the New project dialog:</p><pre tabindex="0">Launch Lumo Cold Kopi in Singapore on 1 December 2026.
+Produce the market research, a launch deck, a campaign brief,
+two weeks of social media posts and a 15-second launch video,
+within a S$60,000 budget, so that 25-34 year-olds on Instagram
+and TikTok know the product exists by launch day.</pre><p class="after">Name the project <b>Lumo Cold Kopi Launch</b>, add the three brand-kit files as Context, and click <b>Create project</b>.</p></article></li><li class="" id="lab-1-step-4"><p class="step">Under Context, add the three brand-kit files, then click Create project.</p><p class="why">Context is read, never edited — the right home for reference files you want kept exactly as they are.</p></li><li class="has-prompt" id="lab-1-step-5"><p class="step">Click the gear icon to open Project settings, choose Memory, and paste Block 2 into Project instructions. Save. <span class="tag">Prompt below</span></p><p class="why">Instructions are standing rules for every thread. Short, checkable rules work better than general wishes.</p><article class="prompt" aria-label="Lab 1 Block 2 — INSTRUCTIONS"><header><span class="pname"><span class="badge">Lab 1</span> Block 2 — INSTRUCTIONS</span><button class="copy" type="button" hidden data-copy="You are the marketing team for Lumo Kopi Co.
+- Prices are in Singapore dollars: S$3.90 per can, S$42.00 per
+  12-pack. Always two decimals.
+- Follow lumo-brand-guidelines.md for anything customer-facing.
+- Never describe the product as healthy. You may say 5 g sugar.
+- Never send an email or publish a post without my approval.
+- When a job has several independent subjects, give each one
+  its own thread and merge the results for me.
+- Flag any figure that two sources disagree on. Do not pick one." aria-label="Copy Lab 1 Block 2 — INSTRUCTIONS">Copy</button></header><p class="lead">Paste this into Project settings → Memory → Project instructions:</p><pre tabindex="0">You are the marketing team for Lumo Kopi Co.
+- Prices are in Singapore dollars: S$3.90 per can, S$42.00 per
+  12-pack. Always two decimals.
+- Follow lumo-brand-guidelines.md for anything customer-facing.
+- Never describe the product as healthy. You may say 5 g sugar.
+- Never send an email or publish a post without my approval.
+- When a job has several independent subjects, give each one
+  its own thread and merge the results for me.
+- Flag any figure that two sources disagree on. Do not pick one.</pre><p class="after">Save the instructions, then go back to the project and send Block 3.</p></article></li><li class="" id="lab-1-step-6"><p class="step">While you are in settings, open General and look at Models.</p><p class="why">Note the model and effort for the lead agent and for threads. You will see their cost in Lab 10.</p></li><li class="has-prompt" id="lab-1-step-7"><p class="step">Back in the project, send Block 3 to the lead agent. <span class="tag">Prompt below</span></p><p class="why">This is a setup check: if it cannot restate the goal or find the files, fix that now, before any real work.</p><article class="prompt" aria-label="Lab 1 Block 3 — FIRST MESSAGE"><header><span class="pname"><span class="badge">Lab 1</span> Block 3 — FIRST MESSAGE</span><button class="copy" type="button" hidden data-copy="Before we start work, check your setup:
+1. Restate the project goal in one line.
+2. List the context files you can read and what each is for.
+3. List the three instructions you think matter most.
+4. From the product sheet, give me the price per can, the sugar
+   per can and the launch date.
+Then remember this for the project: our primary audience is
+25-34 year-olds in Singapore, and our secondary market is
+Kuala Lumpur, launching 15 January 2027." aria-label="Copy Lab 1 Block 3 — FIRST MESSAGE">Copy</button></header><p class="lead">Send this to the lead agent:</p><pre tabindex="0">Before we start work, check your setup:
+1. Restate the project goal in one line.
+2. List the context files you can read and what each is for.
+3. List the three instructions you think matter most.
+4. From the product sheet, give me the price per can, the sugar
+   per can and the launch date.
+Then remember this for the project: our primary audience is
+25-34 year-olds in Singapore, and our secondary market is
+Kuala Lumpur, launching 15 January 2027.</pre><p class="after">Compare the answer with the brand kit, then open Project settings → Memory and find the new memory entry.</p></article></li><li class="" id="lab-1-step-8"><p class="step">Check the answers: S$3.90 per can, 5 g sugar, launch 1 December 2026.</p><p class="why">Every figure must match the product sheet. A wrong figure here means a wrong context file.</p></li><li class="" id="lab-1-step-9"><p class="step">Open Project settings → Memory and find the memory entry about the audience and Kuala Lumpur.</p><p class="why">The project wrote it, so you are responsible for it. Memory you never read is memory you cannot trust.</p></li></ol><div class="check" role="note" aria-label="Check"><h4>Check — done when</h4><p>The Lumo Cold Kopi Launch project exists with the goal from Block 1, the three brand-kit files under Context and the Block 2 instructions saved. The lead agent restated the goal, listed all three context files, and quoted S$3.90 per can, 5 g sugar and a 1 December 2026 launch. A memory file now records the 25-34 audience and the 15 January 2027 Kuala Lumpur launch.</p></div><p class="top"><a href="#top">Back to top</a></p></section><section class="lab" id="lab-2" aria-labelledby="lab-2-title"><p class="eyebrow">Lab 02 · Topic 01</p><h3 id="lab-2-title">Run Market Research in Parallel Threads</h3><dl class="facts-list"><dt>Scenario</dt><dd>Before anyone writes a post, the team needs to know the market. Four subjects need research — competitors, the customer survey, pricing and social trends — and none depends on another. You give the whole job to the lead agent in one message. It starts one thread per subject, each with its own data file, then merges the four findings into one research brief, which you check against the data.</dd><dt>Objective</dt><dd>By the end of this lab you can hand a multi-subject research job to the lead agent and verify the merged brief.</dd><dt>You will build</dt><dd>A research brief (lumo-research-brief.docx) merged from four parallel threads, saved in the project. <span class="uses">Uses: Claude Projects, lead agent and threads, web search</span></dd><dt>Data files</dt><dd><a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-02-market-research-threads/data/lumo-consumer-survey-2026.csv"><code>lumo-consumer-survey-2026.csv</code></a>, <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-02-market-research-threads/data/lumo-competitors.csv"><code>lumo-competitors.csv</code></a>, <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-02-market-research-threads/data/lumo-social-trends.csv"><code>lumo-social-trends.csv</code></a></dd></dl><p class="links"><a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-02-market-research-threads/lab-02-market-research-threads.pdf">Prompt PDF</a> · <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads/lab-02-market-research-threads">Lab folder on GitHub</a> · <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads/lab-02-market-research-threads/data">Data folder</a></p><div class="before"><h4>Before you start</h4><p class="note"><b>Note:</b> Attach the three CSV files from the Lab 02 data folder, or add them to the project's Context first.</p></div><h4>Steps and prompts — Research the market in four threads</h4><ol class="steps" role="list"><li class="" id="lab-2-step-1"><p class="step">Open the Lab 02 data folder and glance at the three CSV files.</p><p class="why">Know your source: 400 survey rows, six competitors, twelve content themes.</p></li><li class="has-prompt" id="lab-2-step-2"><p class="step">In the Lumo Cold Kopi Launch project, attach the three files and send the lab prompt. <span class="tag">Prompt below</span></p><p class="why">One message, four subjects. You are briefing the lead agent, not doing the splitting yourself.</p><article class="prompt" aria-label="Lab 2 Prompt"><header><span class="pname"><span class="badge">Lab 2</span> Prompt</span><button class="copy" type="button" hidden data-copy="Research the market for the Lumo Cold Kopi launch. The data is in
+the three files I have attached. Split this into four threads,
+one per subject, and run them in parallel:
+
+Thread 1 - COMPETITORS (lumo-competitors.csv): price per can, pack,
+  positioning and channel for each brand. Where is the gap Lumo
+  can own?
+Thread 2 - CUSTOMERS (lumo-consumer-survey-2026.csv): share likely
+  to buy (intent 4 or 5), split by age band and city; top purchase
+  drivers; top discovery channels.
+Thread 3 - PRICING: where S$3.90 sits against the competitor
+  median, and the share of respondents willing to pay S$3.50 or
+  more.
+Thread 4 - SOCIAL TRENDS (lumo-social-trends.csv): the three content
+  themes with the highest engagement, with one post idea each.
+
+When all four threads are done, merge them into one research brief,
+lumo-research-brief.docx: a one-paragraph summary, one section per
+thread with the key numbers, and three recommendations for the
+launch. Show your working for every percentage. Tell me which
+thread produced each section, and flag anything the threads
+disagree on." aria-label="Copy Lab 2 Prompt">Copy</button></header><pre tabindex="0">Research the market for the Lumo Cold Kopi launch. The data is in
+the three files I have attached. Split this into four threads,
+one per subject, and run them in parallel:
+
+Thread 1 - COMPETITORS (lumo-competitors.csv): price per can, pack,
+  positioning and channel for each brand. Where is the gap Lumo
+  can own?
+Thread 2 - CUSTOMERS (lumo-consumer-survey-2026.csv): share likely
+  to buy (intent 4 or 5), split by age band and city; top purchase
+  drivers; top discovery channels.
+Thread 3 - PRICING: where S$3.90 sits against the competitor
+  median, and the share of respondents willing to pay S$3.50 or
+  more.
+Thread 4 - SOCIAL TRENDS (lumo-social-trends.csv): the three content
+  themes with the highest engagement, with one post idea each.
+
+When all four threads are done, merge them into one research brief,
+lumo-research-brief.docx: a one-paragraph summary, one section per
+thread with the key numbers, and three recommendations for the
+launch. Show your working for every percentage. Tell me which
+thread produced each section, and flag anything the threads
+disagree on.</pre></article></li><li class="" id="lab-2-step-3"><p class="step">Watch the lead agent announce the threads it starts.</p><p class="why">Each thread has one subject and one file — a focused brief with a fresh context window. That is why parallel research stays sharp.</p></li><li class="" id="lab-2-step-4"><p class="step">Open one thread while it works and read its brief.</p><p class="why">You can see exactly what the lead agent asked each thread to do. A poor result usually traces back to a poor thread brief.</p></li><li class="" id="lab-2-step-5"><p class="step">When the merged brief arrives, check the survey numbers.</p><p class="why">Expect 400 respondents, 248 likely to buy (62%), and 112 of 152 in the 25-34 band (74%).</p></li><li class="" id="lab-2-step-6"><p class="step">Check the channel and driver findings.</p><p class="why">Instagram is the top discovery channel at 136 (34%), then TikTok at 104 (26%). Taste is the top driver at 124 (31%).</p></li><li class="" id="lab-2-step-7"><p class="step">Check the pricing section.</p><p class="why">The competitor median is S$4.30, so S$3.90 sits below it; 228 respondents (57%) would pay S$3.50 or more.</p></li><li class="" id="lab-2-step-8"><p class="step">Check the trends section and the recommendations.</p><p class="why">The top theme should be Taste tests and first-sip reactions. Do the three recommendations follow from the numbers above them?</p></li><li class="" id="lab-2-step-9"><p class="step">Open lumo-research-brief.docx and confirm each section names its thread.</p><p class="why">Traceability: every number in the brief can be traced to one thread and one file.</p></li></ol><div class="check" role="note" aria-label="Check"><h4>Check — done when</h4><p>lumo-research-brief.docx has a summary, four thread sections and three recommendations. It reports 400 respondents, 248 likely to buy (62%), 112 of 152 aged 25-34 (74%), Instagram as the top discovery channel at 34%, Taste as the top driver at 31%, a competitor median of S$4.30 with Lumo's S$3.90 below it, 228 respondents (57%) willing to pay S$3.50 or more, and Taste tests and first-sip reactions as the top content theme.</p></div><p class="top"><a href="#top">Back to top</a></p></section><section class="lab" id="lab-3" aria-labelledby="lab-3-title"><p class="eyebrow">Lab 03 · Topic 01</p><h3 id="lab-3-title">Build the Market Insights Live Artefact</h3><dl class="facts-list"><dt>Scenario</dt><dd>The research brief is a document; the launch team wants something they can explore. You turn the survey and competitor data into a Live Artefact — KPI tiles, a channel chart, a price ladder and a city filter — refine it in plain English, save it and download a copy. The launch deck in Lab 5 quotes this dashboard's numbers.</dd><dt>Objective</dt><dd>By the end of this lab you can turn research data into an interactive Live Artefact dashboard and save it.</dd><dt>You will build</dt><dd>A saved Market Insights Live Artefact, plus a downloaded HTML copy. <span class="uses">Uses: Claude Projects, Live Artefacts</span></dd><dt>Data files</dt><dd><a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-03-market-insights-artefact/data/lumo-consumer-survey-2026.csv"><code>lumo-consumer-survey-2026.csv</code></a>, <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-03-market-insights-artefact/data/lumo-competitors.csv"><code>lumo-competitors.csv</code></a></dd></dl><p class="links"><a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-03-market-insights-artefact/lab-03-market-insights-artefact.pdf">Prompt PDF</a> · <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads/lab-03-market-insights-artefact">Lab folder on GitHub</a> · <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads/lab-03-market-insights-artefact/data">Data folder</a></p><div class="before"><h4>Before you start</h4><p class="note"><b>Note:</b> Artefacts run in a sandbox and cannot call the internet, which is why the prompt says to bake the data in.</p></div><h4>Steps and prompts — Build the Market Insights dashboard</h4><ol class="steps" role="list"><li class="has-prompt" id="lab-3-step-1"><p class="step">In the project, send the lab prompt with the two CSV files attached or in Context. <span class="tag">Prompt below</span></p><p class="why">The project already knows the brand colours from the guidelines in Context — you do not attach them again.</p><article class="prompt" aria-label="Lab 3 Prompt"><header><span class="pname"><span class="badge">Lab 3</span> Prompt</span><button class="copy" type="button" hidden data-copy="Using lumo-consumer-survey-2026.csv and lumo-competitors.csv, build
+a Live Artefact: an interactive Market Insights dashboard for the
+Lumo Cold Kopi launch.
+
+Include:
+- KPI tiles: respondents, % likely to buy (intent 4 or 5), top
+  discovery channel, competitor median price.
+- A bar chart of discovery channels.
+- A bar chart of purchase drivers.
+- A price ladder: the six competitors and Lumo at S$3.90, cheapest
+  to dearest, with Lumo highlighted.
+- A filter for city: All, Singapore, Kuala Lumpur. The KPI tiles and
+  both survey charts must follow the filter.
+
+Bake the data into the artefact - do not fetch anything. Use the
+Lumo brand colours from the brand guidelines. Title it
+&quot;Lumo Cold Kopi - Market Insights&quot;." aria-label="Copy Lab 3 Prompt">Copy</button></header><pre tabindex="0">Using lumo-consumer-survey-2026.csv and lumo-competitors.csv, build
+a Live Artefact: an interactive Market Insights dashboard for the
+Lumo Cold Kopi launch.
+
+Include:
+- KPI tiles: respondents, % likely to buy (intent 4 or 5), top
+  discovery channel, competitor median price.
+- A bar chart of discovery channels.
+- A bar chart of purchase drivers.
+- A price ladder: the six competitors and Lumo at S$3.90, cheapest
+  to dearest, with Lumo highlighted.
+- A filter for city: All, Singapore, Kuala Lumpur. The KPI tiles and
+  both survey charts must follow the filter.
+
+Bake the data into the artefact - do not fetch anything. Use the
+Lumo brand colours from the brand guidelines. Title it
+"Lumo Cold Kopi - Market Insights".</pre></article></li><li class="" id="lab-3-step-2"><p class="step">Check the KPI tiles with the filter on All.</p><p class="why">400 respondents, 62% likely to buy, Instagram top channel, competitor median S$4.30 — the same numbers as the Lab 2 brief.</p></li><li class="" id="lab-3-step-3"><p class="step">Switch the filter to Singapore, then Kuala Lumpur.</p><p class="why">The respondents tile should read 240, then 160. If a chart does not change, ask Claude to wire it to the filter.</p></li><li class="" id="lab-3-step-4"><p class="step">Check the price ladder.</p><p class="why">Kopi Kaki Cold at S$3.20 is cheapest, Northpoint Cold Brew at S$5.60 is dearest, and Lumo sits third at S$3.90, between Daily Grind RTD at S$3.70 and Frostbean at S$4.20.</p></li><li class="" id="lab-3-step-5"><p class="step">Ask for one refinement, for example: Put the price ladder beside the channel chart.</p><p class="why">Refining by conversation is the normal way to work — you never edit the code yourself.</p></li><li class="" id="lab-3-step-6"><p class="step">Save the artefact, then download a copy as HTML.</p><p class="why">A saved artefact persists and can be reopened; the download is a file you can share with someone who does not use Claude.</p></li></ol><div class="check" role="note" aria-label="Check"><h4>Check — done when</h4><p>The Market Insights artefact shows 400 respondents, 62% likely to buy, Instagram as the top channel and a S$4.30 competitor median. The city filter changes the respondent count to 240 (Singapore) and 160 (Kuala Lumpur) and both survey charts follow it. The price ladder runs from S$3.20 to S$5.60 with Lumo highlighted at S$3.90. The artefact is saved and an HTML copy is downloaded.</p></div><p class="top"><a href="#top">Back to top</a></p></section></section><section aria-labelledby="topic-2"><h2 id="topic-2">Topic 02 · Connectors, Skills and Plugins</h2><p class="topic-sub">Google Drive and Gmail · the context window · Slides and Docs · Agent Skills · plugins and mods</p><section class="lab" id="lab-4" aria-labelledby="lab-4-title"><p class="eyebrow">Lab 04 · Topic 02</p><h3 id="lab-4-title">Connect Google Drive and Gmail</h3><dl class="facts-list"><dt>Scenario</dt><dd>The launch budget and timeline live in a shared Google Drive folder, not on your laptop. You upload the Lab 04 data folder to Drive, connect the Google Drive and Gmail connectors, and have the project read the budget from Drive, reconcile it against the launch brief, save the research brief back to Drive, and email you an approved summary. The budget sheet and the brief disagree on two lines — the project should catch it.</dd><dt>Objective</dt><dd>By the end of this lab you can connect Google Drive and Gmail, read campaign files from Drive and send an approved summary.</dd><dt>You will build</dt><dd>Drive and Gmail connected, the research brief saved to Drive, and an approved launch summary emailed to yourself. <span class="uses">Uses: Claude Projects, Google Drive connector, Gmail connector</span></dd><dt>Data files</dt><dd><a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-04-connect-drive-and-gmail/data/Lumo%20Launch/lumo-launch-budget.csv"><code>Lumo Launch/lumo-launch-budget.csv</code></a>, <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-04-connect-drive-and-gmail/data/Lumo%20Launch/lumo-launch-timeline.csv"><code>Lumo Launch/lumo-launch-timeline.csv</code></a></dd></dl><p class="links"><a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-04-connect-drive-and-gmail/lab-04-connect-drive-and-gmail.pdf">Prompt PDF</a> · <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads/lab-04-connect-drive-and-gmail">Lab folder on GitHub</a> · <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads/lab-04-connect-drive-and-gmail/data">Data folder</a></p><div class="before"><h4>Before you start</h4><p class="note"><b>Note:</b> Replace &lt;YOUR EMAIL&gt; with your own address. Send lab emails only to yourself.</p><p class="note"><b>Turning connectors on.</b> Click the <b>+</b> in the chat composer, hover <b>Connectors</b>, and toggle on only Google Drive and Gmail. You can manage them later under <b>Customize → Connectors</b>.</p><p class="note"><b>If Claude says "insufficient scope".</b> The connector is linked but was authorised without permission to read files. Fix it in <b>Settings → Connectors → Google Drive → Reconnect</b>, and accept the read access Google asks for. Then tell Claude to try again.</p></div><h4>Steps and prompts — Reconcile the budget and send the summary</h4><p class="hint">Replace the <mark>highlighted</mark> parts with your own details before you send.</p><ol class="steps" role="list"><li class="" id="lab-4-step-1"><p class="step">Upload the Lab 04 data/Lumo Launch folder to your Google Drive.</p><p class="why">In real work the files are already there; the upload stands in for the shared team drive.</p></li><li class="" id="lab-4-step-2"><p class="step">In the project, click + → Connectors and switch on Google Drive and Gmail, signing in to Google.</p><p class="why">Accept the read access Google asks for. A connector that shows Connected without read access fails with "insufficient scope".</p></li><li class="has-prompt" id="lab-4-step-3"><p class="step">Send the lab prompt with your own email address in place of &lt;YOUR EMAIL&gt;. <span class="tag">Prompt below</span></p><p class="why">No files are attached this time — the project reaches Drive itself.</p><article class="prompt" aria-label="Lab 4 Prompt"><header><span class="pname"><span class="badge">Lab 4</span> Prompt</span><button class="copy" type="button" hidden data-copy="Using Google Drive, open the &quot;Lumo Launch&quot; folder.
+
+1. Read lumo-launch-budget.csv and lumo-launch-timeline.csv.
+2. Compare the budget sheet, line by line, with the budget in
+   lumo-launch-brief.md from our project context. Show both in one
+   table and flag every line where they disagree. Do not decide
+   which is right.
+3. Upload lumo-research-brief.docx from Lab 2 into the same Drive
+   folder.
+4. Draft an email to &lt;YOUR EMAIL&gt; with the subject
+   &quot;Lumo launch - research and budget check&quot;: three bullet points
+   from the research brief, the budget table with the disagreements
+   flagged, the next milestone from the timeline, and a link to the
+   brief in Drive.
+
+Show me the draft. Do not send it until I approve." aria-label="Copy Lab 4 Prompt">Copy</button></header><pre tabindex="0">Using Google Drive, open the "Lumo Launch" folder.
+
+1. Read lumo-launch-budget.csv and lumo-launch-timeline.csv.
+2. Compare the budget sheet, line by line, with the budget in
+   lumo-launch-brief.md from our project context. Show both in one
+   table and flag every line where they disagree. Do not decide
+   which is right.
+3. Upload lumo-research-brief.docx from Lab 2 into the same Drive
+   folder.
+4. Draft an email to <mark>&lt;YOUR EMAIL&gt;</mark> with the subject
+   "Lumo launch - research and budget check": three bullet points
+   from the research brief, the budget table with the disagreements
+   flagged, the next milestone from the timeline, and a link to the
+   brief in Drive.
+
+Show me the draft. Do not send it until I approve.</pre></article></li><li class="" id="lab-4-step-4"><p class="step">Read the budget table Claude produces.</p><p class="why">Both total S$60,000, but Instagram is S$18,000 in the Drive sheet and S$20,000 in the brief, and Influencers is S$12,000 against S$10,000.</p></li><li class="" id="lab-4-step-5"><p class="step">Confirm Claude flagged both lines instead of choosing one.</p><p class="why">That is your Lab 1 instruction at work. Two sources disagreeing is a decision for a human, not a guess for Claude.</p></li><li class="" id="lab-4-step-6"><p class="step">Check that lumo-research-brief.docx now sits in the Lumo Launch folder in Drive.</p><p class="why">Saving outputs back to the team's folder is what makes the work findable by colleagues.</p></li><li class="" id="lab-4-step-7"><p class="step">Read the draft email in full, then approve it.</p><p class="why">Gmail sends only after your explicit approval. Check the figures against the table before you click.</p></li><li class="" id="lab-4-step-8"><p class="step">Open your inbox and confirm the email arrived with the Drive link working.</p><p class="why">Close the loop: an email you did not check arrived is an email you hope arrived.</p></li></ol><div class="check" role="note" aria-label="Check"><h4>Check — done when</h4><p>Google Drive and Gmail are connected. Claude read both CSV files from the Lumo Launch folder, showed a budget table totalling S$60,000 on both sides, and flagged Instagram (S$18,000 vs S$20,000) and Influencers (S$12,000 vs S$10,000) without choosing between them. lumo-research-brief.docx is in the Drive folder, and the approved summary email arrived in your own inbox with a working link.</p></div><p class="top"><a href="#top">Back to top</a></p></section><section class="lab" id="lab-5" aria-labelledby="lab-5-title"><p class="eyebrow">Lab 05 · Topic 02</p><h3 id="lab-5-title">Create the Launch Deck and Campaign Brief</h3><dl class="facts-list"><dt>Scenario</dt><dd>The launch team meets on Friday and needs two things: a short deck for the room and a campaign brief everyone can work from. You ask the project for both. Claude builds the deck in Slides and the brief in Docs, choosing its built-in skills on its own, using the numbers from your research and dashboard. You check every figure, then download the deck as PowerPoint.</dd><dt>Objective</dt><dd>By the end of this lab you can produce a launch deck in Slides and a campaign brief in Docs from the project's research.</dd><dt>You will build</dt><dd>An eight-slide launch deck in Slides (downloaded as .pptx) and a campaign brief in Docs. <span class="uses">Uses: Claude Projects, Slides, Docs, built-in skills</span></dd><dt>Data files</dt><dd>None — this lab works from what the project already holds.</dd></dl><p class="links"><a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-05-launch-deck-and-brief/lab-05-launch-deck-and-brief.pdf">Prompt PDF</a> · <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads/lab-05-launch-deck-and-brief">Lab folder on GitHub</a></p><div class="before"><h4>Before you start</h4><p class="note"><b>Note:</b> You do not name a skill. Ask for a deck and a document; Claude picks the format and the built-in skill.</p></div><h4>Steps and prompts — Build the launch deck and campaign brief</h4><ol class="steps" role="list"><li class="has-prompt" id="lab-5-step-1"><p class="step">In the project, send the lab prompt. <span class="tag">Prompt below</span></p><p class="why">No attachments: the research brief, the dashboard data and the brand kit are all already in the project.</p><article class="prompt" aria-label="Lab 5 Prompt"><header><span class="pname"><span class="badge">Lab 5</span> Prompt</span><button class="copy" type="button" hidden data-copy="Using our research brief, the Market Insights dashboard and the
+brand kit, create two things for Friday&#x27;s launch meeting.
+
+1. A launch deck in Slides, eight slides:
+   1 Title - Lumo Cold Kopi: Kopi, Chilled Right
+   2 The opportunity - the three survey numbers that matter most
+   3 Who we are for - 25-34s in Singapore, with the evidence
+   4 Competitors - a price ladder chart with Lumo highlighted
+   5 Where they find us - a discovery channel chart
+   6 The campaign - message, channels and dates
+   7 Budget - the S$60,000 split, noting the two open questions
+   8 Next steps and owners
+
+   Use the Lumo brand colours. Real charts, not pictures of charts.
+
+2. A campaign brief in Docs: objective, audience, key message,
+   proof points, channels, budget, timeline, KPIs, and a &quot;claims
+   we must not make&quot; section.
+
+Every number must come from the research brief or the dashboard.
+List the source of each number at the end of the brief." aria-label="Copy Lab 5 Prompt">Copy</button></header><pre tabindex="0">Using our research brief, the Market Insights dashboard and the
+brand kit, create two things for Friday's launch meeting.
+
+1. A launch deck in Slides, eight slides:
+   1 Title - Lumo Cold Kopi: Kopi, Chilled Right
+   2 The opportunity - the three survey numbers that matter most
+   3 Who we are for - 25-34s in Singapore, with the evidence
+   4 Competitors - a price ladder chart with Lumo highlighted
+   5 Where they find us - a discovery channel chart
+   6 The campaign - message, channels and dates
+   7 Budget - the S$60,000 split, noting the two open questions
+   8 Next steps and owners
+
+   Use the Lumo brand colours. Real charts, not pictures of charts.
+
+2. A campaign brief in Docs: objective, audience, key message,
+   proof points, channels, budget, timeline, KPIs, and a "claims
+   we must not make" section.
+
+Every number must come from the research brief or the dashboard.
+List the source of each number at the end of the brief.</pre></article></li><li class="" id="lab-5-step-2"><p class="step">Open the deck when it appears and page through all eight slides.</p><p class="why">Check the charts are real charts — click one; a real chart has editable data behind it.</p></li><li class="" id="lab-5-step-3"><p class="step">Check slide 2 and slide 4 against your research.</p><p class="why">62% likely to buy, 74% among 25-34s, Instagram 34%; a price ladder from S$3.20 to S$5.60 with Lumo at S$3.90.</p></li><li class="" id="lab-5-step-4"><p class="step">Check slide 7.</p><p class="why">The S$60,000 split should carry the two open questions from Lab 4 — Instagram and Influencers — not quietly pick one figure.</p></li><li class="" id="lab-5-step-5"><p class="step">Open the campaign brief in Docs and read the "claims we must not make" section.</p><p class="why">It should rule out "healthy" and any claim the product sheet does not support. This section protects every post you write later.</p></li><li class="" id="lab-5-step-6"><p class="step">Ask for one change to each, for example: Shorten slide 6 to three bullets.</p><p class="why">Slides and Docs are edited in place by conversation, the same way as an artefact.</p></li><li class="" id="lab-5-step-7"><p class="step">Download the deck as PowerPoint and open it.</p><p class="why">The download is the file you take into the meeting — check the charts survived.</p></li></ol><div class="check" role="note" aria-label="Check"><h4>Check — done when</h4><p>The deck has eight slides in the Lumo colours, with real charts for the price ladder and the discovery channels, the survey figures 62%, 74% and 34%, and a budget slide that shows S$60,000 with the Instagram and Influencers lines marked as open questions. The campaign brief in Docs has all nine sections, including "claims we must not make", and lists a source for every number. The deck opens in PowerPoint with its charts intact.</p></div><p class="top"><a href="#top">Back to top</a></p></section><section class="lab" id="lab-6" aria-labelledby="lab-6-title"><p class="eyebrow">Lab 06 · Topic 02</p><h3 id="lab-6-title">Capture the Brand Voice as an Agent Skill</h3><dl class="facts-list"><dt>Scenario</dt><dd>Four channels and two weeks of posts are coming, and they all have to sound like Lumo. You rewrite five off-brand captions with Claude until they are right, then use /skill-creator to turn that verified routine into a lumo-brand-voice skill. From then on, every thread in the project — and every colleague — loads the same voice by name.</dd><dt>Objective</dt><dd>By the end of this lab you can rewrite content in the brand voice, verify it, and save the routine as a skill with /skill-creator.</dd><dt>You will build</dt><dd>A lumo-brand-voice Agent Skill, tested on a new caption. <span class="uses">Uses: Claude Projects, Agent Skills, /skill-creator</span></dd><dt>Data files</dt><dd><a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-06-brand-voice-skill/data/lumo-sample-captions.txt"><code>lumo-sample-captions.txt</code></a></dd></dl><p class="links"><a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-06-brand-voice-skill/lab-06-brand-voice-skill.pdf">Prompt PDF</a> · <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads/lab-06-brand-voice-skill">Lab folder on GitHub</a> · <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads/lab-06-brand-voice-skill/data">Data folder</a></p><div class="before"><h4>Before you start</h4><p class="note"><b>Note:</b> Block 2 begins with you typing /skill-creator in the composer — it is not part of the pasted text.</p></div><h4>Steps and prompts — Rewrite, verify, then save the brand voice</h4><p class="intro">This lab has <b>three blocks</b>, sent at different times. Block 1 does the work once. Block 2 saves it as a skill — type /skill-creator first. Block 3 tests the skill on something new.</p><ol class="steps" role="list"><li class="" id="lab-6-step-1"><p class="step">Open lumo-sample-captions.txt and read the five captions.</p><p class="why">Each breaks at least one brand rule — a wrong price format, a health claim, too much slang, too many hashtags.</p></li><li class="has-prompt" id="lab-6-step-2"><p class="step">In the project, attach the file and send Block 1. <span class="tag">Prompt below</span></p><p class="why">This is the Do step of Do · Verify · Save. You never write a skill from a blank page.</p><article class="prompt" aria-label="Lab 6 Block 1 — DO"><header><span class="pname"><span class="badge">Lab 6</span> Block 1 — DO</span><button class="copy" type="button" hidden data-copy="Rewrite the five captions in the attached file in the Lumo
+brand voice, following lumo-brand-guidelines.md.
+
+For each caption, show:
+- the original
+- your rewrite
+- every rule you applied, by name
+- any claim you removed, and why
+
+Then run these checks on each rewrite and show the result:
+price written as S$3.90; no &quot;healthy&quot; or medical claims; at
+most one Singlish word; #LumoKopi present; no more than five
+hashtags; ends with one clear call to action." aria-label="Copy Lab 6 Block 1 — DO">Copy</button></header><p class="lead">Attach lumo-sample-captions.txt and send this first, on its own:</p><pre tabindex="0">Rewrite the five captions in the attached file in the Lumo
+brand voice, following lumo-brand-guidelines.md.
+
+For each caption, show:
+- the original
+- your rewrite
+- every rule you applied, by name
+- any claim you removed, and why
+
+Then run these checks on each rewrite and show the result:
+price written as S$3.90; no "healthy" or medical claims; at
+most one Singlish word; #LumoKopi present; no more than five
+hashtags; ends with one clear call to action.</pre><p class="after"><b>Now stop and read the output.</b> Ask for changes until every rewrite sounds right. Whatever you settle on here is exactly what the skill will reproduce.</p></article></li><li class="" id="lab-6-step-3"><p class="step">Check each rewrite against the brand guidelines and refine until all five are right.</p><p class="why">This is the Verify step. Ask for changes in plain English; you are teaching the routine by correcting it.</p></li><li class="has-prompt" id="lab-6-step-4"><p class="step">Type /skill-creator in the composer, then paste Block 2 and send. <span class="tag">Prompt below</span></p><p class="why">skill-creator writes the SKILL.md from the run you just verified — name, description, instructions and examples.</p><article class="prompt" aria-label="Lab 6 Block 2 — SAVE"><header><span class="pname"><span class="badge">Lab 6</span> Block 2 — SAVE</span><button class="copy" type="button" hidden data-copy="Create a skill called lumo-brand-voice from what we just did.
+
+Description: Use when writing or reviewing any customer-facing
+Lumo Kopi content - social posts, captions, emails, video
+scripts or ads.
+
+It should rewrite or draft content in the Lumo voice, apply the
+brand rules, remove claims we cannot prove, and finish with the
+same checklist of checks we used. Include two of today&#x27;s
+before-and-after examples as a resource." aria-label="Copy Lab 6 Block 2 — SAVE">Copy</button></header><p class="lead">Type /skill-creator in the composer, then paste this:</p><pre tabindex="0">Create a skill called lumo-brand-voice from what we just did.
+
+Description: Use when writing or reviewing any customer-facing
+Lumo Kopi content - social posts, captions, emails, video
+scripts or ads.
+
+It should rewrite or draft content in the Lumo voice, apply the
+brand rules, remove claims we cannot prove, and finish with the
+same checklist of checks we used. Include two of today's
+before-and-after examples as a resource.</pre><p class="after">Approve the skill when Claude shows it to you, then open <b>Customize → Skills</b> and find it.</p></article></li><li class="" id="lab-6-step-5"><p class="step">Read the skill Claude proposes, especially its description, and approve it.</p><p class="why">The description is the one part always in context. It decides when the skill loads, so it must say WHEN to use it.</p></li><li class="" id="lab-6-step-6"><p class="step">Open Customize → Skills and find lumo-brand-voice.</p><p class="why">Your own skills are listed here. Built-in skills such as pptx are not — they show in the context panel when they load.</p></li><li class="has-prompt" id="lab-6-step-7"><p class="step">Start a new thread and send Block 3. <span class="tag">Prompt below</span></p><p class="why">A fresh thread proves the skill works without the earlier conversation — which is exactly how other threads will use it.</p><article class="prompt" aria-label="Lab 6 Block 3 — TEST"><header><span class="pname"><span class="badge">Lab 6</span> Block 3 — TEST</span><button class="copy" type="button" hidden data-copy="Use lumo-brand-voice to write an Instagram caption announcing
+that Lumo Cold Kopi 12-packs are available on Shopee from
+1 December. It&#x27;s super healthy and the best kopi in Singapore!" aria-label="Copy Lab 6 Block 3 — TEST">Copy</button></header><p class="lead">Start a new thread in the project and send:</p><pre tabindex="0">Use lumo-brand-voice to write an Instagram caption announcing
+that Lumo Cold Kopi 12-packs are available on Shopee from
+1 December. It's super healthy and the best kopi in Singapore!</pre><p class="after">The skill should load by itself, remove both unprovable claims and run its checklist.</p></article></li><li class="" id="lab-6-step-8"><p class="step">Check the caption: no "healthy", no "best kopi in Singapore", S$ prices, #LumoKopi present.</p><p class="why">Both claims were traps. A skill that removes them has learned the rule, not just the examples.</p></li></ol><div class="check" role="note" aria-label="Check"><h4>Check — done when</h4><p>lumo-brand-voice appears under Customize → Skills with a description that says when to use it. In a fresh thread, Block 3 loaded the skill without being asked to find it, and the caption it returned drops "healthy" and "best kopi in Singapore", includes #LumoKopi, uses at most five hashtags and ends with one call to action, followed by the checklist results.</p></div><p class="top"><a href="#top">Back to top</a></p></section><section class="lab" id="lab-7" aria-labelledby="lab-7-title"><p class="eyebrow">Lab 07 · Topic 02</p><h3 id="lab-7-title">Add the Marketing Plugin</h3><dl class="facts-list"><dt>Scenario</dt><dd>You wrote one skill yourself; now you install a toolkit somebody else packaged. Anthropic's Marketing plugin bundles several marketing skills behind namespaced commands. You install it, use /marketing:campaign-plan to stress-test the launch plan, and run /marketing:brand-review on the deck copy — then compare a plugin with the skill you wrote, and see where mods fit.</dd><dt>Objective</dt><dd>By the end of this lab you can install a plugin and use its namespaced commands alongside your own skill.</dd><dt>You will build</dt><dd>The Marketing plugin installed, a campaign plan review and a brand review of the launch copy. <span class="uses">Uses: Claude Projects, plugins, Customize</span></dd><dt>Data files</dt><dd>None — this lab works from what the project already holds.</dd></dl><p class="links"><a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-07-marketing-plugin/lab-07-marketing-plugin.pdf">Prompt PDF</a> · <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads/lab-07-marketing-plugin">Lab folder on GitHub</a></p><div class="before"><h4>Before you start</h4><p class="note"><b>Note:</b> Install the plugin first: Customize → Plugins → Browse, find Marketing, click Install. Then type /marketing in the composer to see its commands.</p></div><h4>Steps and prompts — Stress-test the launch with the Marketing plugin</h4><p class="intro">This lab has <b>two blocks</b>, each a command from the plugin. Install the plugin first, then send Block 1 and, after you have read its answer, Block 2.</p><ol class="steps" role="list"><li class="" id="lab-7-step-1"><p class="step">Open Customize → Plugins and browse the available plugins.</p><p class="why">Discover before you build: check whether someone has already packaged what you need.</p></li><li class="" id="lab-7-step-2"><p class="step">Find the Marketing plugin, read what it contains, and click Install.</p><p class="why">One install brings several skills and commands at once — the difference between a plugin and a skill.</p></li><li class="" id="lab-7-step-3"><p class="step">In the project composer, type /marketing and look at the commands it offers.</p><p class="why">Plugin commands carry the plugin's name as a prefix. That is how you tell them from a skill you wrote yourself.</p></li><li class="has-prompt" id="lab-7-step-4"><p class="step">Send Block 1 to stress-test the plan with /marketing:campaign-plan. <span class="tag">Prompt below</span></p><p class="why">The plugin's skill works with your project context: the campaign brief and research brief are already there.</p><article class="prompt" aria-label="Lab 7 Block 1 — PLAN"><header><span class="pname"><span class="badge">Lab 7</span> Block 1 — PLAN</span><button class="copy" type="button" hidden data-copy="/marketing:campaign-plan Review the Lumo Cold Kopi launch using
+our campaign brief and research brief. Keep our objective,
+audience, budget and dates. Tell me:
+- what is missing from the plan,
+- the three biggest risks to the 1 December launch,
+- the KPIs you would track in the first two weeks, with targets.
+Do not change the S$60,000 budget." aria-label="Copy Lab 7 Block 1 — PLAN">Copy</button></header><p class="lead">Send this in the project:</p><pre tabindex="0">/marketing:campaign-plan Review the Lumo Cold Kopi launch using
+our campaign brief and research brief. Keep our objective,
+audience, budget and dates. Tell me:
+- what is missing from the plan,
+- the three biggest risks to the 1 December launch,
+- the KPIs you would track in the first two weeks, with targets.
+Do not change the S$60,000 budget.</pre><p class="after">Read its answer in full before you send Block 2.</p></article></li><li class="" id="lab-7-step-5"><p class="step">Read the risks and KPIs it proposes, and check the budget is unchanged at S$60,000.</p><p class="why">A plugin is someone else's judgement. Keep what fits your goal; question what does not.</p></li><li class="has-prompt" id="lab-7-step-6"><p class="step">Send Block 2 to review the deck copy with /marketing:brand-review. <span class="tag">Prompt below</span></p><p class="why">Two tools on one job: the plugin reviews, and your lumo-brand-voice skill holds the house rules it checks against.</p><article class="prompt" aria-label="Lab 7 Block 2 — REVIEW"><header><span class="pname"><span class="badge">Lab 7</span> Block 2 — REVIEW</span><button class="copy" type="button" hidden data-copy="/marketing:brand-review Review the copy on slides 1, 2 and 6 of
+our launch deck against lumo-brand-guidelines.md. List each
+change you would make and the rule behind it." aria-label="Copy Lab 7 Block 2 — REVIEW">Copy</button></header><p class="lead">Then send:</p><pre tabindex="0">/marketing:brand-review Review the copy on slides 1, 2 and 6 of
+our launch deck against lumo-brand-guidelines.md. List each
+change you would make and the rule behind it.</pre><p class="after">Compare its findings with what your lumo-brand-voice skill would flag.</p></article></li><li class="" id="lab-7-step-7"><p class="step">Open Customize and look at the Mods section.</p><p class="why">Mods change Claude's interface itself — a panel, a status line, a slash command or a hook. You will not build one today; know where they live.</p></li></ol><div class="check" role="note" aria-label="Check"><h4>Check — done when</h4><p>The Marketing plugin is installed and its /marketing: commands appear in the composer. /marketing:campaign-plan returned the gaps, three launch risks and two-week KPIs with targets while keeping the S$60,000 budget and the 1 December date. /marketing:brand-review reviewed the deck copy. You can explain the difference between lumo-brand-voice (a skill you wrote), the Marketing plugin (a packaged bundle) and a mod (a change to Claude's interface).</p></div><p class="top"><a href="#top">Back to top</a></p></section></section><section aria-labelledby="topic-3"><h2 id="topic-3">Topic 03 · Content Production and Scheduled Work</h2><p class="topic-sub">Social posts in parallel threads · a launch video · scheduled tasks · memory and usage</p><section class="lab" id="lab-8" aria-labelledby="lab-8-title"><p class="eyebrow">Lab 08 · Topic 03</p><h3 id="lab-8-title">Create Social Media Posts in Parallel Threads</h3><dl class="facts-list"><dt>Scenario</dt><dd>Launch fortnight needs ten posts across Instagram, TikTok, LinkedIn and Facebook. Each platform has its own format, so you hand the job to the lead agent and let it start one thread per platform. Every thread loads lumo-brand-voice, drafts its posts to its platform's spec, and the lead agent merges them into one dated calendar that you check before anything is scheduled.</dd><dt>Objective</dt><dd>By the end of this lab you can produce a two-week, four-platform social calendar with one thread per channel.</dd><dt>You will build</dt><dd>social-calendar.csv with ten dated posts across four platforms, plus lumo-social-posts.docx with the full copy. <span class="uses">Uses: Claude Projects, lead agent and threads, Agent Skills</span></dd><dt>Data files</dt><dd><a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-08-social-posts-threads/data/social-calendar-template.csv"><code>social-calendar-template.csv</code></a></dd></dl><p class="links"><a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-08-social-posts-threads/lab-08-social-posts-threads.pdf">Prompt PDF</a> · <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads/lab-08-social-posts-threads">Lab folder on GitHub</a> · <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads/lab-08-social-posts-threads/data">Data folder</a></p><div class="before"><h4>Before you start</h4><p class="note"><b>Note:</b> Attach social-calendar-template.csv from the Lab 08 data folder.</p></div><h4>Steps and prompts — Draft two weeks of posts, one thread per platform</h4><ol class="steps" role="list"><li class="has-prompt" id="lab-8-step-1"><p class="step">In the project, attach social-calendar-template.csv and send the lab prompt. <span class="tag">Prompt below</span></p><p class="why">This is the same pattern as Lab 2 — one message, independent subjects — applied to production instead of research.</p><article class="prompt" aria-label="Lab 8 Prompt"><header><span class="pname"><span class="badge">Lab 8</span> Prompt</span><button class="copy" type="button" hidden data-copy="Create the launch social calendar for Lumo Cold Kopi: ten posts,
+one each weekday from Tuesday 1 December to Monday 14 December
+2026, using social-calendar-template.csv for the columns.
+
+Split the drafting into four threads, one per platform, and run
+them in parallel:
+- Instagram: 3 posts (carousel or Reel), caption with a hook in
+  the first line, 3-5 hashtags.
+- TikTok: 3 posts, each a 15-second video script with a hook in
+  the first 2 seconds and on-screen text.
+- LinkedIn: 2 posts in the founder&#x27;s voice, the story behind the
+  product, no more than 3 hashtags.
+- Facebook: 2 posts for community and the 12-pack offer.
+
+Every thread must use the lumo-brand-voice skill and our top
+content theme from the research. The 1 December launch-day
+post is an Instagram Reel; TikTok follows on 2 December.
+
+Then merge the threads into social-calendar.csv (date, platform,
+format, hook, copy, hashtags, visual idea, call to action) and
+lumo-social-posts.docx with the full copy. Report the brand-voice
+checklist result for every post, and list any post that failed." aria-label="Copy Lab 8 Prompt">Copy</button></header><pre tabindex="0">Create the launch social calendar for Lumo Cold Kopi: ten posts,
+one each weekday from Tuesday 1 December to Monday 14 December
+2026, using social-calendar-template.csv for the columns.
+
+Split the drafting into four threads, one per platform, and run
+them in parallel:
+- Instagram: 3 posts (carousel or Reel), caption with a hook in
+  the first line, 3-5 hashtags.
+- TikTok: 3 posts, each a 15-second video script with a hook in
+  the first 2 seconds and on-screen text.
+- LinkedIn: 2 posts in the founder's voice, the story behind the
+  product, no more than 3 hashtags.
+- Facebook: 2 posts for community and the 12-pack offer.
+
+Every thread must use the lumo-brand-voice skill and our top
+content theme from the research. The 1 December launch-day
+post is an Instagram Reel; TikTok follows on 2 December.
+
+Then merge the threads into social-calendar.csv (date, platform,
+format, hook, copy, hashtags, visual idea, call to action) and
+lumo-social-posts.docx with the full copy. Report the brand-voice
+checklist result for every post, and list any post that failed.</pre></article></li><li class="" id="lab-8-step-2"><p class="step">Watch the lead agent start the four platform threads.</p><p class="why">Each thread has its own spec and its own context window, so the TikTok scripts never crowd out the LinkedIn story.</p></li><li class="" id="lab-8-step-3"><p class="step">Open the Instagram thread and check it loaded lumo-brand-voice.</p><p class="why">The skill you wrote in Lab 6 is now doing its real job: keeping four parallel writers on one voice.</p></li><li class="" id="lab-8-step-4"><p class="step">When the merged calendar arrives, count the rows and check the dates.</p><p class="why">Ten rows, weekdays only: 1, 2, 3, 4, 7, 8, 9, 10, 11 and 14 December. Instagram 3, TikTok 3, LinkedIn 2, Facebook 2.</p></li><li class="" id="lab-8-step-5"><p class="step">Read the brand-voice checklist results.</p><p class="why">Every post should pass. If one fails, ask the lead agent to send it back to its thread for a fix.</p></li><li class="" id="lab-8-step-6"><p class="step">Spot-check three posts against the campaign brief's "claims we must not make".</p><p class="why">Parallel production is fast; a human check on the claims is what makes it safe to publish.</p></li><li class="" id="lab-8-step-7"><p class="step">Open lumo-social-posts.docx and confirm the copy matches the calendar.</p><p class="why">The calendar is what Lab 10's scheduled task reads every morning.</p></li></ol><div class="check" role="note" aria-label="Check"><h4>Check — done when</h4><p>social-calendar.csv has ten rows dated on the ten weekdays from 1 to 14 December 2026 — Instagram 3, TikTok 3, LinkedIn 2, Facebook 2 — with the 1 December launch post an Instagram Reel and TikTok on 2 December. Every post passed the lumo-brand-voice checklist, none uses "healthy", every price is written S$3.90 or S$42.00, and lumo-social-posts.docx carries the same copy.</p></div><p class="top"><a href="#top">Back to top</a></p></section><section class="lab" id="lab-9" aria-labelledby="lab-9-title"><p class="eyebrow">Lab 09 · Topic 03</p><h3 id="lab-9-title">Produce a 15-Second Launch Video</h3><dl class="facts-list"><dt>Scenario</dt><dd>The TikTok and Instagram posts need a launch video. You give the project the supplied product images and logo; one thread writes a five-scene script and storyboard with lumo-brand-voice, another writes and runs the code that animates the images and captions into a 15-second, 1080 × 1920 MP4. You check it frame by frame and ask for changes in plain English.</dd><dt>Objective</dt><dd>By the end of this lab you can script, storyboard and render a vertical launch video from supplied brand assets.</dd><dt>You will build</dt><dd>lumo-launch-15s.mp4 (1080 × 1920, 15 seconds), with its script and storyboard. <span class="uses">Uses: Claude Projects, threads, code execution</span></dd><dt>Data files</dt><dd><a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-09-launch-video/data/video-assets/lumo-can.png"><code>video-assets/lumo-can.png</code></a>, <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-09-launch-video/data/video-assets/lumo-12pack.png"><code>video-assets/lumo-12pack.png</code></a>, <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-09-launch-video/data/video-assets/lumo-logo.png"><code>video-assets/lumo-logo.png</code></a>, <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-09-launch-video/data/video-assets/scene-hawker.png"><code>video-assets/scene-hawker.png</code></a>, <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-09-launch-video/data/video-assets/scene-office.png"><code>video-assets/scene-office.png</code></a></dd></dl><p class="links"><a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-09-launch-video/lab-09-launch-video.pdf">Prompt PDF</a> · <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads/lab-09-launch-video">Lab folder on GitHub</a> · <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads/lab-09-launch-video/data">Data folder</a></p><div class="before"><h4>Before you start</h4><p class="note"><b>Note:</b> Attach the whole video-assets folder. Use only the supplied images — never a real person's likeness or another brand's logo.</p></div><h4>Steps and prompts — Script, storyboard and render the video</h4><ol class="steps" role="list"><li class="" id="lab-9-step-1"><p class="step">Open the Lab 09 data/video-assets folder and look at the five images.</p><p class="why">These are the only images the video may use. Supplying assets is how you keep likenesses and logos safe.</p></li><li class="has-prompt" id="lab-9-step-2"><p class="step">In the project, attach the folder and send the lab prompt. <span class="tag">Prompt below</span></p><p class="why">Two threads, but not in parallel this time: the render thread waits for the script. The lead agent manages that order.</p><article class="prompt" aria-label="Lab 9 Prompt"><header><span class="pname"><span class="badge">Lab 9</span> Prompt</span><button class="copy" type="button" hidden data-copy="Make a 15-second vertical launch video for Lumo Cold Kopi, using
+only the five images in the attached video-assets folder.
+
+Use two threads:
+Thread 1 - SCRIPT: with lumo-brand-voice, write five scenes of
+  three seconds each: hook, problem, product, proof, call to action.
+  For each scene give the image, the on-screen text (max 6 words)
+  and the motion. Save it as lumo-video-storyboard.md.
+Thread 2 - RENDER: when the storyboard is ready, write and run
+  code that renders it to lumo-launch-15s.mp4: 1080 x 1920, 30 fps,
+  exactly 15 seconds, large high-contrast captions in the Lumo
+  colours, a gentle zoom on each image, and an end card with the
+  logo, &quot;From S$3.90&quot; and #KopiChilledRight.
+
+If you cannot render video in this session, build the same thing
+as an animated HTML page at 1080 x 1920 and tell me, so I can
+screen-record it. Report the file&#x27;s duration and size when done." aria-label="Copy Lab 9 Prompt">Copy</button></header><pre tabindex="0">Make a 15-second vertical launch video for Lumo Cold Kopi, using
+only the five images in the attached video-assets folder.
+
+Use two threads:
+Thread 1 - SCRIPT: with lumo-brand-voice, write five scenes of
+  three seconds each: hook, problem, product, proof, call to action.
+  For each scene give the image, the on-screen text (max 6 words)
+  and the motion. Save it as lumo-video-storyboard.md.
+Thread 2 - RENDER: when the storyboard is ready, write and run
+  code that renders it to lumo-launch-15s.mp4: 1080 x 1920, 30 fps,
+  exactly 15 seconds, large high-contrast captions in the Lumo
+  colours, a gentle zoom on each image, and an end card with the
+  logo, "From S$3.90" and #KopiChilledRight.
+
+If you cannot render video in this session, build the same thing
+as an animated HTML page at 1080 x 1920 and tell me, so I can
+screen-record it. Report the file's duration and size when done.</pre></article></li><li class="" id="lab-9-step-3"><p class="step">Read the storyboard when Thread 1 finishes.</p><p class="why">Five scenes, three seconds each, captions of six words or fewer, and no health claims — the brand-voice skill applies to scripts too.</p></li><li class="" id="lab-9-step-4"><p class="step">When the video arrives, check the reported duration and size.</p><p class="why">Exactly 15 seconds and 1080 × 1920. A wrong size is the most common reason a platform crops your captions.</p></li><li class="" id="lab-9-step-5"><p class="step">Play it through, then scrub it frame by frame.</p><p class="why">Check every caption is readable with the sound off and the end card shows the logo, From S$3.90 and #KopiChilledRight.</p></li><li class="" id="lab-9-step-6"><p class="step">Ask for one change, for example: Hold the end card for one second longer and shorten scene 2.</p><p class="why">The video is code, so a change is a re-render, not a re-edit. Check the length is still 15 seconds afterwards.</p></li><li class="" id="lab-9-step-7"><p class="step">If Claude built the HTML fallback instead, open it full screen and screen-record 15 seconds.</p><p class="why">Same storyboard, different renderer. The checks stay the same.</p></li></ol><div class="check" role="note" aria-label="Check"><h4>Check — done when</h4><p>lumo-launch-15s.mp4 is 1080 × 1920, 30 fps and 15 seconds long, uses only the supplied images, shows five scenes with captions of six words or fewer in the Lumo colours, and ends on a card with the logo, "From S$3.90" and #KopiChilledRight. lumo-video-storyboard.md sits beside it and matches what plays. No scene makes a health claim.</p></div><p class="top"><a href="#top">Back to top</a></p></section><section class="lab" id="lab-10" aria-labelledby="lab-10-title"><p class="eyebrow">Lab 10 · Topic 03</p><h3 id="lab-10-title">Schedule the Posts and Review the Project</h3><dl class="facts-list"><dt>Scenario</dt><dd>The launch needs a post drafted every weekday morning and a report every Monday, and nobody should have to remember either. You schedule both inside the project, test one with Run now, then do the housekeeping a real project needs: correct its memory when a plan changes, and read the usage of the lead agent and each thread to see what parallel work costs.</dd><dt>Objective</dt><dd>By the end of this lab you can schedule recurring project tasks, edit project memory and review thread usage.</dd><dt>You will build</dt><dd>Two scheduled tasks in the project, a tested daily-post email, an updated memory file and a usage review. <span class="uses">Uses: Claude Projects, scheduled tasks, memory, Gmail connector</span></dd><dt>Data files</dt><dd>None — this lab works from what the project already holds.</dd></dl><p class="links"><a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/blob/main/labs-threads/lab-10-schedule-and-review/lab-10-schedule-and-review.pdf">Prompt PDF</a> · <a href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass/tree/main/labs-threads/lab-10-schedule-and-review">Lab folder on GitHub</a></p><div class="before"><h4>Before you start</h4><p class="note"><b>Note:</b> Scheduled tasks that run locally need the desktop app open. To run them with your laptop closed, add a cloud environment in Project settings → Environment.</p></div><h4>Steps and prompts — Schedule, update memory, review</h4><p class="intro">This lab has <b>three blocks</b>. Block 1 schedules the two tasks. Block 2 changes the plan through memory. Block 3 is a review you send at the end.</p><p class="hint">Replace the <mark>highlighted</mark> parts with your own details before you send.</p><ol class="steps" role="list"><li class="has-prompt" id="lab-10-step-1"><p class="step">Send Block 1 with your own email address in place of &lt;YOUR EMAIL&gt;. <span class="tag">Prompt below</span></p><p class="why">The tasks run inside the project, so they inherit the goal, instructions, context, memory and the brand-voice skill — the prompt stays short.</p><article class="prompt" aria-label="Lab 10 Block 1 — SCHEDULE"><header><span class="pname"><span class="badge">Lab 10</span> Block 1 — SCHEDULE</span><button class="copy" type="button" hidden data-copy="Schedule two recurring tasks in this project.
+
+Task 1 - &quot;Today&#x27;s Lumo post&quot;, every weekday at 9:00am:
+take today&#x27;s row from social-calendar.csv, polish it with
+lumo-brand-voice, check every price and claim against the brand
+kit, and email it to &lt;YOUR EMAIL&gt; as a draft with the subject
+&quot;Today&#x27;s Lumo post - &lt;date&gt;&quot;. Never publish anything.
+
+Task 2 - &quot;Weekly launch report&quot;, Mondays at 8:00am:
+summarise last week&#x27;s posts from the calendar and anything new
+in the Lumo Launch Drive folder in five bullet points, and
+email it to &lt;YOUR EMAIL&gt;.
+
+Show me both tasks before you save them, then run Task 1 once
+now as a test, using 1 December 2026 as today." aria-label="Copy Lab 10 Block 1 — SCHEDULE">Copy</button></header><p class="lead">Send this to the lead agent:</p><pre tabindex="0">Schedule two recurring tasks in this project.
+
+Task 1 - "Today's Lumo post", every weekday at 9:00am:
+take today's row from social-calendar.csv, polish it with
+lumo-brand-voice, check every price and claim against the brand
+kit, and email it to <mark>&lt;YOUR EMAIL&gt;</mark> as a draft with the subject
+"Today's Lumo post - &lt;date&gt;". Never publish anything.
+
+Task 2 - "Weekly launch report", Mondays at 8:00am:
+summarise last week's posts from the calendar and anything new
+in the Lumo Launch Drive folder in five bullet points, and
+email it to <mark>&lt;YOUR EMAIL&gt;</mark>.
+
+Show me both tasks before you save them, then run Task 1 once
+now as a test, using 1 December 2026 as today.</pre><p class="after">Check the test email in your inbox, then open <b>Scheduled</b> and confirm both tasks are listed with the right times.</p></article></li><li class="" id="lab-10-step-2"><p class="step">Read both tasks before they are saved: name, prompt, frequency and time.</p><p class="why">Weekdays at 9:00am and Mondays at 8:00am. A task scheduled at the wrong time is a silent failure.</p></li><li class="" id="lab-10-step-3"><p class="step">Open your inbox and read the test email for 1 December.</p><p class="why">It should be the Instagram launch Reel from your calendar, polished, with S$ prices and no "healthy" claim — a draft, not a published post.</p></li><li class="" id="lab-10-step-4"><p class="step">Open Scheduled in the project and confirm both tasks are listed.</p><p class="why">From here you can pause, edit or run a task now. This is where you would schedule a monthly competitor scan next.</p></li><li class="has-prompt" id="lab-10-step-5"><p class="step">Send Block 2, then read the list of things that depend on the date. <span class="tag">Prompt below</span></p><p class="why">Expect the calendar, Task 1, the deck's title slide and timeline, and the brief. Memory is how one fact reaches every thread.</p><article class="prompt" aria-label="Lab 10 Block 2 — MEMORY"><header><span class="pname"><span class="badge">Lab 10</span> Block 2 — MEMORY</span><button class="copy" type="button" hidden data-copy="Remember this for the project: the Singapore launch has moved
+from 1 December to 8 December 2026. Kuala Lumpur is unchanged.
+Tell me everything in the project that depends on the launch
+date - posts, tasks, the deck, the brief - and propose the
+changes. Do not make them yet." aria-label="Copy Lab 10 Block 2 — MEMORY">Copy</button></header><p class="lead">Send this to the lead agent:</p><pre tabindex="0">Remember this for the project: the Singapore launch has moved
+from 1 December to 8 December 2026. Kuala Lumpur is unchanged.
+Tell me everything in the project that depends on the launch
+date - posts, tasks, the deck, the brief - and propose the
+changes. Do not make them yet.</pre><p class="after">Open <b>Project settings → Memory</b>, find the new entry, and correct the wording if needed.</p></article></li><li class="" id="lab-10-step-6"><p class="step">Open Project settings → Memory and find the new launch-date entry. Edit it if the wording is wrong.</p><p class="why">The project writes memory, but you own it. Delete anything you would not want every future thread to believe.</p></li><li class="has-prompt" id="lab-10-step-7"><p class="step">Send Block 3 at the end of the lab. <span class="tag">Prompt below</span></p><p class="why">A project that can list its own threads and outputs is one a colleague can pick up tomorrow.</p><article class="prompt" aria-label="Lab 10 Block 3 — REVIEW"><header><span class="pname"><span class="badge">Lab 10</span> Block 3 — REVIEW</span><button class="copy" type="button" hidden data-copy="Review this project for me: list the threads you started today,
+what each produced, and where each output is saved. Then tell
+me which context files, instructions or memory entries are now
+out of date." aria-label="Copy Lab 10 Block 3 — REVIEW">Copy</button></header><p class="lead">Send this at the end of the lab:</p><pre tabindex="0">Review this project for me: list the threads you started today,
+what each produced, and where each output is saved. Then tell
+me which context files, instructions or memory entries are now
+out of date.</pre><p class="after">Compare its list with <b>Project settings → Usage</b>, which shows the tokens used by the lead agent and each thread.</p></article></li><li class="" id="lab-10-step-8"><p class="step">Open Project settings → Usage and read the lead agent's and each thread's tokens.</p><p class="why">Parallel threads finish faster but use more in total. Compare the research threads from Lab 2 with the single-thread labs.</p></li></ol><div class="check" role="note" aria-label="Check"><h4>Check — done when</h4><p>Two tasks are listed under Scheduled — Today's Lumo post on weekdays at 9:00am and Weekly launch report on Mondays at 8:00am. The test run emailed you a polished 1 December post as a draft, with S$ prices and no health claim, and nothing was published. Project memory records the 8 December Singapore launch, and the lead agent listed what depends on it. Project settings → Usage shows tokens for the lead agent and for each thread you started today.</p></div><p class="top"><a href="#top">Back to top</a></p></section></section></main>
+<p id="live" class="sr" aria-live="polite"></p>
+<footer>Claude AI Masterclass (C1382) · Threads Edition · courseware v5.1, 27 October 2026. Built from the course source on 27 October 2026. Lumo Kopi Co. and all lab data are fictitious, for training only. Use only the supplied mock data and your own test accounts. Never put real customer, personal or confidential data into a training exercise, and send lab emails to yourself rather than to a real recipient. © Tertiary Infotech Academy Pte Ltd · UEN: 201200696W.</footer>
+</div><script>
+(function(){
+  var live=document.getElementById('live');
+  function fallback(t){var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');
+    a.style.position='fixed';a.style.top='0';a.style.opacity='0';document.body.appendChild(a);
+    a.select();a.setSelectionRange(0,t.length);var ok=false;try{ok=document.execCommand('copy')}catch(e){}
+    document.body.removeChild(a);return ok}
+  function flash(b,ok){var old=b.getAttribute('data-label')||b.textContent;b.setAttribute('data-label',old);
+    b.textContent=ok?'Copied \u2713':'Press Ctrl+C';b.classList.toggle('done',ok);
+    if(live)live.textContent=ok?'Prompt copied to clipboard':'Copy failed - select the text and copy it';
+    setTimeout(function(){b.textContent=old;b.classList.remove('done')},1800)}
+  var btns=document.querySelectorAll('.copy');
+  for(var i=0;i<btns.length;i++){btns[i].hidden=false;btns[i].addEventListener('click',function(){
+    var b=this,t=b.getAttribute('data-copy');
+    if(navigator.clipboard&&window.isSecureContext){
+      navigator.clipboard.writeText(t).then(function(){flash(b,true)},function(){flash(b,fallback(t))});
+    }else{flash(b,fallback(t))}
+  })}
+  /* Highlight the lab currently on screen in the sticky nav. */
+  var links=document.querySelectorAll('nav a[href^="#lab-"]');
+  if('IntersectionObserver' in window&&links.length){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;
+      for(var j=0;j<links.length;j++)links[j].setAttribute('aria-current',links[j].getAttribute('href')==='#'+e.target.id)})},
+      {rootMargin:'-30% 0px -60% 0px'});
+    document.querySelectorAll('.lab').forEach(function(s){io.observe(s)});
+  }
+})();
+</script></body></html>

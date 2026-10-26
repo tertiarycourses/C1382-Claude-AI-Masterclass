@@ -1,6 +1,6 @@
 # Claude AI Masterclass — Learner Guide
 
-**Course Code:** C1382  |  **Conducted by:** Tertiary Infotech Academy Pte Ltd (UEN 201200696W)  |  **Version v5.0 · 27 October 2026**
+**Classic Projects Edition**  |  **Course Code:** C1382  |  **Conducted by:** Tertiary Infotech Academy Pte Ltd (UEN 201200696W)  |  **Version v5.1 · 27 October 2026**
 
 ## Contents
 
@@ -8,19 +8,19 @@
 - [Course Learning Outcomes](#course-learning-outcomes)
 - [Before You Start — Preparation](#before-you-start--preparation)
 - [Working in a Claude Project](#working-in-a-claude-project)
-  - [The lead agent and its threads](#the-lead-agent-and-its-threads)
+  - [How a project is organised](#how-a-project-is-organised)
   - [The parts of a project](#the-parts-of-a-project)
-  - [Writing the goal](#writing-the-goal)
+  - [Creating the project](#creating-the-project)
   - [Writing project instructions](#writing-project-instructions)
-  - [Adding context](#adding-context)
-  - [Working with memory](#working-with-memory)
+  - [Adding context and using the folder](#adding-context-and-using-the-folder)
+  - [Keeping a memory file](#keeping-a-memory-file)
   - [Scheduling tasks](#scheduling-tasks)
-  - [Project settings, models and environments](#project-settings-models-and-environments)
+  - [Coming soon: the new Projects](#coming-soon-the-new-projects)
 - [Topic 01 — Claude Projects and Market Research](#topic-01--claude-projects-and-market-research)
   - [The Claude family](#the-claude-family)
   - [Lab 1 — Set Up the Lumo Launch Project](#lab-1--set-up-the-lumo-launch-project)
-  - [Market research in parallel threads](#market-research-in-parallel-threads)
-  - [Lab 2 — Run Market Research in Parallel Threads](#lab-2--run-market-research-in-parallel-threads)
+  - [Market research in parallel tasks](#market-research-in-parallel-tasks)
+  - [Lab 2 — Run Market Research in Parallel Tasks](#lab-2--run-market-research-in-parallel-tasks)
   - [Live Artefacts](#live-artefacts)
   - [Lab 3 — Build the Market Insights Live Artefact](#lab-3--build-the-market-insights-live-artefact)
 - [Topic 02 — Connectors, Skills and Plugins](#topic-02--connectors-skills-and-plugins)
@@ -33,8 +33,8 @@
   - [Skills, plugins and mods](#skills-plugins-and-mods)
   - [Lab 7 — Add the Marketing Plugin](#lab-7--add-the-marketing-plugin)
 - [Topic 03 — Content Production and Scheduled Work](#topic-03--content-production-and-scheduled-work)
-  - [Social content in parallel threads](#social-content-in-parallel-threads)
-  - [Lab 8 — Create Social Media Posts in Parallel Threads](#lab-8--create-social-media-posts-in-parallel-threads)
+  - [Social content for four platforms](#social-content-for-four-platforms)
+  - [Lab 8 — Create Two Weeks of Social Media Posts](#lab-8--create-two-weeks-of-social-media-posts)
   - [The video pipeline](#the-video-pipeline)
   - [Lab 9 — Produce a 15-Second Launch Video](#lab-9--produce-a-15-second-launch-video)
   - [Scheduled tasks](#scheduled-tasks)
@@ -45,13 +45,13 @@
 
 ## Introduction
 
-Claude is no longer only a chat window. With the redesigned Claude Projects, you give a project one goal and a lead agent plans the work, splits it into parallel threads and brings the results back to you. This course teaches that way of working through one continuous marketing scenario: you are the marketing team at Lumo Kopi Co., launching a new canned cold-brew kopi. Over ten labs, all inside one project, you research the market in parallel threads, build a Live Artefact dashboard, connect Google Drive and Gmail, produce a launch deck and campaign brief, capture the brand voice as a skill, add a marketing plugin, create two weeks of social posts and a launch video, and schedule the routine work so it runs on its own.
+Claude is no longer only a chat window. In Cowork, a Claude Project gives one body of work its own instructions, reference files and working folder, so every task you start already knows the brand and the rules. This course teaches that way of working through one continuous marketing scenario: you are the marketing team at Lumo Kopi Co., launching a new canned cold-brew kopi. Over ten labs, all inside one project, you research the market in parallel tasks, build a Live Artefact dashboard, connect Google Drive and Gmail, produce a launch deck and campaign brief, capture the brand voice as a skill, add a marketing plugin, create two weeks of social posts and a launch video, and schedule the routine work so it runs on its own.
 
 #### The scenario — The Lumo Cold Kopi launch
 
 **The situation:** It is late October 2026. Lumo Kopi Co. launches Lumo Cold Kopi, its first ready-to-drink canned kopi, in Singapore on 1 December — six weeks away — and in Kuala Lumpur in January. The marketing team is small, the budget is S$60,000, and nothing has been produced yet: no research, no deck, no posts, no video.
 
-**Your role:** You are the Lumo marketing team. Instead of juggling a dozen separate chats, you run the whole launch from one Claude Project. Its lead agent plans each job, starts parallel threads for the pieces, and brings the results back for you to check and approve.
+**Your role:** You are the Lumo marketing team. Instead of juggling a dozen separate chats, you run the whole launch from one Claude Project in Cowork: its instructions, brand kit and working folder are set up once, and every task you start inside it already knows the brand.
 
 **Your mission:** By the end of the day the project holds everything the launch needs — verified market research, a dashboard, a deck and brief, a brand-voice skill, two weeks of social posts, a launch video — and scheduled tasks that keep it moving while you are away.
 
@@ -64,15 +64,15 @@ This guide carries the full instructions for all 10 labs. Each lab folder in the
 
 On completion of this course, you will be able to:
 
-- LO1: Set up a Claude Project with a goal, instructions, context and memory, and explain how its lead agent splits work into parallel threads.
-- LO2: Run multi-subject market research as parallel threads and consolidate it into one verified research brief.
+- LO1: Set up a Claude Project in Cowork with instructions, context, a working folder and a project memory file.
+- LO2: Run multi-subject market research as parallel tasks in one project and consolidate it into one verified research brief.
 - LO3: Build, refine, save and download a Live Artefact dashboard from supplied research data.
 - LO4: Connect Google Drive and Gmail so Claude reads campaign files and sends an approved summary.
 - LO5: Produce a launch deck and a campaign brief with Claude's Slides and Docs, using built-in skills.
 - LO6: Capture a brand voice as an Agent Skill with /skill-creator, and install and use a marketing plugin.
-- LO7: Create a two-week, multi-platform set of social media posts in parallel threads using the brand-voice skill.
+- LO7: Create a two-week, multi-platform set of social media posts using the brand-voice skill.
 - LO8: Produce a short vertical launch video from a script, storyboard and supplied brand assets.
-- LO9: Schedule recurring project tasks, maintain project memory and review thread usage, keeping a human approval step.
+- LO9: Schedule recurring project tasks and keep the project's instructions, context and memory file current, with a human approval step.
 
 
 ## Before You Start — Preparation
@@ -87,7 +87,7 @@ On completion of this course, you will be able to:
 
 #### Verify your setup
 
-Open the Claude desktop app, sign in, and open Projects from the sidebar. If you can see the New project button, your account has the new Projects. If you cannot, the beta has not reached your account yet: run each lab in Cowork mode instead, and attach the lab's data files yourself — every prompt still works.
+Open the Claude desktop app, sign in, switch to Cowork and open Projects. If you can start a new project and see its Instructions, Context, Folder and Scheduled panels, your setup is ready. (If your Projects page instead offers a Goal and talks about a lead agent and threads, your account has the new Projects — use the Threads edition of the labs.)
 
 #### Course links
 
@@ -110,7 +110,7 @@ Open the Claude desktop app, sign in, and open Projects from the sidebar. If you
 - **Check every figure** — Read the artefact's and the brief's numbers back against the source file.
 - **Approve before sending** — Read each drafted email and post in full; approve it only when the facts match.
 - **Use a test recipient** — Send class exercises to yourself, never to a real customer.
-- **Watch thread usage** — Parallel threads multiply usage — check Project settings → Usage.
+- **Draft-only schedules** — A scheduled task runs unattended — let it draft and email you, never publish.
 
 > **Note:** Use only the supplied mock data and your own test accounts. Never put real customer, personal or confidential data into a training exercise, and send lab emails to yourself rather than to a real recipient.
 
@@ -120,26 +120,26 @@ Open the Claude desktop app, sign in, and open Projects from the sidebar. If you
 Every lab in this course runs inside one Claude Project — Lumo Cold Kopi Launch — which you create in Lab 1. This chapter explains how a project works and how to set up each of its parts. Come back to it whenever a lab asks you to change the goal, instructions, context, memory or a scheduled task.
 
 
-### The lead agent and its threads
+### How a project is organised
 
-One goal, one lead agent, many threads. You talk to the lead agent. It decides how many threads a job needs, gives each a focused brief, and brings one merged answer back to you.
+A folder-backed project with four panels. Every task you start in the project reads its instructions, context and folder. Start several at once and they run in parallel — one task per subject.
 
-- **Lead agent** — Plans, splits and merges
-- **Thread 1** — Competitors
-- **Thread 2** — Customer survey
-- **Thread 3** — Pricing
-- **Thread 4** — Social trends
-- **Memory** — Shared by every thread
+- **Instructions** — Rules every task follows
+- **Context** — Files Claude reads
+- **Folder** — Where Claude works
+- **Scheduled** — Tasks on a timetable
+- **Your tasks** — Run one or several at once
+- **Memory file** — Decisions kept in the folder
 
 How this changes the way you work:
 
-| Before — one chat per job | Now — a Project with a lead agent |
+| One-off chats | A Claude Project in Cowork |
 |---|---|
-| A chat for copy, one for visuals, one for competitors. | You state the goal once, to the lead agent. |
-| Re-explain the brand in every new chat. | It splits the work and starts parallel threads. |
-| Copy and paste results between chats yourself. | Each thread reports back; the lead merges the results. |
-| Nothing happens while your laptop is closed. | Goal, memory and context persist across every thread. |
-| You are the project manager. | It only comes back to you when it needs a decision. |
+| A chat for copy, one for visuals, one for competitors. | Instructions written once, followed by every task. |
+| Re-attach the brand kit every time. | The brand kit added once as context. |
+| Restate the rules from memory each time. | A real working folder Claude reads and writes. |
+| Outputs scattered across conversations. | Scheduled tasks that belong to the project. |
+| Nothing for a colleague to pick up. | Hand the folder to a colleague and they are ready. |
 
 #### When to use a project
 
@@ -147,8 +147,8 @@ How this changes the way you work:
 |---|---|
 | A long-running goal | Work keeps arriving for weeks — a product launch, a channel, an app. |
 | A job that splits | One big job breaks into pieces that can run at once — assets, ads, competitors, email. |
-| Lots of research | Many subjects to look into — one thread per competitor, market or segment. |
-| Regular check-ins | You want to review each workstream's progress, not one long chat. |
+| Lots of research | Many subjects to look into — one task per competitor, market or segment. |
+| Regular routines | Work that repeats on a timetable — scheduled tasks that belong to the project. |
 
 A one-off question that is done in one reply? Use an ordinary chat.
 
@@ -157,40 +157,40 @@ A one-off question that is done in one reply? Use an ordinary chat.
 
 | Part | What it is |
 |---|---|
-| Goal | What the project must achieve. The lead agent steers every decision toward it. |
 | Instructions | Standing rules you write: brand voice, currency, never publish without approval. |
-| Context | What Claude reads: files, folders, a Google Drive folder or a GitHub repository. |
-| Memory | What the project learns and keeps between threads. Open the memory files to edit them. |
-| Threads | The parallel workers the lead agent starts for each piece of a job. |
-| Scheduled | Tasks that run on a timetable inside the project — the daily post, the weekly report. |
+| Context | Documents Claude READS and never edits — the brand guidelines, product sheet and launch brief. |
+| Folder | A real folder on your computer where Claude WORKS: it reads the data there and writes output back. |
+| Scheduled | Recurring tasks that belong to this project — the daily post draft, the weekly report. |
+| Tasks | Each job you start in the project. Several can run at once, one per subject. |
+| Memory file | lumo-project-memory.md in the folder: decisions you ask Claude to record, read by every later task. |
 
 #### Creating a project
 
-1. **Name** — What you are working on — Lumo Cold Kopi Launch. This is how you find it in the sidebar.
-2. **Goal** — What the project must achieve, in two or three sentences. You can type it or dictate it.
-3. **Context** — Add the brand kit files now, or a folder or Drive folder. You can skip and add them later.
-4. **Create project** — The lead agent opens, reads the goal and context, and is ready for its first job.
+1. **What are you working on?** — The project's name — Lumo Cold Kopi Launch. This is how you find it in the sidebar.
+2. **What are you trying to achieve?** — The goal in two or three sentences. Every task in the project inherits it.
+3. **Use a folder** — Point the project at a folder on your computer, so the files and outputs are yours to open.
+4. **Create project** — The project page opens with four panels: Instructions, Context, Folder and Scheduled.
 
-New project is at the top right of the Projects page. Instructions and memory are edited afterwards, in Project settings.
+Start a new project from Projects in Cowork. The instructions and context are added afterwards, from the project page.
 
 #### Instructions, context and memory compared
 
 These three are easy to confuse, and the difference matters: when an output is wrong, it tells you which one to fix.
 
-|  | Instructions | Context | Memory |
+|  | Instructions | Context | Memory file |
 |---|---|---|---|
-| Who writes it | You | You add it | The project, as it works |
-| What it holds | Rules and style | Files and folders to read | Facts and decisions learned |
-| Lumo example | Prices in S$; no health claims | Brand guidelines, launch brief | Launch date moved; IG performs best |
-| Edit it in | Settings → Memory | Context panel | Settings → Memory → memory files |
-| When output is wrong | Tighten the rule | Add the missing file | Correct or delete the fact |
+| Who writes it | You | You add it | Claude, when you ask it to |
+| What it holds | Rules and style | Files to read | Decisions and facts to keep |
+| Lumo example | Prices in S$; no health claims | Brand guidelines, launch brief | Launch date moved to 8 December |
+| Edit it in | The Instructions panel | The Context panel | lumo-project-memory.md in the folder |
+| When output is wrong | Tighten the rule | Add the missing file | Correct the line in the file |
 
 
-### Writing the goal
+### Creating the project
 
-The goal is the one statement every decision in the project points at. The lead agent reads it before it plans any job, so a vague goal produces vague plans.
+In Cowork, a project is created from a short dialog with two questions and a folder. The name is how you find it again; the answer to "What are you trying to achieve?" is the standing goal every task in the project inherits.
 
-Write it as an outcome with a date and a measure: what will exist, for whom, and how you will know it worked. Two or three sentences is enough.
+Point the project at a folder you create for it. That folder is where Claude works — it reads the data you put there and writes every output back — and it stays a normal folder you can open, back up or share.
 
 **Example**
 
@@ -205,14 +205,14 @@ year-olds on Instagram and TikTok know the product exists by launch day.
 
 **How to do it**
 
-1. Open the project and click the gear icon to open Project settings.
-2. Under General, edit the goal and save.
-3. Ask the lead agent: "Restate the project goal in one line." If it gets it wrong, the goal is unclear.
+1. In Cowork, open Projects and start a new project.
+2. Type the name, paste the goal into What are you trying to achieve?, and choose Use a folder.
+3. Click Create project. The project page opens with its four panels.
 
 
 ### Writing project instructions
 
-Instructions are standing rules that apply to every thread and every job in the project. Use them for things that are always true: the currency, the brand voice in brief, what must never happen without your approval.
+Instructions are standing rules that apply to every task in the project. Use them for things that are always true: the currency, the brand voice in brief, what must never happen without your approval.
 
 Keep them short and testable. A rule Claude can check — "prices always in S$ with two decimals" — works far better than a wish such as "be professional".
 
@@ -231,118 +231,111 @@ You are the marketing team for Lumo Kopi Co.
 
 **How to do it**
 
-1. Open Project settings and choose Memory.
-2. Paste the instructions into Project instructions and save.
-3. Start a new job and check that the rules are followed without you repeating them.
+1. On the project page, open the Instructions panel.
+2. Paste the instructions and save.
+3. Start a new task and check that the rules are followed without you repeating them.
 
 
-### Adding context
+### Adding context and using the folder
 
 Context is what the project reads: the brand guidelines, the product sheet, the launch brief. Claude reads context but does not edit it, so it is the right home for reference material you want kept exactly as it is.
 
-Add only what the work needs. Every file in context competes for space in each thread's context window, so a lean set of reference files gives sharper answers than a whole shared drive.
+The Folder is different: it is where Claude works. Data it should analyse and every file it produces live there. Mixing the two up is the most common setup mistake — reference in Context, working files in the Folder.
 
 **How to do it**
 
-1. In the project, open the Context panel and choose Add.
-2. Add files, a folder from your computer, or a Google Drive folder.
-3. Ask: "Which context files do you have, and what is each one for?"
+1. On the project page, open Context and add the reference files.
+2. Put the lab's data files in the project folder on your computer.
+3. Ask: "Which context files and folder files can you see, and what is each one for?"
 
 
-### Working with memory
+### Keeping a memory file
 
-Memory is what the project writes down for itself as it works: decisions you made, facts it discovered, what performed well. Every thread can read it, which is how something learned in one thread reaches the next.
+A classic project has no memory panel of its own, so keep one yourself: a Markdown file in the project folder — lumo-project-memory.md — where Claude records decisions you ask it to remember. Every later task can read it.
 
-Because the project writes it, memory can be wrong. Open the memory files from time to time, correct anything out of date and delete anything you do not want kept. Treat it like a shared notebook that you are responsible for.
+Because Claude writes it, check it. Open the file from time to time, correct anything out of date and delete anything you do not want every future task to believe. It is a shared notebook that you are responsible for.
 
 **Example**
 
 *EXAMPLE — Lumo Kopi*
 
 ```text
-Remember this for the project: the Singapore launch date has moved from
-1 December to 8 December 2026. Update anything you have planned that
-depends on it.
+Add this to lumo-project-memory.md: the Singapore launch date has moved
+from 1 December to 8 December 2026. Update anything you have planned
+that depends on it.
 ```
 
 **How to do it**
 
-1. Open Project settings → Memory and open a memory file.
-2. Edit or delete a line, then save.
-3. Or tell the lead agent what to remember, and check the memory file afterwards.
+1. Ask Claude to create lumo-project-memory.md in the project folder (Lab 1 does this).
+2. Tell Claude what to record whenever a decision changes.
+3. Open the file yourself and correct or delete lines as needed.
 
 
 ### Scheduling tasks
 
-A scheduled task is a prompt the project runs on a timetable. Because it runs inside the project, it has the goal, instructions, context, memory and skills — you do not repeat any of them in the task.
+A scheduled task is a prompt that runs on a timetable. Pick the project in the task's settings and it runs with the project's instructions, context and folder — you do not repeat them in the task.
 
-Schedule drafts, not publishing. A good marketing task prepares today's post and emails it to you for approval; the click that publishes stays yours. If your workspace has a social-scheduling connector, the task can queue the approved post — still behind your approval.
+Schedule drafts, not publishing. Permissions defaults to Automatically approve, so the task acts unattended: it should prepare today's post and email it to you for approval, and the click that publishes stays yours.
 
 **Example**
 
 *EXAMPLE — Lumo Kopi*
 
 ```text
-Every weekday at 9:00am: take today's row from social-calendar.csv,
-polish the post with lumo-brand-voice, check every price and claim
-against the brand kit, and email it to me as a draft with the subject
-"Today's Lumo post". Never publish anything.
+Take today's row from social-calendar.csv, polish the post with
+lumo-brand-voice, check every price and claim against the brand kit, and
+email it to me as a draft with the subject "Today's Lumo post". Never
+publish anything.
 ```
 
 **How to do it**
 
-1. In the project, ask the lead agent to schedule the task, or open Scheduled and choose New task.
-2. Set the prompt, the frequency and the time, and save.
-3. Use Run now once to test it, then check the email that arrives.
-4. For tasks that must run with your laptop closed, add a cloud environment in Project settings → Environment.
+1. Open Scheduled tasks from the sidebar and choose New task → Set up manually.
+2. Enter the Name and paste the Instructions; pick the Lumo Cold Kopi Launch project.
+3. Change Frequency from Manual to the timetable you want, and check Permissions.
+4. Save, then check the email that arrives at the first run.
 
 
-### Project settings, models and environments
+### Coming soon: the new Projects
 
-| Settings page | What you find there |
+Anthropic redesigned Claude Projects in September 2026. The new version is in beta, rolling out to Pro and Max accounts first — if your Projects page shows a Goal and talks about threads, you already have it.
+
+| Feature | What it does |
 |---|---|
-| General | The project name, the goal, and the models and effort for the lead agent and the threads. |
-| Memory | The project instructions and the memory files the project has written — open one to edit it. |
-| Environment | Local, or a cloud environment so threads keep working with your laptop closed. |
-| Usage | Input and output tokens, for the lead agent and for each thread separately. |
-| Debug access | Let another project read this one's conversations, read-only, to help diagnose a problem. |
+| Lead agent | You state a goal once; a coordinator plans the work, splits it and merges the results. |
+| Parallel threads | The lead agent starts one thread per subject itself — what you do by hand with tasks in Lab 2. |
+| Goal | One outcome statement that every decision in the project steers toward. |
+| Project memory | Memory the project writes and you edit in settings — replacing the memory file you keep in Lab 1. |
+| Usage per thread | Project settings show the tokens used by the lead agent and by each thread. |
+| Cloud environment | Threads keep working in the cloud with your laptop closed. |
 
-Open Project settings from the gear icon at the top right of the project.
+#### What changes in the labs
 
-#### Models and effort
-
-| Role | Typical default | Effort | Change it when |
-|---|---|---|---|
-| Lead agent | Opus 5.5 | Low | It misreads your requests — raise to Medium. |
-| Threads | Opus 5.5 | Medium | Research is shallow — raise; drafts are simple — lower. |
-| Effort | — | Low · Medium · High | Higher effort thinks harder and uses more of your limit. |
-
-Defaults vary by account and change over time — read yours in Project settings → General → Models.
-
-#### Cloud environments
-
-A local task needs the app open. To keep tasks running with the laptop closed, give the project a cloud environment in Project settings → Environment.
-
-| Setting | What it controls |
+| In today's labs (classic) | With the new Projects |
 |---|---|
-| Network access | Which websites the threads may reach — add only the ones the work needs. |
-| Secrets | API keys the threads can use. Once saved, nobody can read them back — not even you. |
-| Setup script | What each thread installs before it starts work, such as one package-install line. |
+| Lab 2: you start four tasks, then a merge task | One message; the lead agent starts four threads and merges them |
+| Lab 8: one task drafts all four platforms | One thread per platform, merged into one calendar |
+| lumo-project-memory.md in the folder | Project settings → Memory, editable memory files |
+| Instructions panel | Project instructions under settings, plus a Goal |
+| Settings → Usage for your whole plan | Usage per thread for this project |
+
+Everything you build today carries over: skills, connectors, artefacts and scheduled tasks work the same way. The Threads edition of this course runs the same ten labs on the new Projects — see the course repository.
 
 
 ## Topic 01 — Claude Projects and Market Research
 
-The Claude family · the new Projects · lead agent and threads · market research · Live Artefacts
+The Claude family · Projects in Cowork · instructions, context and folder · market research · Live Artefacts
 
 #### Key concepts
 
 | Concept | What it means |
 |---|---|
-| Claude Project | A home for a long-running goal. Context, memory and work build up over time instead of resetting each chat. |
-| Lead agent | The project's coordinator. You tell it the goal; it plans, splits the work and reports back. |
-| Threads | Parallel workers the lead agent starts — one per subject — each with its own focused context. |
-| Goal | One clear statement of what the project must achieve. Every decision the lead agent makes points at it. |
-| Instructions vs memory | Instructions are the rules you write. Memory is what the project learns and keeps — and you can edit it. |
+| Claude Project | A home for a long-running body of work. Its rules, files and outputs build up instead of resetting each chat. |
+| Backed by a folder | In Cowork a project points at a real folder on your computer — Claude works there, and you can open it yourself. |
+| Instructions | Standing rules every task in the project follows: currency, brand voice, approval before sending. |
+| Context vs Folder | Context is what Claude reads and never edits. Folder is where it works — reading data and writing output. |
+| Parallel tasks | Several tasks can run in one project at once — one per subject — and a final task merges their files. |
 | Live Artefacts | Interactive tools — dashboards, trackers — that persist in your workspace instead of scrolling away in chat. |
 
 
@@ -358,13 +351,13 @@ Chat and Cowork are now one app: Claude. A marketing team works there — and a 
 
 ### Lab 1 — Set Up the Lumo Launch Project
 
-**Objective:** By the end of this lab you can create a Claude Project with a goal, instructions, context and memory.
+**Objective:** By the end of this lab you can create a Claude Project in Cowork with instructions, context, a working folder and a memory file.
 
-**Scenario:** Lumo Kopi Co. launches Lumo Cold Kopi in six weeks, and the marketing work will keep coming until launch day — exactly what a Claude Project is for. You create the Lumo Cold Kopi Launch project, give it a goal, add the brand kit as context, write its standing instructions, and check that its lead agent understood all three. Every later lab runs inside this project.
+**Scenario:** Lumo Kopi Co. launches Lumo Cold Kopi in six weeks, and the marketing work will keep coming until launch day — exactly what a Claude Project is for. You create the Lumo Cold Kopi Launch project in Cowork, point it at a working folder, write its standing instructions, add the brand kit as context, and check that Claude understood all of it. Every later lab runs inside this project.
 
-**You will build:** The Lumo Cold Kopi Launch project, with a goal, instructions, three context files and a first memory entry.
+**You will build:** The Lumo Cold Kopi Launch project, with instructions, three context files, a working folder and a project memory file.
 
-**Tools:** Claude desktop app, Claude Projects.
+**Tools:** Claude desktop app (Cowork), Claude Projects.
 
 #### Lab files
 
@@ -375,20 +368,20 @@ Chat and Cowork are now one app: Claude. A marketing team works there — and a 
 
 #### Step-by-step
 
-This lab has three blocks. Block 1 is the project goal, typed into the New project dialog. Block 2 is the standing instructions, pasted into Project settings → Memory. Block 3 is your first message to the lead agent.
+This lab has three blocks. Block 1 is the project goal, pasted into the Create a project dialog. Block 2 is the standing instructions, pasted into the Instructions panel. Block 3 is your first task in the project.
 
-> **Note:** No Projects in your sidebar yet? The beta has not reached your account. Switch to Cowork mode, attach the three brand-kit files, paste Block 2 as your first message, then send Block 3.
+> **Note:** Projects live in Cowork mode in the desktop app. Create an empty folder called Lumo Launch on your computer first — the project works inside it.
 
-1. Download the course labs and open the Lab 01 data/brand-kit folder.  
-   *Why:* Skim the three files — guidelines, product sheet, launch brief. You will check Claude's answers against them.
-2. In the Claude desktop app, open Projects from the sidebar and click New project.  
-   *Why:* Projects are shared across the Claude app (Chat and Cowork) and Claude Code, so the same project is reachable from all three.
-3. Name the project Lumo Cold Kopi Launch and paste Block 1 into the Goal field.  
-   *Why:* The goal is what the lead agent steers every decision toward, so it is worth writing as an outcome with a date and a measure.
+1. Download the course labs and open the Lab 01 data/brand-kit folder. Create an empty folder called Lumo Launch on your computer.  
+   *Why:* Skim the three brand-kit files — you will check Claude's answers against them. The empty folder becomes the project's working folder.
+2. In the Claude desktop app, switch to Cowork, open Projects and start a new project.  
+   *Why:* In Cowork a project is backed by a real folder on your computer, so its files stay yours to open.
+3. Under "What are you working on?" type Lumo Cold Kopi Launch, and paste Block 1 into "What are you trying to achieve?".  
+   *Why:* The goal is the standing context every task inherits, so write it as an outcome with a date and a measure.
 
    **Block 1 — GOAL**
 
-   Paste this into the Goal field of the New project dialog:
+   Paste this into "What are you trying to achieve?" in the Create a project dialog:
 
    *PROMPT — copy into Claude*
 
@@ -400,17 +393,17 @@ This lab has three blocks. Block 1 is the project goal, typed into the New proje
    and TikTok know the product exists by launch day.
    ```
 
-   Name the project **Lumo Cold Kopi Launch**, add the three brand-kit files as Context, and click **Create project**.
+   Name it **Lumo Cold Kopi Launch**, choose **Use a folder** and pick your Lumo Launch folder, then **Create project**.
 
 
-4. Under Context, add the three brand-kit files, then click Create project.  
-   *Why:* Context is read, never edited — the right home for reference files you want kept exactly as they are.
-5. Click the gear icon to open Project settings, choose Memory, and paste Block 2 into Project instructions. Save.  
-   *Why:* Instructions are standing rules for every thread. Short, checkable rules work better than general wishes.
+4. Choose Use a folder, pick your Lumo Launch folder, and click Create project.  
+   *Why:* The project page opens with four panels: Instructions, Context, Folder and Scheduled.
+5. Open the Instructions panel and paste Block 2. Save.  
+   *Why:* Instructions are standing rules for every task. Short, checkable rules work better than general wishes.
 
    **Block 2 — INSTRUCTIONS**
 
-   Paste this into Project settings → Memory → Project instructions:
+   Paste this into the project's Instructions panel:
 
    *PROMPT — copy into Claude*
 
@@ -421,22 +414,22 @@ This lab has three blocks. Block 1 is the project goal, typed into the New proje
    - Follow lumo-brand-guidelines.md for anything customer-facing.
    - Never describe the product as healthy. You may say 5 g sugar.
    - Never send an email or publish a post without my approval.
-   - When a job has several independent subjects, give each one
-     its own thread and merge the results for me.
+   - Save every output to the project folder.
+   - Read lumo-project-memory.md before you start any task.
    - Flag any figure that two sources disagree on. Do not pick one.
    ```
 
-   Save the instructions, then go back to the project and send Block 3.
+   Save the instructions, then add the three brand-kit files in the **Context** panel.
 
 
-6. While you are in settings, open General and look at Models.  
-   *Why:* Note the model and effort for the lead agent and for threads. You will see their cost in Lab 10.
-7. Back in the project, send Block 3 to the lead agent.  
-   *Why:* This is a setup check: if it cannot restate the goal or find the files, fix that now, before any real work.
+6. Open the Context panel and add the three brand-kit files.  
+   *Why:* Context is read, never edited — the right home for reference files you want kept exactly as they are.
+7. Start a new task in the project and send Block 3.  
+   *Why:* This is a setup check: if Claude cannot restate the goal or find the files, fix that now, before any real work.
 
-   **Block 3 — FIRST MESSAGE**
+   **Block 3 — FIRST TASK**
 
-   Send this to the lead agent:
+   Start a new task in the project and send:
 
    *PROMPT — copy into Claude*
 
@@ -447,110 +440,177 @@ This lab has three blocks. Block 1 is the project goal, typed into the New proje
    3. List the three instructions you think matter most.
    4. From the product sheet, give me the price per can, the sugar
       per can and the launch date.
-   Then remember this for the project: our primary audience is
-   25-34 year-olds in Singapore, and our secondary market is
+   Then create lumo-project-memory.md in the project folder with
+   the heading "Project memory" and record: our primary audience
+   is 25-34 year-olds in Singapore, and our secondary market is
    Kuala Lumpur, launching 15 January 2027.
    ```
 
-   Compare the answer with the brand kit, then open Project settings → Memory and find the new memory entry.
+   Compare the answer with the brand kit, then open your Lumo Launch folder and read lumo-project-memory.md.
 
 
 8. Check the answers: S$3.90 per can, 5 g sugar, launch 1 December 2026.  
    *Why:* Every figure must match the product sheet. A wrong figure here means a wrong context file.
-9. Open Project settings → Memory and find the memory entry about the audience and Kuala Lumpur.  
-   *Why:* The project wrote it, so you are responsible for it. Memory you never read is memory you cannot trust.
+9. Open the Lumo Launch folder on your computer and read lumo-project-memory.md.  
+   *Why:* A classic project has no memory panel, so this file plays that role: every task reads it (Block 2 says so), and you can edit it.
 
 #### Check
 
-> **Check — you are done when:** The Lumo Cold Kopi Launch project exists with the goal from Block 1, the three brand-kit files under Context and the Block 2 instructions saved. The lead agent restated the goal, listed all three context files, and quoted S$3.90 per can, 5 g sugar and a 1 December 2026 launch. A memory file now records the 25-34 audience and the 15 January 2027 Kuala Lumpur launch.
+> **Check — you are done when:** The Lumo Cold Kopi Launch project exists in Cowork, using your Lumo Launch folder, with the Block 2 instructions saved and the three brand-kit files under Context. Claude restated the goal, listed all three context files, and quoted S$3.90 per can, 5 g sugar and a 1 December 2026 launch. lumo-project-memory.md in the folder records the 25-34 audience and the 15 January 2027 Kuala Lumpur launch.
 
 
-### Market research in parallel threads
+### Market research in parallel tasks
 
-In Lab 2 you hand the lead agent one research job with four independent subjects. It starts one thread per subject:
+In Lab 2 you start four research tasks in the project at once, one per independent subject, then a fifth task merges them:
 
-| Thread | What it researches |
+| Task | What it researches |
 |---|---|
-| Competitors | Six cold-brew brands: price, pack, positioning, and the gap Lumo can own. |
-| Customer survey | 400 respondents: who is likely to buy, why, and where they discover drinks. |
-| Pricing | Where S$3.90 sits against the market, and what the survey says people will pay. |
-| Social trends | Which content themes earn the most engagement in the category right now. |
+| Task 1 — Competitors | Six cold-brew brands: price, pack, positioning, and the gap Lumo can own. |
+| Task 2 — Customers | 400 survey respondents: who is likely to buy, why, and where they discover drinks. |
+| Task 3 — Pricing | Where S$3.90 sits against the market, and what the survey says people will pay. |
+| Task 4 — Social trends | Which content themes earn the most engagement in the category right now. |
 
-Each thread gets one subject and its own data file. The lead agent merges the four findings into one research brief — and flags where they disagree.
+Start four tasks in the project at once, one subject each, each saving its own file to the folder. A fifth task merges them into the research brief.
 
 
-### Lab 2 — Run Market Research in Parallel Threads
+### Lab 2 — Run Market Research in Parallel Tasks
 
-**Objective:** By the end of this lab you can hand a multi-subject research job to the lead agent and verify the merged brief.
+**Objective:** By the end of this lab you can split a multi-subject research job into parallel tasks and verify the merged brief.
 
-**Scenario:** Before anyone writes a post, the team needs to know the market. Four subjects need research — competitors, the customer survey, pricing and social trends — and none depends on another. You give the whole job to the lead agent in one message. It starts one thread per subject, each with its own data file, then merges the four findings into one research brief, which you check against the data.
+**Scenario:** Before anyone writes a post, the team needs to know the market. Four subjects need research — competitors, the customer survey, pricing and social trends — and none depends on another. So you start four tasks in the project at once, one per subject, each saving its findings to the folder. A fifth task merges the four files into one research brief, which you check against the data.
 
-**You will build:** A research brief (lumo-research-brief.docx) merged from four parallel threads, saved in the project.
+**You will build:** Four research files and lumo-research-brief.docx merged from them, in the project folder.
 
-**Tools:** Claude Projects, lead agent and threads, web search.
+**Tools:** Claude Projects in Cowork, parallel tasks, web search.
 
 #### Lab files
 
-- Prompt PDF: labs/lab-02-market-research-threads/lab-02-market-research-threads.pdf
-- labs/lab-02-market-research-threads/data/lumo-consumer-survey-2026.csv
-- labs/lab-02-market-research-threads/data/lumo-competitors.csv
-- labs/lab-02-market-research-threads/data/lumo-social-trends.csv
+- Prompt PDF: labs/lab-02-market-research/lab-02-market-research.pdf
+- labs/lab-02-market-research/data/lumo-consumer-survey-2026.csv
+- labs/lab-02-market-research/data/lumo-competitors.csv
+- labs/lab-02-market-research/data/lumo-social-trends.csv
 
 #### Step-by-step
 
+This lab has five blocks. Blocks 1 to 4 each go into their own new task, started one after another without waiting for the previous one to finish. Block 5 goes into a fifth task once the four research files are in the folder.
+
+> **Note:** Copy the three CSV files from the Lab 02 data folder into your Lumo Launch project folder first.
+
 1. Open the Lab 02 data folder and glance at the three CSV files.  
    *Why:* Know your source: 400 survey rows, six competitors, twelve content themes.
-2. In the Lumo Cold Kopi Launch project, attach the three files and send the lab prompt.  
-   *Why:* One message, four subjects. You are briefing the lead agent, not doing the splitting yourself.
+2. Copy the three CSV files into your Lumo Launch project folder.  
+   *Why:* Data Claude analyses belongs in the Folder; the brand kit stays in Context.
+3. Start a new task in the project and send Block 1. Do not wait for it.  
+   *Why:* Each task has one subject and one file — a focused brief with a fresh context window. That is why parallel research stays sharp.
+
+   **Block 1 — COMPETITORS**
+
+   Start a new task in the project and send:
 
    *PROMPT — copy into Claude*
 
    ```text
-   Research the market for the Lumo Cold Kopi launch. The data is in
-   the three files I have attached. Split this into four threads,
-   one per subject, and run them in parallel:
-
-   Thread 1 - COMPETITORS (lumo-competitors.csv): price per can, pack,
-     positioning and channel for each brand. Where is the gap Lumo
-     can own?
-   Thread 2 - CUSTOMERS (lumo-consumer-survey-2026.csv): share likely
-     to buy (intent 4 or 5), split by age band and city; top purchase
-     drivers; top discovery channels.
-   Thread 3 - PRICING: where S$3.90 sits against the competitor
-     median, and the share of respondents willing to pay S$3.50 or
-     more.
-   Thread 4 - SOCIAL TRENDS (lumo-social-trends.csv): the three content
-     themes with the highest engagement, with one post idea each.
-
-   When all four threads are done, merge them into one research brief,
-   lumo-research-brief.docx: a one-paragraph summary, one section per
-   thread with the key numbers, and three recommendations for the
-   launch. Show your working for every percentage. Tell me which
-   thread produced each section, and flag anything the threads
-   disagree on.
+   Research COMPETITORS for the Lumo Cold Kopi launch using
+   lumo-competitors.csv: price per can, pack, positioning and
+   channel for each brand, and the gap Lumo can own.
+   Save your findings as research-1-competitors.md in the project
+   folder.
    ```
 
-   > **Note:** Attach the three CSV files from the Lab 02 data folder, or add them to the project's Context first.
+   Do not wait for it — start the next task straight away.
 
 
-3. Watch the lead agent announce the threads it starts.  
-   *Why:* Each thread has one subject and one file — a focused brief with a fresh context window. That is why parallel research stays sharp.
-4. Open one thread while it works and read its brief.  
-   *Why:* You can see exactly what the lead agent asked each thread to do. A poor result usually traces back to a poor thread brief.
-5. When the merged brief arrives, check the survey numbers.  
+4. Start a second task and send Block 2.  
+   *Why:* Several tasks can run in one project at the same time.
+
+   **Block 2 — CUSTOMERS**
+
+   Start a second task and send:
+
+   *PROMPT — copy into Claude*
+
+   ```text
+   Research CUSTOMERS using lumo-consumer-survey-2026.csv: the share
+   likely to buy (intent 4 or 5), split by age band and city; the
+   top purchase drivers; the top discovery channels. Show your
+   working for every percentage. Save your findings as
+   research-2-customers.md in the project folder.
+   ```
+
+   Start the third task.
+
+
+5. Start a third task and send Block 3.  
+   *Why:* Pricing reads both files; it does not need the other tasks' results.
+
+   **Block 3 — PRICING**
+
+   Start a third task and send:
+
+   *PROMPT — copy into Claude*
+
+   ```text
+   Research PRICING using lumo-competitors.csv and
+   lumo-consumer-survey-2026.csv: where S$3.90 sits against the
+   competitor median, and the share of respondents willing to pay
+   S$3.50 or more. Show your working. Save your findings as
+   research-3-pricing.md in the project folder.
+   ```
+
+   Start the fourth task.
+
+
+6. Start a fourth task and send Block 4.  
+   *Why:* You are now the lead agent: four workers, four subjects, one goal.
+
+   **Block 4 — TRENDS**
+
+   Start a fourth task and send:
+
+   *PROMPT — copy into Claude*
+
+   ```text
+   Research SOCIAL TRENDS using lumo-social-trends.csv: the three
+   content themes with the highest engagement, with one post idea
+   each. Save your findings as research-4-trends.md in the project
+   folder.
+   ```
+
+   Four tasks are now running at once. Watch them finish in the project's task list.
+
+
+7. When the four research files are in the folder, start a fifth task and send Block 5.  
+   *Why:* The merge task reads the files, not the other conversations — so the folder is how the tasks share their work.
+
+   **Block 5 — MERGE**
+
+   When all four files are in the folder, start a fifth task and send:
+
+   *PROMPT — copy into Claude*
+
+   ```text
+   Merge research-1-competitors.md, research-2-customers.md,
+   research-3-pricing.md and research-4-trends.md from the project
+   folder into one research brief, lumo-research-brief.docx:
+   a one-paragraph summary, one section per subject with the key
+   numbers, and three recommendations for the launch. Name the
+   source file under each section, and flag anything the four
+   files disagree on.
+   ```
+
+   Open the brief and check it against the data in the next steps.
+
+
+8. When the merged brief arrives, check the survey numbers.  
    *Why:* Expect 400 respondents, 248 likely to buy (62%), and 112 of 152 in the 25-34 band (74%).
-6. Check the channel and driver findings.  
-   *Why:* Instagram is the top discovery channel at 136 (34%), then TikTok at 104 (26%). Taste is the top driver at 124 (31%).
-7. Check the pricing section.  
-   *Why:* The competitor median is S$4.30, so S$3.90 sits below it; 228 respondents (57%) would pay S$3.50 or more.
-8. Check the trends section and the recommendations.  
+9. Check the channel, driver and pricing findings.  
+   *Why:* Instagram 136 (34%), TikTok 104 (26%); Taste 124 (31%); competitor median S$4.30 with S$3.90 below it; 228 (57%) would pay S$3.50 or more.
+10. Check the trends section and the recommendations.  
    *Why:* The top theme should be Taste tests and first-sip reactions. Do the three recommendations follow from the numbers above them?
-9. Open lumo-research-brief.docx and confirm each section names its thread.  
-   *Why:* Traceability: every number in the brief can be traced to one thread and one file.
 
 #### Check
 
-> **Check — you are done when:** lumo-research-brief.docx has a summary, four thread sections and three recommendations. It reports 400 respondents, 248 likely to buy (62%), 112 of 152 aged 25-34 (74%), Instagram as the top discovery channel at 34%, Taste as the top driver at 31%, a competitor median of S$4.30 with Lumo's S$3.90 below it, 228 respondents (57%) willing to pay S$3.50 or more, and Taste tests and first-sip reactions as the top content theme.
+> **Check — you are done when:** The project folder holds the four research files and lumo-research-brief.docx, whose summary, four sections and three recommendations name their source files. The brief reports 400 respondents, 248 likely to buy (62%), 112 of 152 aged 25-34 (74%), Instagram as the top discovery channel at 34%, Taste as the top driver at 31%, a competitor median of S$4.30 with Lumo's S$3.90 below it, 228 respondents (57%) willing to pay S$3.50 or more, and Taste tests and first-sip reactions as the top content theme.
 
 
 ### Live Artefacts
@@ -676,12 +736,12 @@ The context window is all the information the model can “see” when producing
 | Lever | What it adds |
 |---|---|
 | Conversation | Your prompt. The messages you send, including both text and attachments. |
-| Project context | The files, folders and Drive folder the project reads from. |
+| Project context | The files the project reads, and the folder it works in. |
 | Connectors | The connected tools Claude can pull data from, and take actions in. |
 | Skills | A set of instructions Claude follows for a repeatable workflow. |
-| Instructions & memory | Project rules you wrote, and facts the project has learned. |
+| Instructions & memory file | Project rules you wrote, and decisions kept in the memory file. |
 
-Every lab today pulls one of these levers — context in Lab 1, connectors in Lab 4, skills in Labs 5–7, and memory in Lab 10.
+Every lab today pulls one of these levers — context in Lab 1, connectors in Lab 4, skills in Labs 5–7, and the memory file in Lab 10.
 
 A window that fills up costs you in four ways:
 
@@ -692,7 +752,7 @@ A window that fills up costs you in four ways:
 | Slower responses | The model processes every token on every turn. A bigger context means more work per message, which means longer waits before you see a reply. |
 | Eats up your usage faster | Your entire context gets resent with each new message — so more tokens are burned per turn, and your limits are reached sooner. |
 
-The fix is housekeeping: one job per thread, only the connectors you need, and only the files the job actually reads.
+The fix is housekeeping: one job per task, only the connectors you need, and only the files the job actually reads.
 
 
 ### Lab 4 — Connect Google Drive and Gmail
@@ -874,7 +934,7 @@ You never write a skill from a blank page. You do the task once, then save the v
 
 **Objective:** By the end of this lab you can rewrite content in the brand voice, verify it, and save the routine as a skill with /skill-creator.
 
-**Scenario:** Four channels and two weeks of posts are coming, and they all have to sound like Lumo. You rewrite five off-brand captions with Claude until they are right, then use /skill-creator to turn that verified routine into a lumo-brand-voice skill. From then on, every thread in the project — and every colleague — loads the same voice by name.
+**Scenario:** Four channels and two weeks of posts are coming, and they all have to sound like Lumo. You rewrite five off-brand captions with Claude until they are right, then use /skill-creator to turn that verified routine into a lumo-brand-voice skill. From then on, every task in the project — and every colleague — loads the same voice by name.
 
 **You will build:** A lumo-brand-voice Agent Skill, tested on a new caption.
 
@@ -952,12 +1012,12 @@ This lab has three blocks, sent at different times. Block 1 does the work once s
    *Why:* The description is the one part always in context. It decides when the skill loads, so it must say WHEN to use it.
 6. Open Customize → Skills and find lumo-brand-voice.  
    *Why:* Your own skills are listed here. Built-in skills such as pptx are not — they show in the context panel when they load.
-7. Start a new thread and send Block 3.  
-   *Why:* A fresh thread proves the skill works without the earlier conversation — which is exactly how other threads will use it.
+7. Start a new task and send Block 3.  
+   *Why:* A fresh task proves the skill works without the earlier conversation — which is exactly how later tasks will use it.
 
    **Block 3 — TEST**
 
-   Start a new thread in the project and send:
+   Start a new task in the project and send:
 
    *PROMPT — copy into Claude*
 
@@ -975,7 +1035,7 @@ This lab has three blocks, sent at different times. Block 1 does the work once s
 
 #### Check
 
-> **Check — you are done when:** lumo-brand-voice appears under Customize → Skills with a description that says when to use it. In a fresh thread, Block 3 loaded the skill without being asked to find it, and the caption it returned drops "healthy" and "best kopi in Singapore", includes #LumoKopi, uses at most five hashtags and ends with one call to action, followed by the checklist results.
+> **Check — you are done when:** lumo-brand-voice appears under Customize → Skills with a description that says when to use it. In a fresh task, Block 3 loaded the skill without being asked to find it, and the caption it returned drops "healthy" and "best kopi in Singapore", includes #LumoKopi, uses at most five hashtags and ends with one call to action, followed by the checklist results.
 
 
 ### Skills, plugins and mods
@@ -1079,23 +1139,23 @@ This lab has two blocks, each a command from the Marketing plugin. Install the p
 
 ## Topic 03 — Content Production and Scheduled Work
 
-Social posts in parallel threads · a launch video · scheduled tasks · memory and usage
+Social posts for four platforms · a launch video · scheduled tasks · the memory file
 
 #### Key concepts
 
 | Concept | What it means |
 |---|---|
-| One thread per channel | The lead agent gives Instagram, TikTok, LinkedIn and Facebook a thread each, then merges one calendar. |
-| Skill inside a thread | Every thread loads the same brand-voice skill, so four channels still sound like one brand. |
+| Specs per platform | Instagram, TikTok, LinkedIn and Facebook each get their own spec in the prompt, so one task drafts all four well. |
+| Skill in every task | Every task loads the same brand-voice skill, so four channels still sound like one brand. |
 | Video as code | Claude writes and runs the code that turns a storyboard and your images into an MP4. |
-| Scheduled tasks | A prompt that runs on a timetable inside the project — daily, weekly or monthly — while you are away. |
+| Scheduled tasks | A prompt that runs on a timetable — daily, weekly or monthly — inside the project, while you are away. |
 | Approval stays human | A scheduled task drafts and emails the post to you. Publishing is still your click. |
-| Usage per thread | Project settings show the tokens the lead agent and each thread used — the cost of parallel work. |
+| A memory file | A Markdown file in the project folder that records decisions, so every later task reads the same facts. |
 
 
-### Social content in parallel threads
+### Social content for four platforms
 
-Each platform has its own format, so Lab 8 gives every platform its own thread:
+Each platform has its own format, so the Lab 8 prompt gives every platform its own spec:
 
 | Platform | Format and rules |
 |---|---|
@@ -1104,36 +1164,36 @@ Each platform has its own format, so Lab 8 gives every platform its own thread:
 | LinkedIn | Founder or team voice; the story behind the product; no more than 3 hashtags. |
 | Facebook | Community and offers; a clear link to buy; questions that invite comments. |
 
-Every thread loads lumo-brand-voice, so four formats still sound like one brand.
+Every post loads lumo-brand-voice, so four formats still sound like one brand.
 
 #### From brief to calendar
 
-1. **Brief the lead** — One message: the goal, the dates, the channels and the skill to use.
-2. **Split by channel** — The lead agent starts one thread per platform with its own spec.
-3. **Draft in parallel** — Each thread drafts its posts using the brand-voice skill.
-4. **Merge the calendar** — The lead agent merges the drafts into one dated calendar.
+1. **Brief once** — One prompt: the dates, the four platforms, the spec for each and the skill to use.
+2. **Draft by platform** — Claude works through each platform's posts to its own spec.
+3. **Check the voice** — The brand-voice skill runs its checklist on every post.
+4. **Save the calendar** — The posts land in one dated calendar file in the project folder.
 5. **Check and approve** — You check claims, prices and dates before anything is scheduled.
 
 
-### Lab 8 — Create Social Media Posts in Parallel Threads
+### Lab 8 — Create Two Weeks of Social Media Posts
 
-**Objective:** By the end of this lab you can produce a two-week, four-platform social calendar with one thread per channel.
+**Objective:** By the end of this lab you can produce a two-week, four-platform social calendar using the brand-voice skill.
 
-**Scenario:** Launch fortnight needs ten posts across Instagram, TikTok, LinkedIn and Facebook. Each platform has its own format, so you hand the job to the lead agent and let it start one thread per platform. Every thread loads lumo-brand-voice, drafts its posts to its platform's spec, and the lead agent merges them into one dated calendar that you check before anything is scheduled.
+**Scenario:** Launch fortnight needs ten posts across Instagram, TikTok, LinkedIn and Facebook. Each platform has its own format, so the prompt gives Claude a spec for each. It loads lumo-brand-voice, drafts every platform's posts to its spec, and saves one dated calendar that you check before anything is scheduled.
 
 **You will build:** social-calendar.csv with ten dated posts across four platforms, plus lumo-social-posts.docx with the full copy.
 
-**Tools:** Claude Projects, lead agent and threads, Agent Skills.
+**Tools:** Claude Projects in Cowork, Agent Skills.
 
 #### Lab files
 
-- Prompt PDF: labs/lab-08-social-posts-threads/lab-08-social-posts-threads.pdf
-- labs/lab-08-social-posts-threads/data/social-calendar-template.csv
+- Prompt PDF: labs/lab-08-social-posts/lab-08-social-posts.pdf
+- labs/lab-08-social-posts/data/social-calendar-template.csv
 
 #### Step-by-step
 
 1. In the project, attach social-calendar-template.csv and send the lab prompt.  
-   *Why:* This is the same pattern as Lab 2 — one message, independent subjects — applied to production instead of research.
+   *Why:* One task with four precise specs. In the Threads edition each platform gets its own thread; here the specs keep one task on track.
 
    *PROMPT — copy into Claude*
 
@@ -1142,8 +1202,7 @@ Every thread loads lumo-brand-voice, so four formats still sound like one brand.
    one each weekday from Tuesday 1 December to Monday 14 December
    2026, using social-calendar-template.csv for the columns.
 
-   Split the drafting into four threads, one per platform, and run
-   them in parallel:
+   Draft each platform's posts to its own spec:
    - Instagram: 3 posts (carousel or Reel), caption with a hook in
      the first line, 3-5 hashtags.
    - TikTok: 3 posts, each a 15-second video script with a hook in
@@ -1152,11 +1211,11 @@ Every thread loads lumo-brand-voice, so four formats still sound like one brand.
      product, no more than 3 hashtags.
    - Facebook: 2 posts for community and the 12-pack offer.
 
-   Every thread must use the lumo-brand-voice skill and our top
+   Use the lumo-brand-voice skill for every post, and our top
    content theme from the research. The 1 December launch-day
    post is an Instagram Reel; TikTok follows on 2 December.
 
-   Then merge the threads into social-calendar.csv (date, platform,
+   Then save them into social-calendar.csv (date, platform,
    format, hook, copy, hashtags, visual idea, call to action) and
    lumo-social-posts.docx with the full copy. Report the brand-voice
    checklist result for every post, and list any post that failed.
@@ -1165,14 +1224,14 @@ Every thread loads lumo-brand-voice, so four formats still sound like one brand.
    > **Note:** Attach social-calendar-template.csv from the Lab 08 data folder.
 
 
-2. Watch the lead agent start the four platform threads.  
-   *Why:* Each thread has its own spec and its own context window, so the TikTok scripts never crowd out the LinkedIn story.
-3. Open the Instagram thread and check it loaded lumo-brand-voice.  
-   *Why:* The skill you wrote in Lab 6 is now doing its real job: keeping four parallel writers on one voice.
-4. When the merged calendar arrives, count the rows and check the dates.  
+2. Watch Claude work through the four platforms.  
+   *Why:* Each platform is drafted against its own spec, so the TikTok scripts and the LinkedIn story stay distinct.
+3. Check in the task's activity that Claude loaded lumo-brand-voice.  
+   *Why:* The skill you wrote in Lab 6 is now doing its real job: keeping four formats in one voice.
+4. When the calendar arrives, count the rows and check the dates.  
    *Why:* Ten rows, weekdays only: 1, 2, 3, 4, 7, 8, 9, 10, 11 and 14 December. Instagram 3, TikTok 3, LinkedIn 2, Facebook 2.
 5. Read the brand-voice checklist results.  
-   *Why:* Every post should pass. If one fails, ask the lead agent to send it back to its thread for a fix.
+   *Why:* Every post should pass. If one fails, ask Claude to redraft it.
 6. Spot-check three posts against the campaign brief's "claims we must not make".  
    *Why:* Parallel production is fast; a human check on the claims is what makes it safe to publish.
 7. Open lumo-social-posts.docx and confirm the copy matches the calendar.  
@@ -1209,11 +1268,11 @@ Claude does not edit video by hand — it writes and runs the code that renders 
 
 **Objective:** By the end of this lab you can script, storyboard and render a vertical launch video from supplied brand assets.
 
-**Scenario:** The TikTok and Instagram posts need a launch video. You give the project the supplied product images and logo; one thread writes a five-scene script and storyboard with lumo-brand-voice, another writes and runs the code that animates the images and captions into a 15-second, 1080 × 1920 MP4. You check it frame by frame and ask for changes in plain English.
+**Scenario:** The TikTok and Instagram posts need a launch video. You give the project the supplied product images and logo; Claude first writes a five-scene script and storyboard with lumo-brand-voice, then writes and runs the code that animates the images and captions into a 15-second, 1080 × 1920 MP4. You check it frame by frame and ask for changes in plain English.
 
 **You will build:** lumo-launch-15s.mp4 (1080 × 1920, 15 seconds), with its script and storyboard.
 
-**Tools:** Claude Projects, threads, code execution.
+**Tools:** Claude Projects in Cowork, code execution.
 
 #### Lab files
 
@@ -1229,7 +1288,7 @@ Claude does not edit video by hand — it writes and runs the code that renders 
 1. Open the Lab 09 data/video-assets folder and look at the five images.  
    *Why:* These are the only images the video may use. Supplying assets is how you keep likenesses and logos safe.
 2. In the project, attach the folder and send the lab prompt.  
-   *Why:* Two threads, but not in parallel this time: the render thread waits for the script. The lead agent manages that order.
+   *Why:* Two stages in one task: the render waits for the script, so you can read the storyboard first.
 
    *PROMPT — copy into Claude*
 
@@ -1237,12 +1296,12 @@ Claude does not edit video by hand — it writes and runs the code that renders 
    Make a 15-second vertical launch video for Lumo Cold Kopi, using
    only the five images in the attached video-assets folder.
 
-   Use two threads:
-   Thread 1 - SCRIPT: with lumo-brand-voice, write five scenes of
+   Work in two stages:
+   Stage 1 - SCRIPT: with lumo-brand-voice, write five scenes of
      three seconds each: hook, problem, product, proof, call to action.
      For each scene give the image, the on-screen text (max 6 words)
      and the motion. Save it as lumo-video-storyboard.md.
-   Thread 2 - RENDER: when the storyboard is ready, write and run
+   Stage 2 - RENDER: when the storyboard is ready, write and run
      code that renders it to lumo-launch-15s.mp4: 1080 x 1920, 30 fps,
      exactly 15 seconds, large high-contrast captions in the Lumo
      colours, a gentle zoom on each image, and an end card with the
@@ -1256,7 +1315,7 @@ Claude does not edit video by hand — it writes and runs the code that renders 
    > **Note:** Attach the whole video-assets folder. Use only the supplied images — never a real person's likeness or another brand's logo.
 
 
-3. Read the storyboard when Thread 1 finishes.  
+3. Read the storyboard when Stage 1 finishes.  
    *Why:* Five scenes, three seconds each, captions of six words or fewer, and no health claims — the brand-voice skill applies to scripts too.
 4. When the video arrives, check the reported duration and size.  
    *Why:* Exactly 15 seconds and 1080 × 1920. A wrong size is the most common reason a platform crops your captions.
@@ -1278,12 +1337,12 @@ A scheduled task has six parts. Write each one down before you schedule anything
 
 | Part | What to decide |
 |---|---|
-| Prompt | Exactly what to do each run — written like a lab prompt, with the checks included. |
-| Frequency | Daily, weekdays, weekly or monthly. |
-| Time | When it runs, in your time zone — for example, weekdays at 9:00am. |
-| Where it runs | Inside the project, so it reads the same goal, context, memory and skills. |
-| Output | Where the result goes — an email draft, a file in Drive, a note in the project. |
-| Approval | The step a human still takes — the task drafts, you publish. |
+| Name | What the task is called in the Scheduled list — for example, Today's Lumo post. |
+| Instructions | Exactly what to do each run — written like a lab prompt, with the checks included. |
+| Project | Pick the Lumo Cold Kopi Launch project, so the task reads its instructions, context and folder. |
+| Frequency | Daily, weekdays, weekly or monthly. The default is Manual — change it. |
+| Permissions | Defaults to Automatically approve: the task acts unattended, so it must only draft. |
+| Require this computer | On: runs only while your computer is awake, with your folders. Off: runs without them. |
 
 #### Examples for the launch
 
@@ -1293,7 +1352,7 @@ A scheduled task has six parts. Write each one down before you schedule anything
 | Weekly report, Mondays 8:00am | Summarise last week's posts from the social calendar and anything new in the Lumo Launch Drive folder in five bullet points. |
 | Monthly scan, 1st at 10:00am | Check the six competitors for new products or price changes and update the research brief. |
 
-A local task needs the app open. To keep tasks running with the laptop closed, give the project a cloud environment in Project settings → Environment.
+Open Scheduled tasks from the sidebar (or the project's Scheduled panel), choose New task and Set up manually. A task with Permissions on Automatically approve must only draft.
 
 #### Responsible marketing with Claude
 
@@ -1311,13 +1370,13 @@ Speed is only useful if what goes out is true and fair. Keep these rules on ever
 
 ### Lab 10 — Schedule the Posts and Review the Project
 
-**Objective:** By the end of this lab you can schedule recurring project tasks, edit project memory and review thread usage.
+**Objective:** By the end of this lab you can schedule recurring project tasks, keep the project memory file current and review the project.
 
-**Scenario:** The launch needs a post drafted every weekday morning and a report every Monday, and nobody should have to remember either. You schedule both inside the project, test one with Run now, then do the housekeeping a real project needs: correct its memory when a plan changes, and read the usage of the lead agent and each thread to see what parallel work costs.
+**Scenario:** The launch needs a post drafted every weekday morning and a report every Monday, and nobody should have to remember either. You create both as scheduled tasks on the project, then do the housekeeping a real project needs: record a changed plan in the memory file, and review what the project now holds.
 
-**You will build:** Two scheduled tasks in the project, a tested daily-post email, an updated memory file and a usage review.
+**You will build:** Two scheduled tasks on the project, an updated memory file and a project review.
 
-**Tools:** Claude Projects, scheduled tasks, memory, Gmail connector.
+**Tools:** Claude Projects in Cowork, scheduled tasks, Gmail connector.
 
 #### Lab files
 
@@ -1327,93 +1386,104 @@ This lab has no data folder — it works from what the project already holds.
 
 #### Step-by-step
 
-This lab has three blocks. Block 1 schedules the two recurring tasks. Block 2 changes the launch plan through project memory. Block 3 asks the project to review itself.
+This lab has four blocks. Blocks 1 and 2 are pasted into the Instructions field of the Create scheduled task dialog, not typed into the chat. Block 3 updates the project's memory file. Block 4 asks the project to review itself.
 
-> **Note:** Scheduled tasks that run locally need the desktop app open. To run them with your laptop closed, add a cloud environment in Project settings → Environment.
+> **Note:** Replace `<YOUR EMAIL>` in Blocks 1 and 2. Copy social-calendar.csv from Lab 8 into the project folder if Claude saved it elsewhere.
 
-1. Send Block 1 with your own email address in place of `<YOUR EMAIL>`.  
-   *Why:* The tasks run inside the project, so they inherit the goal, instructions, context, memory and the brand-voice skill — the prompt stays short.
+1. Open Scheduled tasks from the sidebar (or the project's Scheduled panel), choose New task, then Set up manually.  
+   *Why:* Create with Claude asks you questions instead; setting it up manually shows you every field.
+2. Name it Today's Lumo post and paste Block 1 into Instructions, with your own email.  
+   *Why:* The task runs in the project, so it inherits the instructions, context, folder and the brand-voice skill — the prompt stays short.
 
-   **Block 1 — SCHEDULE**
+   **Block 1 — DAILY POST TASK**
 
-   Send this to the lead agent:
-
-   *PROMPT — copy into Claude*
-
-   ```text
-   Schedule two recurring tasks in this project.
-
-   Task 1 - "Today's Lumo post", every weekday at 9:00am:
-   take today's row from social-calendar.csv, polish it with
-   lumo-brand-voice, check every price and claim against the brand
-   kit, and email it to <YOUR EMAIL> as a draft with the subject
-   "Today's Lumo post - <date>". Never publish anything.
-
-   Task 2 - "Weekly launch report", Mondays at 8:00am:
-   summarise last week's posts from the calendar and anything new
-   in the Lumo Launch Drive folder in five bullet points, and
-   email it to <YOUR EMAIL>.
-
-   Show me both tasks before you save them, then run Task 1 once
-   now as a test, using 1 December 2026 as today.
-   ```
-
-   Check the test email in your inbox, then open **Scheduled** and confirm both tasks are listed with the right times.
-
-
-2. Read both tasks before they are saved: name, prompt, frequency and time.  
-   *Why:* Weekdays at 9:00am and Mondays at 8:00am. A task scheduled at the wrong time is a silent failure.
-3. Open your inbox and read the test email for 1 December.  
-   *Why:* It should be the Instagram launch Reel from your calendar, polished, with S$ prices and no "healthy" claim — a draft, not a published post.
-4. Open Scheduled in the project and confirm both tasks are listed.  
-   *Why:* From here you can pause, edit or run a task now. This is where you would schedule a monthly competitor scan next.
-5. Send Block 2, then read the list of things that depend on the date.  
-   *Why:* Expect the calendar, Task 1, the deck's title slide and timeline, and the brief. Memory is how one fact reaches every thread.
-
-   **Block 2 — MEMORY**
-
-   Send this to the lead agent:
+   Paste into the Instructions field of a new scheduled task named "Today's Lumo post":
 
    *PROMPT — copy into Claude*
 
    ```text
-   Remember this for the project: the Singapore launch has moved
-   from 1 December to 8 December 2026. Kuala Lumpur is unchanged.
-   Tell me everything in the project that depends on the launch
-   date - posts, tasks, the deck, the brief - and propose the
-   changes. Do not make them yet.
+   Take today's row from social-calendar.csv in the project folder,
+   polish the post with lumo-brand-voice, and check every price and
+   claim against the brand kit. Email it to <YOUR EMAIL> as a draft
+   with the subject "Today's Lumo post - <date>".
+
+   Never publish anything and never post to social media. If there
+   is no row for today, email "No Lumo post scheduled today".
    ```
 
-   Open **Project settings → Memory**, find the new entry, and correct the wording if needed.
+   Pick the **Lumo Cold Kopi Launch** project, set **Frequency** to weekdays at 9:00am, and save. Permissions defaults to *Automatically approve* — which is why the task only drafts.
 
 
-6. Open Project settings → Memory and find the new launch-date entry. Edit it if the wording is wrong.  
-   *Why:* The project writes memory, but you own it. Delete anything you would not want every future thread to believe.
-7. Send Block 3 at the end of the lab.  
-   *Why:* A project that can list its own threads and outputs is one a colleague can pick up tomorrow.
+3. Pick the Lumo Cold Kopi Launch project, set Frequency to weekdays at 9:00am, check Permissions, and save.  
+   *Why:* Frequency defaults to Manual — a task left on Manual never runs. Permissions defaults to Automatically approve, so the task must only draft.
+4. Create a second task, Weekly launch report, with Block 2, Mondays at 8:00am.  
+   *Why:* Two tasks, two timetables, one project. This is where you would add a monthly competitor scan next.
 
-   **Block 3 — REVIEW**
+   **Block 2 — WEEKLY REPORT TASK**
+
+   Paste into a second scheduled task named "Weekly launch report":
+
+   *PROMPT — copy into Claude*
+
+   ```text
+   Summarise last week's posts from social-calendar.csv and anything
+   new in the Lumo Launch Drive folder in five bullet points, and
+   email the summary to <YOUR EMAIL>. Draft only - do not send
+   anything else.
+   ```
+
+   Pick the project, set **Frequency** to weekly, Mondays at 8:00am, and save.
+
+
+5. Confirm both tasks appear under Scheduled, with the right days and times. Use Run now if it is offered.  
+   *Why:* A task scheduled at the wrong time is a silent failure. A test run's email shows exactly what arrives each morning.
+6. Start a new task in the project and send Block 3.  
+   *Why:* Expect the calendar, Task 1, the deck's title slide and timeline, and the brief. The memory file is how one fact reaches every later task.
+
+   **Block 3 — MEMORY**
+
+   Start a new task in the project and send:
+
+   *PROMPT — copy into Claude*
+
+   ```text
+   Add this to lumo-project-memory.md: the Singapore launch has
+   moved from 1 December to 8 December 2026. Kuala Lumpur is
+   unchanged. Then tell me everything in the project folder and
+   scheduled tasks that depends on the launch date - posts, tasks,
+   the deck, the brief - and propose the changes. Do not make them yet.
+   ```
+
+   Open **lumo-project-memory.md** in the folder and check the new line.
+
+
+7. Open lumo-project-memory.md and check the new launch-date line. Edit it if the wording is wrong.  
+   *Why:* Claude writes the file, but you own it. Delete anything you would not want every future task to believe.
+8. Send Block 4 at the end of the lab.  
+   *Why:* A project that can list its own files and what each is for is one a colleague can pick up tomorrow.
+
+   **Block 4 — REVIEW**
 
    Send this at the end of the lab:
 
    *PROMPT — copy into Claude*
 
    ```text
-   Review this project for me: list the threads you started today,
-   what each produced, and where each output is saved. Then tell
-   me which context files, instructions or memory entries are now
+   Review this project for me: list every file in the project
+   folder, which lab produced it, and what it is for. Then tell me
+   which instructions, context files or memory-file lines are now
    out of date.
    ```
 
-   Compare its list with **Project settings → Usage**, which shows the tokens used by the lead agent and each thread.
+   Compare its list with the folder on your computer.
 
 
-8. Open Project settings → Usage and read the lead agent's and each thread's tokens.  
-   *Why:* Parallel threads finish faster but use more in total. Compare the research threads from Lab 2 with the single-thread labs.
+9. Open Settings → Usage and see how much of your plan today's labs used.  
+   *Why:* Parallel tasks finish faster but use more in total — worth knowing before you schedule work every day.
 
 #### Check
 
-> **Check — you are done when:** Two tasks are listed under Scheduled — Today's Lumo post on weekdays at 9:00am and Weekly launch report on Mondays at 8:00am. The test run emailed you a polished 1 December post as a draft, with S$ prices and no health claim, and nothing was published. Project memory records the 8 December Singapore launch, and the lead agent listed what depends on it. Project settings → Usage shows tokens for the lead agent and for each thread you started today.
+> **Check — you are done when:** Two scheduled tasks are listed on the project — Today's Lumo post on weekdays at 9:00am and Weekly launch report on Mondays at 8:00am — both drafting and emailing only, with nothing published. lumo-project-memory.md records the 8 December Singapore launch, Claude listed what depends on it, and the project review matches the files in your Lumo Launch folder.
 
 
 ## Wrap-Up
@@ -1422,31 +1492,31 @@ Across ten labs you took one product launch from an empty project to a researche
 
 #### What you built
 
-- The Lumo Cold Kopi Launch project, with a goal, instructions, context and memory.
-- A market research brief built from four parallel threads, with conflicts flagged.
+- The Lumo Cold Kopi Launch project, with instructions, context, a folder and a memory file.
+- A market research brief merged from four parallel tasks, with conflicts flagged.
 - A Market Insights Live Artefact dashboard, saved and downloaded.
 - Google Drive and Gmail connected, with an approved summary sent to yourself.
 - A launch deck in Slides and a campaign brief in Docs.
 - A lumo-brand-voice Agent Skill and the Marketing plugin.
-- Two weeks of social posts across four platforms, drafted in parallel threads.
+- Two weeks of social posts across four platforms.
 - A 15-second vertical launch video.
 - Scheduled tasks that draft the daily post and the weekly report for your approval.
 
 #### The habit to keep
 
-- Give long-running work a project with a clear goal, not a string of chats.
-- Split big jobs into threads, one subject each, and let the lead agent merge them.
+- Give long-running work a project with clear instructions, not a string of chats.
+- Split big jobs into focused tasks, one subject each, and merge the results.
 - Check every figure and claim against the source before anything goes out.
 - Write a routine down once as a skill instead of retyping it every time.
 - Schedule the drafting; keep the publishing click for yourself.
 
 #### Next steps
 
-- **Start one real Project** — Give your next campaign a project with a goal, instructions and context.
-- **Split one job into threads** — Next time you research competitors, give each one its own thread.
+- **Start one real Project** — Give your next campaign a project with instructions, context and a folder.
+- **Split one job into tasks** — Next time you research competitors, give each one its own task.
 - **Capture your brand voice** — Turn your real brand guide into a skill your whole team shares.
 - **Schedule one routine** — Pick the post or report you produce every week and schedule the draft.
-- **Browse Discover** — See which plugins already exist before you write a skill someone has packaged.
+- **Watch for the new Projects** — When your account gets the lead agent and threads, the Threads edition of this course shows the same labs on it.
 
 
 ## Glossary
@@ -1455,15 +1525,15 @@ Across ten labs you took one product launch from an empty project to a researche
 |---|---|
 | Agent Skill | A folder containing a SKILL.md of instructions that Claude loads on demand when the task matches its description. |
 | Artefact | A self-contained output Claude builds — a document, dashboard or tool — shown beside the chat rather than inside it. |
-| Claude Project | A workspace for one long-running goal, with its own instructions, context, memory, threads and scheduled tasks. |
+| Claude Project | A workspace for one long-running body of work, with its own instructions, context files, working folder and scheduled tasks. |
 | Connector | An integration that lets Claude reach an outside service such as Google Drive, Gmail or Calendar. |
-| Effort | How hard a model thinks before it answers. Higher effort is more thorough and uses more of your limit. |
-| Lead agent | The project's coordinator: it plans each job, starts threads and merges their results. Also called the coordinator. |
 | Live Artefact | An artefact that persists in your workspace, keeps its state, and can refresh its data when reopened. |
 | MCP | Model Context Protocol — the open standard connectors use to expose tools and data to Claude. |
-| Memory | Facts and decisions a project writes down as it works, readable by every thread and editable by you. |
+| Memory | What a project keeps between tasks. In a classic project, the memory file you ask Claude to maintain; in the new Projects, editable memory in settings. |
+| Memory file | A Markdown file in the project folder where Claude records decisions you ask it to keep, read by every later task. |
 | Mod | A change to Claude's own interface or behaviour, such as a side panel, status line, slash command or hook. |
 | Plugin | A packaged bundle of skills, tools, agents and hooks, installed in one step. |
-| Scheduled task | A prompt a project runs automatically on a timetable. |
+| Project folder | The folder on your computer a Cowork project works in: Claude reads data there and writes its outputs back. |
 | SKILL.md | The Markdown file at the heart of an Agent Skill: name, description and instructions. |
-| Thread | One parallel worker inside a project, started by the lead agent with a focused brief and its own context window. |
+| Scheduled task | A prompt a project runs automatically on a timetable. |
+| Task | One job you start inside a project. Several tasks can run at once. |

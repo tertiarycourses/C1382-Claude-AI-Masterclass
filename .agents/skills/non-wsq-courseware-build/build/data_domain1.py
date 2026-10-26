@@ -248,3 +248,8 @@ DOMAIN1 = [
         ),
     ),
 ]
+
+
+# The classic edition rewrites the labs that depend on the lead agent and threads.
+import course_data as _C
+DOMAIN1 = _C.apply_edition(DOMAIN1)
