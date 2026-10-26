@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en-SG"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Claude AI Masterclass</title>
+<meta name="description" content="Claude AI Masterclass (C1382) — lab prompts and course materials.">
+<style>
+:root{--bg:#FAF9F5;--panel:#fff;--ink:#21201C;--muted:#5F5B54;--rule:#E4E1D9;
+--accent:#D97757;--btn:#B85A3A;--accent-ink:#A8502F;--on-accent:#fff;--accent-bg:#FBF3EF;--ok:#3E7A52;
+--mark:#F8E3C4;--code:#F5F3EE;--note:#F5F3EE}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+--bg:#1F1E1B;--panel:#2A2925;--ink:#F1EEE6;--muted:#BDB7AB;--rule:#3D3B36;
+--accent:#E08A6D;--btn:#E08A6D;--accent-ink:#F0A68C;--on-accent:#1F1E1B;--accent-bg:#352A25;--ok:#7CC096;
+--mark:#5C4630;--code:#23221F;--note:#2F2D29}}
+:root[data-theme="dark"]{--bg:#1F1E1B;--panel:#2A2925;--ink:#F1EEE6;--muted:#BDB7AB;--rule:#3D3B36;
+--accent:#E08A6D;--btn:#E08A6D;--accent-ink:#F0A68C;--on-accent:#1F1E1B;--accent-bg:#352A25;--ok:#7CC096;
+--mark:#5C4630;--code:#23221F;--note:#2F2D29}
+*{box-sizing:border-box}
+html{scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);
+font:17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Calibri,Roboto,sans-serif}
+.wrap{max-width:880px;margin:0 auto;padding:28px 16px 80px}
+a{color:var(--accent-ink);text-underline-offset:2px}
+a:focus-visible,button:focus-visible,summary:focus-visible,pre:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:Cambria,Georgia,"Times New Roman",serif;font-weight:600;line-height:1.2}
+h1{font-size:34px;margin:6px 0 8px}
+h2{font-size:24px;margin:44px 0 4px;padding-top:6px;border-top:3px solid var(--accent)}
+h3{font-size:25px;margin:4px 0 10px}
+h4{font-size:14px;letter-spacing:.07em;text-transform:uppercase;color:var(--accent-ink);margin:26px 0 10px}
+.eyebrow{margin:0;color:var(--accent-ink);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sub{color:var(--muted);margin:0 0 14px}
+.topic-sub{color:var(--muted);margin:0 0 6px;font-size:15px}
+.skip{position:absolute;left:-999px}.skip:focus{left:16px;top:8px;z-index:9;background:var(--panel);padding:8px 12px}
+nav{position:sticky;top:0;z-index:2;background:var(--bg);padding:10px 0;margin-top:8px;
+border-bottom:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+nav span{font-size:13px;font-weight:700;color:var(--muted);margin-right:4px}
+nav a{display:inline-block;min-width:44px;text-align:center;padding:7px 10px;border:1.5px solid var(--rule);
+border-radius:999px;color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;background:var(--panel)}
+nav a:hover{border-color:var(--accent)}
+nav a[aria-current="true"]{background:var(--btn);border-color:var(--btn);color:var(--on-accent)}
+@media (max-width:600px){nav{flex-wrap:nowrap;overflow-x:auto}nav a{flex:none}h1{font-size:28px}h3{font-size:22px}}
+.lab{padding:26px 0 8px;border-bottom:1px solid var(--rule)}
+.meta{color:var(--muted);font-size:15px}
+.links{font-size:15px;font-weight:600}
+details{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:8px 14px;margin:0 0 8px}
+summary{cursor:pointer;font-weight:600}
+details ol,details ul{margin:8px 0 4px;padding-left:22px}details li{margin:6px 0}
+details.files{font-size:15px}
+details.check{border-left:4px solid var(--ok)}
+.intro,.hint{font-size:16px}.hint{color:var(--muted)}
+mark{background:var(--mark);color:inherit;border-radius:3px;padding:0 2px}
+code{font:0.9em ui-monospace,Menlo,Consolas,monospace}
+.prompt{background:var(--panel);border:1px solid var(--rule);border-left:4px solid var(--accent);
+border-radius:10px;margin:0 0 16px;overflow:hidden}
+.prompt header{display:flex;justify-content:space-between;align-items:center;gap:12px;
+padding:9px 14px;background:var(--accent-bg)}
+.pname{font-weight:700}
+.badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+background:var(--btn);color:var(--on-accent);border-radius:999px;padding:2px 9px;margin-right:6px;vertical-align:1px}
+.lead,.after{margin:0;padding:12px 14px 0;font-size:16px}
+.after{padding:0 14px 12px;color:var(--muted)}
+.prompt pre{margin:10px 14px 12px;padding:14px;background:var(--code);border-radius:8px;
+white-space:pre-wrap;word-wrap:break-word;font:14.5px/1.55 ui-monospace,Menlo,Consolas,monospace}
+.prompt .note{margin:0 14px 12px}
+.note{background:var(--note);border-radius:8px;padding:10px 14px;font-size:15px}
+.copy{flex:none;font:inherit;font-weight:700;font-size:15px;color:var(--on-accent);background:var(--btn);
+border:0;border-radius:8px;padding:8px 18px;cursor:pointer;min-height:40px;min-width:92px}
+.copy:hover{filter:brightness(1.07)}
+.copy.done{background:var(--ok)}
+.top{font-size:14px;margin:6px 0 0}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:12px;padding:18px 20px;margin:18px 0}
+.facts{width:100%;border-collapse:collapse;font-size:16px}
+.facts th,.facts td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--rule);vertical-align:top}
+.facts th{color:var(--muted);font-weight:600;width:38%}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.btn{display:inline-block;padding:11px 18px;border-radius:10px;font-weight:700;text-decoration:none;
+border:1.5px solid var(--accent);color:var(--accent-ink)}
+.btn.primary{background:var(--btn);border-color:var(--btn);color:var(--on-accent)}
+footer{margin-top:40px;color:var(--muted);font-size:14px}
+.scenario{background:var(--panel);border:1px solid var(--rule);border-top:4px solid var(--accent);
+border-radius:12px;padding:16px 20px 8px;margin:18px 0 6px}
+.scenario h2{border:0;margin:2px 0 10px;padding:0;font-size:24px}
+.scenario dl,.facts-list{margin:0}
+.scenario dt,.facts-list dt{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink)}
+.scenario dd{margin:2px 0 12px}
+.facts-list{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:12px 16px 2px;margin:4px 0 12px}
+.facts-list dd{margin:2px 0 12px}
+.facts-list .uses{display:block;color:var(--muted);font-size:15px}
+.before .note{margin:0 0 8px}
+ol.steps{list-style:none;counter-reset:step;margin:0;padding:0}
+ol.steps>li{counter-increment:step;position:relative;padding:0 0 6px 46px;margin:0}
+ol.steps>li::before{content:counter(step);position:absolute;left:0;top:0;width:32px;height:32px;
+border-radius:50%;border:1.5px solid var(--rule);background:var(--panel);color:var(--ink);
+font-weight:700;font-size:15px;line-height:29px;text-align:center}
+ol.steps>li::after{content:"";position:absolute;left:15px;top:36px;bottom:4px;width:2px;background:var(--rule)}
+ol.steps>li:last-child::after{display:none}
+ol.steps>li.has-prompt::before{background:var(--btn);border-color:var(--btn);color:var(--on-accent)}
+.step{margin:4px 0 2px}
+li.has-prompt>.step{font-weight:600}
+.why{margin:0 0 10px;color:var(--muted);font-size:15px}
+.tag{display:inline-block;margin-left:6px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+color:var(--accent-ink);white-space:nowrap}
+ol.steps .prompt{margin:4px 0 14px;position:relative;z-index:1}  /* paint over the step rail */
+.check{background:var(--panel);border:1px solid var(--rule);border-left:4px solid var(--ok);border-radius:10px;
+padding:4px 16px 10px;margin:10px 0}
+.check h4{color:var(--ok);margin:10px 0 4px}.check p{margin:0}
+@media (max-width:600px){ol.steps>li{padding-left:38px}ol.steps>li::before{width:28px;height:28px;line-height:25px;font-size:14px}
+ol.steps>li::after{left:13px;top:32px}ol.steps .prompt{margin-left:-38px}.prompt pre{font-size:13.5px}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style></head><body><div class="wrap">
+<p class="eyebrow">C1382 · v5.0</p>
+<h1>Claude AI Masterclass</h1>
+<p class="sub">Projects, threads, artefacts, connectors, skills and content — for marketing teams</p>
+<p>Lumo Kopi Co. is a fictitious Singapore coffee brand about to launch Lumo Cold Kopi — a ready-to-drink oat-milk kopi cold brew in a 240 ml can — in Singapore on 1 December 2026 and Kuala Lumpur in January 2027. You are its marketing team. All brands, figures, survey answers and documents in this course are synthetic and used for training only.</p>
+<div class="btns"><a class="btn primary" href="prompts/">Open the lab prompts</a>
+<a class="btn" href="https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass">Course repository</a>
+<a class="btn" href="https://www.tertiarycourses.com.sg/claude-ai-masterclass.html">Course details and registration</a></div>
+<div class="card"><table class="facts"><caption class="sr">Course details</caption><tr><th scope='row'>Course code</th><td>C1382</td></tr><tr><th scope='row'>Programme</th><td>Non-WSQ</td></tr><tr><th scope='row'>Duration</th><td>1 day · 9am–6pm</td></tr><tr><th scope='row'>Format</th><td>Instructor-led, hands-on practical labs · 10 labs</td></tr><tr><th scope='row'>Courseware</th><td>v5.0 · 27 October 2026</td></tr></table></div>
+<footer>Claude AI Masterclass (C1382) · courseware v5.0, 27 October 2026. Built from the course source on 27 October 2026. Lumo Kopi Co. and all lab data are fictitious, for training only. Use only the supplied mock data and your own test accounts. Never put real customer, personal or confidential data into a training exercise, and send lab emails to yourself rather than to a real recipient. © Tertiary Infotech Academy Pte Ltd · UEN: 201200696W.</footer>
+</div></body></html>

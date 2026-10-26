@@ -1,38 +1,12 @@
 #!/usr/bin/env bash
-# Single-command aligned build of the NON-WSQ courseware from the single source
-# (course_data.py + data_domainN.py). Produces in the course's courseware/: the
-# PPT, LP and LG as DOCX + PDF, with page-numbered Tables of Contents in LP/LG.
-#
-# Generic: the course repo and the LP/LG filenames are derived from
-# course_data.py, so this orchestrator is course-agnostic. Override the target
-# repo with the COURSE_REPO environment variable.
-#
-# Pipeline: run the python-pptx / python-docx generators, render to PDF with
-# LibreOffice, inject a static page-numbered TOC (LibreOffice can't update the
-# TOC field headless), then re-render the LP/LG PDFs.
+# One-command aligned build of the whole course from the single source
+# (course_data.py + data_domain1..3.py): mock data and assets, lab prompt PDFs,
+# the copy-ready prompts page, the README, the slide deck, Lesson Plan and
+# Learner Guide, each rendered to PDF with a page-numbered TOC.
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 SOFFICE="${SOFFICE:-soffice}"
 
-# Git Bash on Windows may have LibreOffice installed without `soffice` on PATH.
-if ! command -v "$SOFFICE" >/dev/null 2>&1 && [[ ! -x "$SOFFICE" ]]; then
-  for candidate in \
-    "/c/Program Files/LibreOffice/program/soffice.com" \
-    "/c/Program Files/LibreOffice/program/soffice.exe" \
-    "/c/Program Files (x86)/LibreOffice/program/soffice.exe"
-  do
-    if [[ -x "$candidate" ]]; then
-      SOFFICE="$candidate"
-      break
-    fi
-  done
-fi
-if ! command -v "$SOFFICE" >/dev/null 2>&1 && [[ ! -x "$SOFFICE" ]]; then
-  echo "LibreOffice soffice was not found. Install it or set SOFFICE to its executable." >&2
-  exit 2
-fi
-
-# Resolve the course repo + short title from the single source (course_data.py).
 IFS=$'\t' read -r REPO SHORT <<< "$(python3 - "$HERE" <<'PY'
 import os, sys
 here = sys.argv[1]; sys.path.insert(0, here)
@@ -43,54 +17,47 @@ def find_repo(start):
     d = start
     for _ in range(8):
         d = os.path.dirname(d)
-        if os.path.isdir(os.path.join(d,"courseware")) and os.path.isdir(os.path.join(d,"labs")): return d
+        if os.path.isdir(os.path.join(d, "courseware")) and os.path.isdir(os.path.join(d, "labs")):
+            return d
     return os.path.dirname(os.path.dirname(start))
 print(find_repo(here) + "\t" + C.SHORT_TITLE)
 PY
 )"
 CW="$REPO/courseware"
-RENDER_ROOT="$(mktemp -d "$REPO/.courseware-render.XXXXXX")"
-trap 'rm -rf -- "$RENDER_ROOT"' EXIT
-PASS1="$RENDER_ROOT/pass1"
-PASS2="$RENDER_ROOT/pass2"
-mkdir -p "$PASS1" "$PASS2"
-LO_PROFILE="${LO_PROFILE:-$RENDER_ROOT/lo-profile}"
-LO_PROFILE_URL="$(python3 - "$LO_PROFILE" <<'PY'
-from pathlib import Path
-import sys
-print(Path(sys.argv[1]).resolve().as_uri())
-PY
-)"
 
-lo_convert() {
-  local outdir="$1"
-  shift
-  "$SOFFICE" "-env:UserInstallation=$LO_PROFILE_URL" --headless --convert-to pdf --outdir "$outdir" "$@" >/dev/null 2>&1
-}
+echo "==> Mock data and assets (asserts the figures the courseware quotes)"
+python3 "$HERE/build_mockdata.py"
 
-echo "==> Generate PPT / LP / LG from the single source"
+echo "==> Labs index and prompt PDFs"
+python3 "$HERE/build_labs.py"
+python3 "$HERE/build_lab_pdfs.py"
+
+echo "==> Prompts page (docs/) and README"
+python3 "$HERE/build_prompts_page.py"
+python3 "$HERE/build_readme.py"
+
+echo "==> Slides / Lesson Plan / Learner Guide"
 python3 "$HERE/build_slides.py"
 python3 "$HERE/build_lesson_plan.py"
 python3 "$HERE/build_learner_guide.py"
-python3 "$HERE/build_labs.py"
 
 PPT="$(ls -t "$CW"/*.pptx | head -1)"
 LP="$CW/LP-$SHORT.docx"
 LG="$CW/LG-$SHORT.docx"
 
 echo "==> Render PDFs (pass 1)"
-lo_convert "$PASS1" "$PPT" "$LP" "$LG"
+for f in "$PPT" "$LP" "$LG"; do
+  "$SOFFICE" --headless --convert-to pdf --outdir "$CW" "$f" >/dev/null 2>&1
+done
 
-echo "==> Inject page-numbered Table of Contents (LP + LG)"
-python3 "$HERE/inject_toc.py" "$LP" "$PASS1/LP-$SHORT.pdf" 2
-python3 "$HERE/inject_toc.py" "$LG" "$PASS1/LG-$SHORT.pdf" 2
+echo "==> Inject page-numbered Tables of Contents"
+python3 "$HERE/inject_toc.py" "$LP" "${LP%.docx}.pdf" 2
+python3 "$HERE/inject_toc.py" "$LG" "${LG%.docx}.pdf" 2
 
 echo "==> Render PDFs (pass 2 — with built TOC)"
-lo_convert "$PASS2" "$LP" "$LG"
-
-cp -f "$PASS1/$(basename "${PPT%.pptx}.pdf")" "$CW/"
-cp -f "$PASS2/LP-$SHORT.pdf" "$CW/"
-cp -f "$PASS2/LG-$SHORT.pdf" "$CW/"
+for f in "$LP" "$LG"; do
+  "$SOFFICE" --headless --convert-to pdf --outdir "$CW" "$f" >/dev/null 2>&1
+done
 
 echo "==> Done. Artifacts in courseware/:"
 ls -1 "$CW"/*.pptx "$CW"/*.docx "$CW"/*.pdf

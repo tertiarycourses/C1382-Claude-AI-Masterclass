@@ -1,97 +1,337 @@
-"""Topic 2 lab for Claude Cowork Masterclass (C1382)."""
+"""Topic 2 — Connectors, Skills and Plugins. Labs 4-7.
+
+Lab 4 connects Google Drive and Gmail: the launch budget lives in Drive, and the
+Drive sheet deliberately disagrees with the launch brief on two lines, so the
+project's "flag disagreements" instruction gets a real test. Lab 5 produces the
+launch deck and campaign brief with Claude's Slides and Docs. Lab 6 captures the
+brand voice as a skill with /skill-creator; Lab 7 installs a plugin somebody
+else packaged.
+
+Lab 6 carries `prompt_blocks`: its blocks are sent as separate messages with a
+verify step between, and block 2 begins with the learner typing /skill-creator.
+"""
 
 DOMAIN2 = [
     dict(
-        num=2,
-        topic=2,
-        title="Turn a Messy Folder into a Management-Ready Report",
-        objective="LO3: organise a working copy, analyse spreadsheet data with defined metrics, synthesise notes and feedback with provenance, and produce a reconciled spreadsheet, report, and presentation from one fact base",
-        duration="105 minutes",
+        num=4, topic=2,
+        title="Connect Google Drive and Gmail",
+        objective="connect Google Drive and Gmail, read campaign files from Drive and send an approved summary",
         desc=(
-            "You use the verified Northstar workspace from Lab 1 to run a staged, end-to-end management-reporting workflow. "
-            "Claude inventories and organises a working copy, creates a source register and calculation workbook, pauses for a human reconciliation gate, then produces a written operations report and a short leadership presentation whose facts, period, terminology, and actions agree."
+            "The launch budget and timeline live in a shared Google Drive folder, not on your "
+            "laptop. You upload the Lab 04 data folder to Drive, connect the Google Drive and "
+            "Gmail connectors, and have the project read the budget from Drive, reconcile it "
+            "against the launch brief, save the research brief back to Drive, and email you an "
+            "approved summary. The budget sheet and the brief disagree on two lines — the "
+            "project should catch it."
         ),
-        build="A reconciled Week 32 workbook, source and evidence registers, management report, leadership brief, quality review, and run log.",
-        services="Claude Cowork, local files, spreadsheet creation and analysis, document creation, presentation creation, spreadsheet and office viewers",
-        prerequisites=[
-            "Lab 1 is complete or its rejoin baseline has been reconstructed and verified.",
-            "outputs/lab-01/01-file-inventory.md accounts for every direct inbox file.",
-            "outputs/lab-01/01-file-inventory.csv contains the same exact one-row-per-source filename set.",
-            "The current inbox hashes match outputs/lab-01/00-inbox-baseline.csv or its macOS equivalent.",
-            "The Northstar Operations Lab project instructions still restrict writes to outputs/ and playbook/.",
-            "On macOS, python3 --version succeeds; the independent controls and revision-hash records require Python 3.",
+        build="Drive and Gmail connected, the research brief saved to Drive, and an approved launch summary emailed to yourself.",
+        services="Claude Projects, Google Drive connector, Gmail connector",
+        data=["Lumo Launch/lumo-launch-budget.csv", "Lumo Launch/lumo-launch-timeline.csv"],
+        tools_sections=[
+            ("Turning connectors on",
+             "Click the **+** in the chat composer, hover **Connectors**, and toggle on only\n"
+             "Google Drive and Gmail. You can manage them later under **Customize → Connectors**."),
+            ("If Claude says \"insufficient scope\"",
+             "The connector is linked but was authorised without permission to read files.\n"
+             "Fix it in **Settings → Connectors → Google Drive → Reconnect**, and accept the\n"
+             "read access Google asks for. Then tell Claude to try again."),
         ],
-        deck_steps=[
-            "Freeze the Week 32 source set and brief a staged management-pack workflow.",
-            "Run parallel file, data, and note workstreams into shared source and evidence registers.",
-            "Reconcile the workbook against independent control totals before narrative work.",
-            "Generate, inspect, revise, and cross-check the report and presentation.",
-        ],
-        deck_verify="Verify the controls match, every file agrees, and the inbox is unchanged.",
+        prompt_step=3,
+        prompt_title="Reconcile the budget and send the summary",
+        prompt=(
+            "Using Google Drive, open the \"Lumo Launch\" folder.\n"
+            "\n"
+            "1. Read lumo-launch-budget.csv and lumo-launch-timeline.csv.\n"
+            "2. Compare the budget sheet, line by line, with the budget in\n"
+            "   lumo-launch-brief.md from our project context. Show both in one\n"
+            "   table and flag every line where they disagree. Do not decide\n"
+            "   which is right.\n"
+            "3. Upload lumo-research-brief.docx from Lab 2 into the same Drive\n"
+            "   folder.\n"
+            "4. Draft an email to <YOUR EMAIL> with the subject\n"
+            "   \"Lumo launch - research and budget check\": three bullet points\n"
+            "   from the research brief, the budget table with the disagreements\n"
+            "   flagged, the next milestone from the timeline, and a link to the\n"
+            "   brief in Drive.\n"
+            "\n"
+            "Show me the draft. Do not send it until I approve."
+        ),
+        prompt_note="Replace <YOUR EMAIL> with your own address. Send lab emails only to yourself.",
         steps=[
-            (
-                "Open C1382-northstar-workspace and verify the Lab 1 checkpoint. Confirm the inventory and verification files exist, the verification state is clear, and the protected inbox still matches the baseline. Create the new output directory only after the check succeeds.",
-                "Windows PowerShell:\n$required = @('.\\outputs\\lab-01\\00-inbox-baseline.csv','.\\outputs\\lab-01\\01-file-inventory.md','.\\outputs\\lab-01\\01-file-inventory.csv','.\\outputs\\lab-01\\01-verification.md')\n$required | ForEach-Object { if (-not (Test-Path -LiteralPath $_)) { throw \"Missing checkpoint: $_\" } }\n$verification = Get-Content -LiteralPath .\\outputs\\lab-01\\01-verification.md -Raw\nif ($verification -notmatch 'Result:\\s*VERIFIED') { throw 'Lab 1 verification is not in a verified state' }\n$before = Import-Csv .\\outputs\\lab-01\\00-inbox-baseline.csv\n$after = Get-ChildItem .\\inbox -File | Sort-Object Name | ForEach-Object { [pscustomobject]@{Name=$_.Name;Bytes=$_.Length;SHA256=(Get-FileHash -Algorithm SHA256 $_.FullName).Hash} }\nif (Compare-Object $before $after -Property Name,Bytes,SHA256) { throw 'Inbox changed; restore the verified checkpoint' }\nNew-Item -ItemType Directory -Force .\\outputs\\lab-02 | Out-Null\n\nmacOS Terminal:\nset -euo pipefail\ncommand -v python3 >/dev/null 2>&1 || { echo 'Python 3 is required; ask the trainer before continuing'; exit 1; }\npython3 --version\nfor f in outputs/lab-01/00-inbox-baseline.sha256 outputs/lab-01/01-file-inventory.md outputs/lab-01/01-file-inventory.csv outputs/lab-01/01-verification.md; do test -f \"$f\" || { echo \"Missing $f\"; exit 1; }; done\ngrep -Eq 'Result:[[:space:]]*VERIFIED' outputs/lab-01/01-verification.md || { echo 'Lab 1 is not verified'; exit 1; }\nshasum -a 256 -c outputs/lab-01/00-inbox-baseline.sha256\nmkdir -p outputs/lab-02\n\n105-minute phase budget: checkpoint and controls 15; Stage 1 execution 25; reconciliation gate 15; Stage 2 generation 25; visual review and revisions 20; final close-out 5. If Stage 1 has not reconciled by minute 55, compare your calculations with checkpoints/lab-02-stage1-control.md, correct the failing calculation or source mapping, and continue only after the human gate passes.",
-            ),
-            (
-                "Read management-brief.md and brand-style.md. In outputs/lab-02/02-quality-review.md, create headings for source scope, metric reconciliation, workbook review, report review, presentation review, cross-artifact consistency, inbox comparison, and owner questions. This file is your independent review record, not Claude's completion summary.",
-                "Create this file in a text editor:\noutputs/lab-02/02-quality-review.md\n\nRequired headings:\n# Lab 2 Quality Review\n## Source scope\n## Metric reconciliation\n## Workbook review\n## Report review\n## Presentation review\n## Cross-artifact consistency\n## Inbox comparison\n## Owner questions\n## Final result",
-            ),
-            (
-                "Calculate the Week 32 control totals directly from northstar-sales-w32.csv. Record the values in the Metric reconciliation section before Claude creates the workbook. Use weighted rates from the total numerators and denominators, not the average of location percentages.",
-                "Windows PowerShell:\n$rows = Import-Csv .\\inbox\\northstar-sales-w32.csv\n$orders = ($rows | Measure-Object orders -Sum).Sum\n$onTime = ($rows | Measure-Object fulfilled_on_time -Sum).Sum\n$revenue = ($rows | Measure-Object revenue_sgd -Sum).Sum\n$returns = ($rows | Measure-Object returns -Sum).Sum\n$hours = ($rows | Measure-Object labour_hours -Sum).Sum\n[pscustomobject]@{Orders=$orders;OnTime=$onTime;RevenueSGD=$revenue;Returns=$returns;LabourHours=$hours;OnTimeRate=('{0:P2}' -f ($onTime/$orders));ReturnRate=('{0:P2}' -f ($returns/$orders));RevenuePerOrder=('{0:N2}' -f ($revenue/$orders))} | Format-List\n$rows | Where-Object { [double]$_.fulfilled_on_time / [double]$_.orders -lt 0.95 } | ForEach-Object { '{0}: {1:P2}' -f $_.location,([double]$_.fulfilled_on_time/[double]$_.orders) }\n\nmacOS Terminal:\npython3 - <<'PY'\nimport csv\nwith open('inbox/northstar-sales-w32.csv', newline='', encoding='utf-8-sig') as f:\n    rows = list(csv.DictReader(f))\ndef total(name): return sum(float(r[name]) for r in rows)\norders, on_time = total('orders'), total('fulfilled_on_time')\nrevenue, returns = total('revenue_sgd'), total('returns')\nhours = total('labour_hours')\nprint(f'Orders = {orders:.0f}')\nprint(f'Fulfilled on time = {on_time:.0f}')\nprint(f'Revenue = SGD {revenue:.0f}')\nprint(f'Returns = {returns:.0f}')\nprint(f'Labour hours = {hours:.0f}')\nprint(f'On-time fulfilment = {on_time/orders:.2%}')\nprint(f'Return rate = {returns/orders:.2%}')\nprint(f'Revenue per order = SGD {revenue/orders:.2f}')\nprint('Exceptions below 95%:')\nfor row in rows:\n    rate = float(row['fulfilled_on_time']) / float(row['orders'])\n    if rate < 0.95: print(f\"{row['location']}: {rate:.2%}\")\nPY\n\nExpected controls:\nOrders = 2000\nFulfilled on time = 1856\nRevenue = SGD 339350\nReturns = 113\nLabour hours = 2733\nOn-time fulfilment = 92.80%\nReturn rate = 5.65%\nRevenue per order = SGD 169.68\nExceptions below 95% = Orchard 94.05%, Jurong 90.41%, and Woodlands 87.30%",
-            ),
-            (
-                "Return to the Northstar Operations Lab project and start a new Cowork task. Paste the staged brief below. It requires three independent extraction workstreams and a pause after the workbook so the narrative cannot outrun reconciled evidence.",
-                "Outcome: Turn the protected Week 32 Northstar inputs into a management-ready operating pack for the Head of Operations.\n\nApproved sources: management-brief.md, brand-style.md, outputs/lab-01/01-file-inventory.md, inbox/northstar-sales-w32.csv, inbox/customer-feedback-w32.csv, and inbox/operations-notes-w32.md. These six paths are the complete read set. Do not read, analyse, cite, or copy any Week 33 file in this task. Do not use external sources.\n\nStage 1 workstreams that may run in parallel:\nA. File workstream - create outputs/lab-02/organised-copy/ with copies of the three Week 32 inputs and the two stable brief/style files, classified into data, notes, feedback, and reference. Leave inbox unchanged. Create outputs/lab-02/02-source-register.md with source, period, purpose, use, and limitation.\nB. Data workstream - create outputs/lab-02/02-operations-analysis.xlsx with sheets Read Me, Raw Sales, KPI Summary, Location Detail, Feedback, and Sources. Preserve raw rows. Use formulas where practical. Define every KPI and show control totals.\nC. Evidence workstream - create outputs/lab-02/02-evidence-register.md with observation or theme, evidence type, exact source and location, confidence, inference, OWNER TO VERIFY item, and intended downstream use.\n\nRequired Week 32 KPIs: total orders, fulfilled-on-time orders, weighted on-time fulfilment rate, revenue, returns, weighted return rate, labour hours, revenue per order, and location exceptions against the targets in management-brief.md.\n\nHuman gate: First show your plan, exact read set, write set, workstream dependencies, and checks. Wait for approval. After approval, complete Stage 1 only. Pause and show the source register, evidence register, workbook paths, KPI values, exceptions, formula or calculation method, and unresolved questions. Do not draft the report or presentation until I approve Stage 2.\n\nStage 2 deliverables after later approval: outputs/lab-02/02-management-report.docx, outputs/lab-02/02-leadership-brief.pptx, and outputs/lab-02/02-run-log.md. Follow brand-style.md and management-brief.md. Do not send, share, publish, remove, or overwrite anything.",
-            ),
-            (
-                "Review the proposed plan. Confirm that the three Stage 1 workstreams read the same frozen source set, write to distinct destinations, and merge through the source register and KPI summary. Confirm that report and presentation work wait for the metric gate. Correct the plan if any source write, external source, or premature narrative appears.",
-                "The approved route must show:\n- only the three named Week 32 inputs and the stable brief/style files are content sources; Week 33 is excluded\n- inbox/ is read-only and organised-copy/ contains copies only\n- source and evidence registers have distinct destinations and jointly form shared evidence\n- the workbook preserves raw rows and definitions\n- Stage 1 pauses before the report and slides\n- no send, share, publish, removal, or overwrite action\n\nIf needed, say: Revise the plan to match these six conditions, show the corrected read and write sets, and wait again.",
-            ),
-            (
-                "Approve Stage 1 and let Claude execute. Monitor the paths and intervening questions. When Claude pauses, open 02-source-register.md, 02-evidence-register.md, and 02-operations-analysis.xlsx. Confirm the workbook contains the six promised sheets; the source register accounts for every file used; and the evidence register gives exact provenance, separates evidence from inference, and identifies every OWNER TO VERIFY item. Do not approve Stage 2 from the completion message alone.",
-                "Expected Stage 1 paths:\noutputs/lab-02/organised-copy/\noutputs/lab-02/02-source-register.md\noutputs/lab-02/02-evidence-register.md\noutputs/lab-02/02-operations-analysis.xlsx",
-            ),
-            (
-                "Reconcile the workbook with your independent controls. Check the reporting period, total orders, fulfilled-on-time orders, revenue, returns, labour hours, weighted rates, and revenue per order. Confirm Orchard, Jurong, and Woodlands are clearly identified as on-time exceptions and that the calculation does not average location percentages. Record the observed workbook cells and results in 02-quality-review.md.",
-                "Expected workbook values:\n- Reporting period: Week 32\n- Orders: 2,000\n- Fulfilled on time: 1,856\n- On-time fulfilment: 92.80%\n- Revenue: SGD 339,350\n- Returns: 113\n- Return rate: 5.65%\n- Labour hours: 2,733\n- Revenue per order: SGD 169.68\n- On-time exceptions: Orchard 94.05%, Jurong 90.41%, and Woodlands 87.30%\n\nRecord the actual sheet and cell for each value in outputs/lab-02/02-quality-review.md.",
-            ),
-            (
-                "If a value, formula, sheet, source reference, or exception is wrong, give Claude a focused discrepancy report. Require correction in the workbook and source register only, then repeat the complete reconciliation. Approve Stage 2 only after every control matches or an unresolved item is explicitly labelled for an owner.",
-                "Focused correction template:\nStage 1 is not approved yet. In <FILE_AND_LOCATION>, I observed <ACTUAL>. The control is <EXPECTED> because <DEFINITION_OR_SOURCE>. Correct the root calculation or source mapping, preserve the raw rows, update any dependent Stage 1 view, and show the revised values and checks. Do not begin Stage 2.",
-            ),
-            (
-                "Approve Stage 2 with the final evidence contract below. It requires the report and slides to use the reconciled workbook, cite the source register, distinguish fact from inference, and keep recommendations reviewable.",
-                "Stage 1 is approved. Complete Stage 2 using only the reconciled workbook, source register, and evidence register as the fact base.\n\nReport: Create outputs/lab-02/02-management-report.docx with title, period, executive summary, KPI table, location exceptions, customer-feedback themes, evidence-based drivers, three prioritised recommendations, owner and timing fields, risks, OWNER TO VERIFY items, methodology, and source and evidence register references.\n\nPresentation: Create outputs/lab-02/02-leadership-brief.pptx with 5 to 7 slides: title, executive scorecard, exceptions, customer and operational evidence, recommended actions, decisions and owner questions. Use concise headlines and the style rules in brand-style.md.\n\nRun log: Create outputs/lab-02/02-run-log.md listing sources read, files created, metric definitions, control checks, corrections, assumptions, owner questions, and confirmation that inbox was unchanged.\n\nDo not invent root causes, commitments, owners, dates, or external facts. Use OWNER TO VERIFY where the supplied sources do not resolve a claim. Do not send, share, or publish the artifacts.",
-            ),
-            (
-                "Open the actual Word document and presentation in compatible applications. Review the complete report for structure, page breaks, clipped or blank content, metric consistency, evidence labels, and actionable recommendations. Review every slide for readable text, clean layout, consistent period and values, a decision arc, and no unsupported claim. Record specific findings in 02-quality-review.md.",
-                "Visual review checklist:\nReport - title and period; complete sections; readable tables; no blank pages; no clipped text; sources and methodology; OWNER TO VERIFY items.\nSlides - 5 to 7 slides; readable at normal presentation size; no overlaps; no cut-off text; same Week 32 values; clear decisions and owner questions.\nCross-artifact - same metric names, units, rounding, locations, targets, recommendations, and source period.",
-            ),
-            (
-                "Before requesting a revision, record pre-revision hashes for every Stage 1 and Stage 2 artifact. Then give Claude one evidence-based revision request for every real defect. Name the file, location, observed issue, expected state, and invariant that must remain unchanged. After revision, reopen every changed artifact and repeat the full cross-artifact check.",
-                "Windows PowerShell:\n$reviewFiles = Get-ChildItem .\\outputs\\lab-02 -File | Where-Object Name -Match '^02-(?!pre-revision-hashes)'\n$reviewFiles | Sort-Object Name | ForEach-Object { [pscustomobject]@{Name=$_.Name;SHA256=(Get-FileHash -Algorithm SHA256 $_.FullName).Hash} } | Export-Csv -NoTypeInformation -Encoding utf8 .\\outputs\\lab-02\\02-pre-revision-hashes.csv\n\nmacOS Terminal:\npython3 - <<'PY'\nfrom hashlib import sha256\nfrom pathlib import Path\nfolder = Path('outputs/lab-02')\nexcluded = {'02-pre-revision-hashes.sha256', '02-post-revision-hashes.sha256'}\nfiles = sorted((p for p in folder.glob('02-*') if p.is_file() and p.name not in excluded), key=lambda p: p.name)\nPath(folder/'02-pre-revision-hashes.sha256').write_text(''.join(f\"{sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\\n\" for p in files), encoding='utf-8')\nprint(f'Recorded {len(files)} pre-revision hashes')\nPY\n\nRevision template:\nRevise <FILE>. At <PAGE_SLIDE_SHEET_OR_SECTION>, I observed <ISSUE>. Change it to <EXPECTED_STATE>. Preserve the verified Week 32 source set, control totals, metric definitions, source and evidence registers, and every other correct section. After saving, list the exact changes and rerun the cross-artifact consistency check.",
-            ),
-            (
-                "Recalculate the inbox hashes against the Lab 1 baseline. Complete the Inbox comparison, Owner questions, and Final result sections in 02-quality-review.md. Ask Claude for a read-only final reconciliation across the workbook, report, presentation, source register, and run log, then compare its report with your own record.",
-                "Windows PowerShell:\n$before = Import-Csv .\\outputs\\lab-01\\00-inbox-baseline.csv\n$after = Get-ChildItem .\\inbox -File | Sort-Object Name | ForEach-Object { [pscustomobject]@{Name=$_.Name;Bytes=$_.Length;SHA256=(Get-FileHash -Algorithm SHA256 $_.FullName).Hash} }\n$diff = Compare-Object $before $after -Property Name,Bytes,SHA256\nif ($diff) { $diff | Format-Table -AutoSize; throw 'Inbox changed' } else { 'Inbox unchanged' }\n$afterRevision = Get-ChildItem .\\outputs\\lab-02 -File | Where-Object Name -Match '^02-(?!pre-revision-hashes)' | Sort-Object Name | ForEach-Object { [pscustomobject]@{Name=$_.Name;SHA256=(Get-FileHash -Algorithm SHA256 $_.FullName).Hash} }\n$beforeRevision = Import-Csv .\\outputs\\lab-02\\02-pre-revision-hashes.csv\nCompare-Object $beforeRevision $afterRevision -Property Name,SHA256 | Format-Table -AutoSize\n\nmacOS Terminal:\nshasum -a 256 -c outputs/lab-01/00-inbox-baseline.sha256\npython3 - <<'PY'\nfrom hashlib import sha256\nfrom pathlib import Path\nfolder = Path('outputs/lab-02')\nexcluded = {'02-pre-revision-hashes.sha256', '02-post-revision-hashes.sha256'}\nfiles = sorted((p for p in folder.glob('02-*') if p.is_file() and p.name not in excluded), key=lambda p: p.name)\nPath(folder/'02-post-revision-hashes.sha256').write_text(''.join(f\"{sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\\n\" for p in files), encoding='utf-8')\nprint(f'Recorded {len(files)} post-revision hashes')\nPY\ndiff -u outputs/lab-02/02-pre-revision-hashes.sha256 outputs/lab-02/02-post-revision-hashes.sha256 || true\n\nRecord which hashes changed and why in 02-quality-review.md. A requested revision should change only the intended artifacts.\n\nCowork prompt:\nRead the current Lab 2 artifacts without changing them. Reconcile reporting period, KPI definitions, values, rounding, exception locations, recommendations, owner questions, source references, and file list across 02-operations-analysis.xlsx, 02-management-report.docx, 02-leadership-brief.pptx, 02-source-register.md, 02-evidence-register.md, and 02-run-log.md. Report every mismatch; if none, state the checks performed and any remaining limitation.",
-            ),
+            ("Upload the Lab 04 data/Lumo Launch folder to your Google Drive.",
+             "In real work the files are already there; the upload stands in for the shared team drive."),
+            ("In the project, click + → Connectors and switch on Google Drive and Gmail, signing in to Google.",
+             "Accept the read access Google asks for. A connector that shows Connected without read access fails with \"insufficient scope\"."),
+            ("Send the lab prompt with your own email address in place of <YOUR EMAIL>.",
+             "No files are attached this time — the project reaches Drive itself."),
+            ("Read the budget table Claude produces.",
+             "Both total S$60,000, but Instagram is S$18,000 in the Drive sheet and S$20,000 in the brief, and Influencers is S$12,000 against S$10,000."),
+            ("Confirm Claude flagged both lines instead of choosing one.",
+             "That is your Lab 1 instruction at work. Two sources disagreeing is a decision for a human, not a guess for Claude."),
+            ("Check that lumo-research-brief.docx now sits in the Lumo Launch folder in Drive.",
+             "Saving outputs back to the team's folder is what makes the work findable by colleagues."),
+            ("Read the draft email in full, then approve it.",
+             "Gmail sends only after your explicit approval. Check the figures against the table before you click."),
+            ("Open your inbox and confirm the email arrived with the Drive link working.",
+             "Close the loop: an email you did not check arrived is an email you hope arrived."),
         ],
         test=(
-            "Confirm outputs/lab-02 contains organised-copy and the seven named artifacts: source register, evidence register, workbook, report, presentation, quality review, and run log. Confirm organised-copy contains only the named Week 32 inputs and stable brief/style files, with no Week 33 file. Reconcile the workbook to 2,000 orders, 1,856 fulfilled on time, SGD 339,350 revenue, 113 returns, 2,733 labour hours, 92.80% on-time fulfilment, 5.65% return rate, and SGD 169.68 revenue per order; confirm Orchard, Jurong, and Woodlands are the on-time exceptions. "
-            "Open and visually inspect the report and every slide. Confirm period, values, definitions, exception locations, recommendations, and owner questions agree across the workbook, report, presentation, source register, evidence register, and run log. Confirm the inbox hash comparison is unchanged, the before/after hash record explains intended revisions, and 02-quality-review.md records every check and the final result."
+            "Google Drive and Gmail are connected. Claude read both CSV files from the Lumo "
+            "Launch folder, showed a budget table totalling S$60,000 on both sides, and flagged "
+            "Instagram (S$18,000 vs S$20,000) and Influencers (S$12,000 vs S$10,000) without "
+            "choosing between them. lumo-research-brief.docx is in the Drive folder, and the "
+            "approved summary email arrived in your own inbox with a working link."
         ),
-        checkpoint="Keep the verified Lab 2 package and unchanged inbox. Lab 3 derives a reusable weekly-operations playbook from this run, changes the reporting-week parameter to Week 33, and proves the workflow can repeat without copying Week 32 conclusions.",
-        troubleshooting=[
-            ("Claude begins the report before the metric gate", "Steer immediately: stop Stage 2, retain any draft as non-authoritative, reconcile Stage 1, then replace the draft from the approved workbook rather than editing unsupported claims in place."),
-            ("The workbook averages location rates", "Require weighted totals: sum fulfilled_on_time divided by sum orders, and sum returns divided by sum orders. Preserve each location's rate for exception analysis but do not average those percentages for the overall rate."),
-            ("A generated file will not open", "Ask Claude to regenerate that one artifact in the same required format and path from the reconciled fact base. Keep the source register and verified workbook unchanged, then reopen the replacement."),
-            ("The report invents a cause or owner", "Replace the unsupported statement with an evidence-labelled inference or OWNER TO VERIFY item. Add the question and intended owner to the report and quality review."),
-            ("The slide deck is dense or clipped", "Request a focused layout revision: shorten headlines and body copy, split one overloaded slide, preserve the decision arc and all verified values, then inspect every slide again."),
-            ("Values disagree across files", "Treat the reconciled workbook as the numerical source of truth and the source register as the provenance source. Ask Claude to rebuild the dependent report and slide statements, then rerun the full cross-artifact check."),
+    ),
+    dict(
+        num=5, topic=2,
+        title="Create the Launch Deck and Campaign Brief",
+        objective="produce a launch deck in Slides and a campaign brief in Docs from the project's research",
+        desc=(
+            "The launch team meets on Friday and needs two things: a short deck for the room "
+            "and a campaign brief everyone can work from. You ask the project for both. Claude "
+            "builds the deck in Slides and the brief in Docs, choosing its built-in skills on "
+            "its own, using the numbers from your research and dashboard. You check every "
+            "figure, then download the deck as PowerPoint."
+        ),
+        build="An eight-slide launch deck in Slides (downloaded as .pptx) and a campaign brief in Docs.",
+        services="Claude Projects, Slides, Docs, built-in skills",
+        data=[],
+        prompt_step=1,
+        prompt_title="Build the launch deck and campaign brief",
+        prompt=(
+            "Using our research brief, the Market Insights dashboard and the\n"
+            "brand kit, create two things for Friday's launch meeting.\n"
+            "\n"
+            "1. A launch deck in Slides, eight slides:\n"
+            "   1 Title - Lumo Cold Kopi: Kopi, Chilled Right\n"
+            "   2 The opportunity - the three survey numbers that matter most\n"
+            "   3 Who we are for - 25-34s in Singapore, with the evidence\n"
+            "   4 Competitors - a price ladder chart with Lumo highlighted\n"
+            "   5 Where they find us - a discovery channel chart\n"
+            "   6 The campaign - message, channels and dates\n"
+            "   7 Budget - the S$60,000 split, noting the two open questions\n"
+            "   8 Next steps and owners\n"
+            "\n"
+            "   Use the Lumo brand colours. Real charts, not pictures of charts.\n"
+            "\n"
+            "2. A campaign brief in Docs: objective, audience, key message,\n"
+            "   proof points, channels, budget, timeline, KPIs, and a \"claims\n"
+            "   we must not make\" section.\n"
+            "\n"
+            "Every number must come from the research brief or the dashboard.\n"
+            "List the source of each number at the end of the brief."
+        ),
+        prompt_note="You do not name a skill. Ask for a deck and a document; Claude picks the format and the built-in skill.",
+        steps=[
+            ("In the project, send the lab prompt.",
+             "No attachments: the research brief, the dashboard data and the brand kit are all already in the project."),
+            ("Open the deck when it appears and page through all eight slides.",
+             "Check the charts are real charts — click one; a real chart has editable data behind it."),
+            ("Check slide 2 and slide 4 against your research.",
+             "62% likely to buy, 74% among 25-34s, Instagram 34%; a price ladder from S$3.20 to S$5.60 with Lumo at S$3.90."),
+            ("Check slide 7.",
+             "The S$60,000 split should carry the two open questions from Lab 4 — Instagram and Influencers — not quietly pick one figure."),
+            ("Open the campaign brief in Docs and read the \"claims we must not make\" section.",
+             "It should rule out \"healthy\" and any claim the product sheet does not support. This section protects every post you write later."),
+            ("Ask for one change to each, for example: Shorten slide 6 to three bullets.",
+             "Slides and Docs are edited in place by conversation, the same way as an artefact."),
+            ("Download the deck as PowerPoint and open it.",
+             "The download is the file you take into the meeting — check the charts survived."),
         ],
-        challenge="Ask Claude to add an executive dashboard sheet with one trend-free Week 32 scorecard, target variance, conditional formatting, and a plain-language data dictionary. Verify that the dashboard does not imply a time trend from one week of data and that every value reconciles to the existing KPI Summary.",
-        reflection="Which intermediate artifact made the final pack most trustworthy, and why would generating all three formats in one unreviewed step have increased risk?",
-    )
+        test=(
+            "The deck has eight slides in the Lumo colours, with real charts for the price "
+            "ladder and the discovery channels, the survey figures 62%, 74% and 34%, and a "
+            "budget slide that shows S$60,000 with the Instagram and Influencers lines marked "
+            "as open questions. The campaign brief in Docs has all nine sections, including "
+            "\"claims we must not make\", and lists a source for every number. The deck opens "
+            "in PowerPoint with its charts intact."
+        ),
+    ),
+    dict(
+        num=6, topic=2,
+        title="Capture the Brand Voice as an Agent Skill",
+        objective="rewrite content in the brand voice, verify it, and save the routine as a skill with /skill-creator",
+        desc=(
+            "Four channels and two weeks of posts are coming, and they all have to sound like "
+            "Lumo. You rewrite five off-brand captions with Claude until they are right, then "
+            "use /skill-creator to turn that verified routine into a lumo-brand-voice skill. "
+            "From then on, every thread in the project — and every colleague — loads the same "
+            "voice by name."
+        ),
+        build="A lumo-brand-voice Agent Skill, tested on a new caption.",
+        services="Claude Projects, Agent Skills, /skill-creator",
+        data=["lumo-sample-captions.txt"],
+        prompt_intro=("This lab has **three blocks**, sent at different times. Block 1 does the "
+                      "work once. Block 2 saves it as a skill — type /skill-creator first. "
+                      "Block 3 tests the skill on something new."),
+        prompt_intro_md=("This lab has **three blocks**, sent at different times.\n"
+                         "Block 1 does the work, Block 2 saves it with /skill-creator, Block 3 tests it."),
+        prompt_intro_lg=("This lab has three blocks, sent at different times. Block 1 does the work "
+                         "once so you can verify it. Block 2 saves it as a skill: type /skill-creator "
+                         "in the composer, then paste the block. Block 3 tests the saved skill."),
+        prompt_title="Rewrite, verify, then save the brand voice",
+        prompt_blocks=[
+            dict(
+                label="Block 1 — DO", step=2,
+                lead="Attach lumo-sample-captions.txt and send this first, on its own:",
+                text=(
+                    "Rewrite the five captions in the attached file in the Lumo\n"
+                    "brand voice, following lumo-brand-guidelines.md.\n"
+                    "\n"
+                    "For each caption, show:\n"
+                    "- the original\n"
+                    "- your rewrite\n"
+                    "- every rule you applied, by name\n"
+                    "- any claim you removed, and why\n"
+                    "\n"
+                    "Then run these checks on each rewrite and show the result:\n"
+                    "price written as S$3.90; no \"healthy\" or medical claims; at\n"
+                    "most one Singlish word; #LumoKopi present; no more than five\n"
+                    "hashtags; ends with one clear call to action."
+                ),
+                after=("**Now stop and read the output.** Ask for changes until every rewrite "
+                       "sounds right. Whatever you settle on here is exactly what the skill "
+                       "will reproduce."),
+                after_md=("**Stop here.** Read the rewrites and refine them until they are right.\n"
+                          "Whatever you settle on is what the skill will reproduce."),
+                slide_note="Stop here. Refine the rewrites until they are right before you save anything.",
+            ),
+            dict(
+                label="Block 2 — SAVE", step=4,
+                lead="Type /skill-creator in the composer, then paste this:",
+                text=(
+                    "Create a skill called lumo-brand-voice from what we just did.\n"
+                    "\n"
+                    "Description: Use when writing or reviewing any customer-facing\n"
+                    "Lumo Kopi content - social posts, captions, emails, video\n"
+                    "scripts or ads.\n"
+                    "\n"
+                    "It should rewrite or draft content in the Lumo voice, apply the\n"
+                    "brand rules, remove claims we cannot prove, and finish with the\n"
+                    "same checklist of checks we used. Include two of today's\n"
+                    "before-and-after examples as a resource."
+                ),
+                after="Approve the skill when Claude shows it to you, then open **Customize → Skills** and find it.",
+                after_md="Approve the skill, then find it under **Customize → Skills**.",
+                slide_note="Type /skill-creator first, then paste the block.",
+            ),
+            dict(
+                label="Block 3 — TEST", step=7,
+                lead="Start a new thread in the project and send:",
+                text=(
+                    "Use lumo-brand-voice to write an Instagram caption announcing\n"
+                    "that Lumo Cold Kopi 12-packs are available on Shopee from\n"
+                    "1 December. It's super healthy and the best kopi in Singapore!"
+                ),
+                after="The skill should load by itself, remove both unprovable claims and run its checklist.",
+                after_md="The skill should load by itself and remove both unprovable claims.",
+                slide_note="Both claims in this prompt are traps — the skill must remove them.",
+            ),
+        ],
+        prompt_note="Block 2 begins with you typing /skill-creator in the composer — it is not part of the pasted text.",
+        steps=[
+            ("Open lumo-sample-captions.txt and read the five captions.",
+             "Each breaks at least one brand rule — a wrong price format, a health claim, too much slang, too many hashtags."),
+            ("In the project, attach the file and send Block 1.",
+             "This is the Do step of Do · Verify · Save. You never write a skill from a blank page."),
+            ("Check each rewrite against the brand guidelines and refine until all five are right.",
+             "This is the Verify step. Ask for changes in plain English; you are teaching the routine by correcting it."),
+            ("Type /skill-creator in the composer, then paste Block 2 and send.",
+             "skill-creator writes the SKILL.md from the run you just verified — name, description, instructions and examples."),
+            ("Read the skill Claude proposes, especially its description, and approve it.",
+             "The description is the one part always in context. It decides when the skill loads, so it must say WHEN to use it."),
+            ("Open Customize → Skills and find lumo-brand-voice.",
+             "Your own skills are listed here. Built-in skills such as pptx are not — they show in the context panel when they load."),
+            ("Start a new thread and send Block 3.",
+             "A fresh thread proves the skill works without the earlier conversation — which is exactly how other threads will use it."),
+            ("Check the caption: no \"healthy\", no \"best kopi in Singapore\", S$ prices, #LumoKopi present.",
+             "Both claims were traps. A skill that removes them has learned the rule, not just the examples."),
+        ],
+        test=(
+            "lumo-brand-voice appears under Customize → Skills with a description that says "
+            "when to use it. In a fresh thread, Block 3 loaded the skill without being asked to "
+            "find it, and the caption it returned drops \"healthy\" and \"best kopi in "
+            "Singapore\", includes #LumoKopi, uses at most five hashtags and ends with one call "
+            "to action, followed by the checklist results."
+        ),
+    ),
+    dict(
+        num=7, topic=2,
+        title="Add the Marketing Plugin",
+        objective="install a plugin and use its namespaced commands alongside your own skill",
+        desc=(
+            "You wrote one skill yourself; now you install a toolkit somebody else packaged. "
+            "Anthropic's Marketing plugin bundles several marketing skills behind namespaced "
+            "commands. You install it, use /marketing:campaign-plan to stress-test the launch "
+            "plan, and run /marketing:brand-review on the deck copy — then compare a plugin "
+            "with the skill you wrote, and see where mods fit."
+        ),
+        build="The Marketing plugin installed, a campaign plan review and a brand review of the launch copy.",
+        services="Claude Projects, plugins, Customize",
+        data=[],
+        prompt_title="Stress-test the launch with the Marketing plugin",
+        prompt_intro=("This lab has **two blocks**, each a command from the plugin. Install the "
+                      "plugin first, then send Block 1 and, after you have read its answer, Block 2."),
+        prompt_intro_md=("This lab has **two blocks**, each a plugin command. Install the plugin\n"
+                         "first, then send them one at a time."),
+        prompt_intro_lg=("This lab has two blocks, each a command from the Marketing plugin. Install "
+                         "the plugin first, then send Block 1 and, after reading its answer, Block 2."),
+        prompt_blocks=[
+            dict(
+                label="Block 1 — PLAN", step=4,
+                lead="Send this in the project:",
+                text=(
+                    "/marketing:campaign-plan Review the Lumo Cold Kopi launch using\n"
+                    "our campaign brief and research brief. Keep our objective,\n"
+                    "audience, budget and dates. Tell me:\n"
+                    "- what is missing from the plan,\n"
+                    "- the three biggest risks to the 1 December launch,\n"
+                    "- the KPIs you would track in the first two weeks, with targets.\n"
+                    "Do not change the S$60,000 budget."
+                ),
+                after="Read its answer in full before you send Block 2.",
+                after_md="Check the risks, KPIs and the unchanged S$60,000 budget.",
+                slide_note="Install the plugin first: Customize → Plugins → Browse → Marketing → Install.",
+            ),
+            dict(
+                label="Block 2 — REVIEW", step=6,
+                lead="Then send:",
+                text=(
+                    "/marketing:brand-review Review the copy on slides 1, 2 and 6 of\n"
+                    "our launch deck against lumo-brand-guidelines.md. List each\n"
+                    "change you would make and the rule behind it."
+                ),
+                after="Compare its findings with what your lumo-brand-voice skill would flag.",
+                after_md="Compare with what lumo-brand-voice would flag.",
+                slide_note="The plugin reviews; your own skill holds the house rules.",
+            ),
+        ],
+        prompt_note=("Install the plugin first: Customize → Plugins → Browse, find Marketing, "
+                     "click Install. Then type /marketing in the composer to see its commands."),
+        steps=[
+            ("Open Customize → Plugins and browse the available plugins.",
+             "Discover before you build: check whether someone has already packaged what you need."),
+            ("Find the Marketing plugin, read what it contains, and click Install.",
+             "One install brings several skills and commands at once — the difference between a plugin and a skill."),
+            ("In the project composer, type /marketing and look at the commands it offers.",
+             "Plugin commands carry the plugin's name as a prefix. That is how you tell them from a skill you wrote yourself."),
+            ("Send Block 1 to stress-test the plan with /marketing:campaign-plan.",
+             "The plugin's skill works with your project context: the campaign brief and research brief are already there."),
+            ("Read the risks and KPIs it proposes, and check the budget is unchanged at S$60,000.",
+             "A plugin is someone else's judgement. Keep what fits your goal; question what does not."),
+            ("Send Block 2 to review the deck copy with /marketing:brand-review.",
+             "Two tools on one job: the plugin reviews, and your lumo-brand-voice skill holds the house rules it checks against."),
+            ("Open Customize and look at the Mods section.",
+             "Mods change Claude's interface itself — a panel, a status line, a slash command or a hook. You will not build one today; know where they live."),
+        ],
+        test=(
+            "The Marketing plugin is installed and its /marketing: commands appear in the "
+            "composer. /marketing:campaign-plan returned the gaps, three launch risks and "
+            "two-week KPIs with targets while keeping the S$60,000 budget and the 1 December "
+            "date. /marketing:brand-review reviewed the deck copy. You can explain the "
+            "difference between lumo-brand-voice (a skill you wrote), the Marketing plugin "
+            "(a packaged bundle) and a mod (a change to Claude's interface)."
+        ),
+    ),
 ]

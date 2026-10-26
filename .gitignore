@@ -33,3 +33,6 @@ labs/*/outputs/*
 !labs/*/outputs/.gitkeep
 labs/*/working/*
 !labs/*/working/.gitkeep
+
+# Playwright MCP session output (screenshot capture scratch).
+.playwright-mcp/

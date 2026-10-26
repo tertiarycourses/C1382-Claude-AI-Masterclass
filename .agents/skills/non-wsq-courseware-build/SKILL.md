@@ -1,12 +1,49 @@
 ---
 name: non-wsq-courseware-build
-description: Single-source build pipeline for a NON-WSQ (C-prefix) course — one content module (course_data.py + data_domainN.py) drives ALL artifacts (the all-white slide deck PPT, the Lesson Plan LP, the Learner Guide LG + its Markdown mirror) so they stay 100% aligned. Excludes all WSQ funding, SSG/SkillsFuture, TRAQOM, digital-attendance and assessment content. Use to build or regenerate courseware for a Tertiary Infotech non-WSQ short course.
+description: Single-source build pipeline for a highly technical NON-WSQ (C-prefix) course with zero general instructional slides — one content module (course_data.py + data_domainN.py) drives ALL artifacts (the all-white slide deck PPT, the Lesson Plan LP, the Learner Guide LG + its Markdown mirror) so they stay 100% aligned. Excludes all WSQ funding, SSG/SkillsFuture, TRAQOM, digital-attendance and assessment content. Use to build or regenerate courseware for a Tertiary Infotech non-WSQ short course.
 ---
 
 # non-wsq-courseware-build — single-source NON-WSQ courseware pipeline
 
+**Model policy:** All courseware generation must run on **GPT-5.6 Sol** (`gpt-5.6-sol`). If the active model is different, switch to `gpt-5.6-sol` before generating courseware.
+
 The non-WSQ sibling of `courseware-build`. Same house look, same single-source
 guarantee, with the entire funding/compliance layer removed.
+
+## Domain-technical slide gate (mandatory)
+
+**ZERO GENERAL INSTRUCTIONAL SLIDES.** Standalone overview, introduction, definition, “what is”,
+“why it matters”, benefits, trends, future outlook, inspirational statement and broad use-case
+survey slides are prohibited. Delete them or rebuild them around a concrete technical mechanism,
+artifact, model, metric, decision rule, failure case or evidence trace. Only required
+cover/admin/divider/break/closing slides are exempt. The slide inventory must report zero
+slides classified as `GENERAL`.
+
+Every instructional slide—excluding cover/admin/divider/break/closing slides—must contain
+an authentic annotated UI/output, runnable code/command/query/config, formula/worked
+calculation, named architecture/data flow/schema/state/control, editable chart/model, real
+workflow/log/report/artifact, or sourced implementation case with evidence and constraints.
+Generic definitions, benefits, trend summaries, stock images and polished cards alone fail.
+For business or creative courses, use domain methods, calculations, thresholds, templates,
+decision rules, worked artifacts and failure analysis.
+
+Pair “what/why” with mechanism, realistic evidence and a diagnostic/control implication.
+Keep detailed click-by-click procedures in the Learner Guide and lab guide. Generate a
+slide-level technical-anchor inventory and require zero unanchored instructional slides;
+slide count, card density and visual polish do not prove technical depth.
+
+## Course-duration slide minimum (mandatory)
+
+| Duration | Minimum slide count |
+|---|---:|
+| 1 day (8h) | 100 |
+| 2 days (16h) | 200 |
+| 3 days (24h) | 300 |
+| 4 days (32h) | 400 |
+
+These are minimums, not target bands or caps. A deck below its duration minimum fails the build
+and QA. Meet the minimum with substantive, technically anchored teaching content; decorative
+padding and low-density filler do not count as compliance.
 
 ## What "non-WSQ" means here (hard rules)
 
@@ -33,7 +70,7 @@ In place of the assessment block the deck carries a **"How You'll Learn"** flow
 ## Layout
 
 ```
-<skill-dir>/
+.claude/skills/non-wsq-courseware-build/
   SKILL.md
   assets/            brand assets (tertiary-infotech-logo.png, optional course-badge.png)
   build/
@@ -66,21 +103,14 @@ data-driven throughout:
 
 ## Build
 
-Resolve `<skill-dir>` from this `SKILL.md`. When the skill is installed at user
-scope, set `COURSE_REPO` to the target repository so generated artifacts land
-in that repository rather than beside the installed skill. On Windows, prefer
-Git Bash (`C:\Program Files\Git\bin\bash.exe`) over the WSL launcher. The
-orchestrator auto-detects LibreOffice in its standard Windows installation
-path; set `SOFFICE` explicitly for a non-standard install.
-
 ```bash
 # one command: PPT + LP + LG as DOCX + PDF, with page-numbered TOCs
-COURSE_REPO="<course-repo>" bash "<skill-dir>/build/build_courseware.sh"
+bash .claude/skills/non-wsq-courseware-build/build/build_courseware.sh
 
 # or individually
-COURSE_REPO="<course-repo>" python "<skill-dir>/build/build_slides.py"
-COURSE_REPO="<course-repo>" python "<skill-dir>/build/build_lesson_plan.py"
-COURSE_REPO="<course-repo>" python "<skill-dir>/build/build_learner_guide.py"
+python3 .claude/skills/non-wsq-courseware-build/build/build_slides.py
+python3 .claude/skills/non-wsq-courseware-build/build/build_lesson_plan.py
+python3 .claude/skills/non-wsq-courseware-build/build/build_learner_guide.py
 ```
 
 **Do not** pair this with the `wsq-assessment` skill — non-WSQ courses have no
@@ -90,12 +120,11 @@ assessment. There is deliberately no assessment builder in this suite.
 
 Bump `VERSION` and add a `VERSION_HISTORY` row in `course_data.py`, move
 superseded versioned files to `courseware/archive/`, then run the
-`non-wsq-courseware-qa` custom agent to audit the deck — it fails the build if any
+**non-wsq-courseware-qa** agent to audit the deck — it fails the build if any
 WSQ/SSG/TRAQOM/assessment content has leaked back in.
 
 ## Reusing for a new course
 
-Copy this skill into the new course's `.agents/skills/non-wsq-courseware-build/`,
+Copy this skill into the new course's `.claude/skills/non-wsq-courseware-build/`,
 write `course_data.py` + `data_domainN.py`, drop any course badge into `assets/`,
-and run the orchestrator. The engine files are reused unchanged. Keep the
-user-level installed copy unchanged when the data is course-specific.
+and run the orchestrator. The engine files are reused unchanged.

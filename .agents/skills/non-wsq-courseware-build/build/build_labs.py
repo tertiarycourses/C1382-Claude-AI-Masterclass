@@ -1,14 +1,34 @@
 #!/usr/bin/env python3
+"""Generate labs/README.md, the labs index, from the same single source as the
+deck and guide.
+
+From v5.0 a lab folder holds only two things: the lab's prompt PDF
+(build_lab_pdfs.py) and, where the lab needs it, a data/ folder of mock data
+and assets (build_mockdata.py). The full instructions and check steps live in
+the Learner Guide, so no per-lab Markdown is written here.
+
+The shared helpers below (ACTS, REPO, lab_dir, ...) are imported by
+build_lab_pdfs.py, build_prompts_page.py and build_readme.py, so every lab
+artifact names its folders and files the same way.
 """
-Generate labs/lab-NN-*.md and labs/README.md from the SAME single source
-(course_data.py + data_domainN.py) that drives the PPT, LP and LG — so the
-lab files can never drift out of alignment with the other artifacts.
-"""
-import os, re, sys, glob, importlib
+import os, sys, glob, re, importlib
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import course_data as C
+
+
+def load_domains():
+    acts = []
+    for f in sorted(glob.glob(os.path.join(HERE, "data_domain[0-9]*.py")),
+                    key=lambda p: int("".join(c for c in os.path.basename(p) if c.isdigit()) or 0)):
+        if not re.fullmatch(r"data_domain\d+\.py", os.path.basename(f)):
+            continue
+        mod = importlib.import_module(os.path.basename(f)[:-3])
+        n = "".join(c for c in os.path.basename(f) if c.isdigit())
+        acts += getattr(mod, f"DOMAIN{n}", [])
+    return sorted(acts, key=lambda a: a["num"])
+
 
 def find_repo(start):
     env = os.environ.get("COURSE_REPO")
@@ -19,127 +39,135 @@ def find_repo(start):
         d = os.path.dirname(d)
         if os.path.isdir(os.path.join(d, "courseware")) and os.path.isdir(os.path.join(d, "labs")):
             return d
-    return os.path.dirname(os.path.dirname(start))
+    return start
+
 
 REPO = find_repo(HERE)
 LABS = os.path.join(REPO, "labs")
-os.makedirs(LABS, exist_ok=True)
+ACTS = load_domains()
+TOPIC = {t["num"]: t for t in C.TOPICS}
+_NUMWORDS = {1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six",
+             7: "Seven", 8: "Eight", 9: "Nine", 10: "Ten"}
 
-# ---- collect labs from every data_domainN.py, in domain order
-labs = []
-for path in sorted(glob.glob(os.path.join(HERE, "data_domain[0-9]*.py"))):
-    mod = importlib.import_module(os.path.basename(path)[:-3])
-    for name in dir(mod):
-        if re.fullmatch(r"DOMAIN\d+", name):
-            labs.extend(getattr(mod, name))
-labs.sort(key=lambda l: l["num"])
 
-TOPICS = {t["num"]: t for t in C.TOPICS}
+# ------------------------------------------------------------------ naming
+def lab_folder(a):
+    """labs/<this>/ — e.g. lab-01-set-up-the-launch-project."""
+    return f"lab-{a['num']:02d}-{C.LAB_SLUGS[a['num']]}"
 
-def slug(s):
-    return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", s.lower())).strip("-")
 
-# Fail fast before writing any files: contiguous numbering and complete lab
-# records are alignment invariants for the PPT, LP, LG, and lab set.
-expected_nums = list(range(1, len(labs) + 1))
-actual_nums = [lab.get("num") for lab in labs]
-assert actual_nums == expected_nums, f"Lab numbers must be contiguous 1..N; got {actual_nums}"
-assert len({slug(lab.get("title", "")) for lab in labs}) == len(labs), "Lab filenames would not be unique"
-required_fields = {"num", "topic", "title", "objective", "duration", "desc", "build", "services", "steps", "test"}
-for lab in labs:
-    missing = required_fields - set(lab)
-    assert not missing, f"Lab {lab.get('num')} missing required fields: {sorted(missing)}"
-    assert lab["topic"] in TOPICS, f"Lab {lab['num']} uses unknown topic {lab['topic']}"
-    assert lab["steps"] and all(isinstance(step, tuple) and len(step) == 2 for step in lab["steps"]), f"Lab {lab['num']} has invalid steps"
-    assert re.fullmatch(r"\d+ minutes", lab["duration"]), f"Lab {lab['num']} has invalid duration {lab['duration']!r}"
+def lab_dir(a):
+    return os.path.join(LABS, lab_folder(a))
 
-def fence(cmd):
-    """Prompts contain no backticks; render them as a plain fenced block."""
-    return "```text\n" + cmd.strip() + "\n```"
 
-written = []
-for lab in labs:
-    n = lab["num"]
-    topic = TOPICS.get(lab["topic"], {})
-    fname = f"lab-{n:02d}-{slug(lab['title'])}.md"
-    written.append((n, fname, lab, topic))
+def pdf_name(a):
+    """The prompt PDF is named after its folder: lab-01-<slug>/lab-01-<slug>.pdf."""
+    return f"{lab_folder(a)}.pdf"
 
-    L = []
-    L.append(f"# Lab {n} — {lab['title']}\n")
-    L.append(f"- **Course:** {C.TITLE}")
-    L.append(f"- **Version:** {C.VERSION} ({C.VERSION_DATE})")
-    L.append(f"- **Topic {lab['topic']}:** {topic.get('title','')}")
-    L.append(f"- **Maps to:** {lab['objective']}")
-    L.append(f"- **Tools:** {lab['services']}\n")
-    L.append(f"**Duration:** {lab.get('duration','Refer to the Lesson Plan')}\n")
-    L.append("---\n")
-    L.append("## What You Will Do\n")
-    L.append(lab["desc"] + "\n")
-    L.append("## What You Will Build\n")
-    L.append(lab["build"] + "\n")
-    if lab.get("prerequisites"):
-        L.append("## Prerequisites\n")
-        for item in lab["prerequisites"]:
-            L.append(f"- {item}")
-        L.append("")
-    if n > 1:
-        L.append("> **Rejoin path.** If a prerequisite artifact is missing, use the Rejoin Path in [the labs index](README.md), reconstruct the named checkpoint, and verify it before continuing.\n")
-    L.append(f"> **Data note.** {C.LAB_NOTE}\n")
-    L.append("## Steps\n")
-    for i, (instr, cmd) in enumerate(lab["steps"], 1):
-        L.append(f"**{i}. {instr}**\n")
-        if cmd.strip():
-            L.append(fence(cmd) + "\n")
-    L.append("## Test It\n")
-    L.append(lab["test"] + "\n")
-    if lab.get("checkpoint"):
-        L.append("## Checkpoint for the Next Lab\n")
-        L.append(lab["checkpoint"] + "\n")
-    if lab.get("troubleshooting"):
-        L.append("## Troubleshooting\n")
-        for issue, fix in lab["troubleshooting"]:
-            L.append(f"- **{issue}:** {fix}")
-        L.append("")
-    if lab.get("challenge"):
-        L.append("## Challenge\n")
-        L.append(lab["challenge"] + "\n")
-    if lab.get("reflection"):
-        L.append("## Reflection\n")
-        L.append(lab["reflection"] + "\n")
-    L.append("---\n")
-    prev = f"[← Lab {n-1}](lab-{n-1:02d}-{slug(labs[n-2]['title'])}.md)" if n > 1 else "[← Labs index](README.md)"
-    nxt  = f"[Lab {n+1} →](lab-{n+1:02d}-{slug(labs[n]['title'])}.md)" if n < len(labs) else "[Labs index →](README.md)"
-    L.append(f"{prev} · {nxt}\n")
 
-    with open(os.path.join(LABS, fname), "w", encoding="utf-8") as f:
-        f.write("\n".join(L))
+def blocks(a):
+    """A lab's prompts as a list of blocks, whatever shape the source uses.
 
-# ---- labs/README.md index
-lab_minutes = sum(int(re.match(r"\d+", lab["duration"]).group()) for lab in labs)
-lab_time = f"{lab_minutes // 60} h {lab_minutes % 60:02d} min" if lab_minutes % 60 else f"{lab_minutes // 60} h"
-R = [f"# {C.TITLE} — Hands-On Labs\n",
-     f"{len(labs)} labs across {len(C.TOPICS)} topics · {C.DAYS} {'day' if C.DAYS == 1 else 'days'} · "
-     f"{C.INSTRUCTIONAL_HOURS:g} instructional hours · {C.CLOCK_HOURS:g} clock hours including tea breaks · {lab_minutes/60:g} hands-on lab hours\n",
-     "Work through the labs in order — each one builds on the artifacts you produced "
-     "in the labs before it.\n"]
-R[1] = R[1].replace(f"{lab_minutes/60:g} hands-on lab hours", f"{lab_time} hands-on lab time")
-R.append("\n## Rejoin Path\n")
-R.append("If you join after Lab 1 or resume after a gap, do not skip the connected inputs. Reconstruct and verify the smallest baseline below before starting the target lab. The supplied starter files reduce setup time but do not replace the required checks.\n")
-R.append("| Rejoin point | Minimum verified baseline |")
-R.append("|---|---|")
-for point, baseline in C.REJOIN_PATH:
-    R.append(f"| {point} | {baseline} |")
-for t in C.TOPICS:
-    R.append(f"\n## Topic {t['num']} — {t['title']}\n")
-    R.append("| # | Lab | Tools | You Build |")
-    R.append("|---|-----|-------|-----------|")
-    for n, fname, lab, _tp in written:
-        if lab["topic"] == t["num"]:
-            R.append(f"| {n} | [{lab['title']}]({fname}) | {lab['services']} | {lab['build']} |")
-R.append(f"\n---\n\n> {C.LAB_NOTE}\n")
-R.append(f"\n_{C.ORG} · {C.COURSE_CODE} · {C.VERSION} ({C.VERSION_DATE})_\n")
+    Most labs carry one `prompt`; multi-message labs carry `prompt_blocks`
+    (label, lead, text, after). Normalising here means the PDF and the web page
+    render one shape and cannot disagree about what a lab asks learners to send.
+    """
+    if a.get("prompt_blocks"):
+        return a["prompt_blocks"]
+    return [dict(label="Prompt", lead="", text=a["prompt"], after="",
+                 step=a.get("prompt_step"))]
 
-with open(os.path.join(LABS, "README.md"), "w", encoding="utf-8") as f:
-    f.write("\n".join(R))
 
-print(f"Saved {len(labs)} lab files + README.md to {LABS}")
+def steps_with_prompts(a):
+    """The lab as one ordered walk-through: [(n, step, why, [blocks])].
+
+    Every prompt names the step it belongs to (`prompt_step` on a one-prompt
+    lab, `step` on each block), so the PDF and the web page can place each
+    prompt box directly under its step — step, prompt, step, prompt. A prompt
+    whose step is missing or out of range fails the build rather than being
+    silently dropped from what learners see.
+    """
+    by_step = {}
+    for b in blocks(a):
+        s = b.get("step")
+        assert isinstance(s, int) and 1 <= s <= len(a["steps"]), (
+            f"Lab {a['num']}: prompt {b['label']!r} has step={s!r}; "
+            f"expected 1..{len(a['steps'])}")
+        by_step.setdefault(s, []).append(b)
+    return [(i, step, why, by_step.get(i, []))
+            for i, (step, why) in enumerate(a["steps"], 1)]
+
+
+def write(path, text):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(text)
+
+
+def scenario_md(level="##"):
+    """The overarching course story (COURSE_SCENARIO) as a short Markdown section,
+    shared by labs/README.md and the repository README."""
+    sc = C.COURSE_SCENARIO
+    return [f"{level} The scenario — {sc['title']}", "",
+            f"**The situation.** {sc['situation']}", "",
+            f"**Your role.** {sc['role']}", "",
+            f"**The mission.** {sc['mission']}", ""]
+
+
+# ------------------------------------------------------------------ README
+def readme():
+    out = [
+        f"# {C.TITLE} — Labs",
+        "",
+        C.COMPANY_BLURB,
+        "",
+        f"{_NUMWORDS.get(len(ACTS), len(ACTS))} labs, one continuous build, "
+        f"opening with {ACTS[0]['title']}.",
+        "Every lab after it extends the same project, so work through them in order.",
+        "",
+    ]
+    out += scenario_md("##")
+    if getattr(C, "LABS_README_NOTE", ""):
+        out += [C.LABS_README_NOTE.strip(), ""]
+    out += [
+        f"**Copy-ready prompts:** every prompt below is also on the [Lab Prompts page]({C.PROMPTS_URL}),",
+        "with a one-click **Copy** button for each block.",
+        "",
+        "| Lab | Topic | Title | Prompt PDF | Data |",
+        "|---:|---|---|---|---|",
+    ]
+    for a in ACTS:
+        t = TOPIC[a["topic"]]
+        folder = lab_folder(a)
+        pdf = f"[PDF]({folder}/{pdf_name(a)})"
+        n = len(a.get("data", []))
+        data = f"[{n} file{'s' if n != 1 else ''}]({folder}/data/)" if n else "—"
+        out.append(f"| {a['num']:02d} | {t['code']} {t['title']} | {a['title']} | {pdf} | {data} |")
+    out += ["", "## Lab objectives", ""]
+    out += [f"- **Lab {a['num']:02d}.** By the end of this lab you can {a['objective']}." for a in ACTS]
+    out += [
+        "",
+        "## What each lab folder holds",
+        "",
+        "- `lab-NN-<name>.pdf` — the course scenario, the lab's scenario and objective, then the",
+        "  steps with each prompt in a copy-friendly box under the step that sends it, and the check.",
+        "- `data/` — the synthetic Lumo Kopi files and assets the lab uses (where it needs any).",
+        "",
+        "Labs with no `data/` folder work from what the project already holds.",
+        "",
+        "## Ground rules",
+        "",
+        C.LAB_NOTE,
+        "",
+    ]
+    return "\n".join(out)
+
+
+def main():
+    write(os.path.join(LABS, "README.md"), readme())
+    print(f"  index  labs/README.md  ({len(ACTS)} labs)")
+
+
+if __name__ == "__main__":
+    print("Generating labs index")
+    main()

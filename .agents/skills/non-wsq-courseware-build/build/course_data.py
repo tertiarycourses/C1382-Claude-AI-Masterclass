@@ -1,595 +1,1028 @@
-"""Single source of truth for Claude Cowork Masterclass (C1382)."""
+"""
+SINGLE SOURCE OF TRUTH — Claude AI Masterclass (C1382), v5.0.
+
+Everything (PPT, Lesson Plan, Learner Guide, labs, prompts page) is generated
+from this file plus data_domain1..3.py, so the artifacts can never drift apart.
+
+v5.0 replaces the finance scenario with one marketing launch that runs inside a
+single Claude Project from Lab 1 onwards: the project's lead agent (the
+coordinator) splits each job into parallel threads, one per subject, and every
+lab adds to the same project — research, artefacts, connectors, skills, social
+posts, video and scheduled work.
+
+Design: the Claude Style house look shared with the Claude Code Masterclass
+(C1417) — terracotta accent, Cambria headings, white cards.
+
+NON-WSQ: no assessment, no funding content, no attendance rules. Learning is
+reinforced through the labs and a recap per topic.
+"""
 
 # ------------------------------------------------------------------ metadata
-TITLE = "Claude Cowork Masterclass"
-SHORT_TITLE = "Claude Cowork Masterclass"
-COURSE_CODE = "C1382"
-COURSE_URL = "https://www.tertiarycourses.com.sg/claude-cowork-masterclass.html"
-REPOSITORY_URL = "https://github.com/tertiarycourses/C1382-Claude-Cowork-Masterclass"
-VERSION = "v1.0"
-VERSION_DATE = "3 August 2026"
-ORG = "Tertiary Infotech Academy Pte Ltd"
-UEN = "UEN: 201200696W"
-TRAINER = "Course Trainer"
-TRAINER_CERT = "Adult educator and AI-enabled knowledge-work practitioner"
-TRAINER_DELIVERS = "Claude Cowork, agentic work practices, business document creation, data analysis, workflow design, and responsible AI use"
-DAYS = 1
-MODE = "Instructor-led, concept-first learning with connected hands-on labs"
+TITLE        = "Claude AI Masterclass"
+SHORT_TITLE  = "Claude AI Masterclass"
+COURSE_CODE  = "C1382"
+VERSION      = "v5.0"
+VERSION_DATE = "27 October 2026"
+TAGLINE      = "Projects, threads, artefacts, connectors, skills and content — for marketing teams"
+ORG          = "Tertiary Infotech Academy Pte Ltd"
+UEN          = "UEN: 201200696W"
+TRAINER      = "Dr. Alfred Ang"
+TRAINER_ROLE = "AI Trainer & Engineer"
+DAYS         = 1
+MODE         = "Instructor-led, hands-on practical labs"
+REGISTRATION = "https://www.tertiarycourses.com.sg/claude-ai-masterclass.html"
+REPO_URL     = "https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass"
+PROMPTS_URL  = "https://tertiarycourses.github.io/C1382-Claude-AI-Masterclass/prompts/"
 
-# The advertised 7.5 hours includes two 15-minute tea breaks. Lunch is outside
-# the scheduled total, leaving seven hours of instruction and practice.
-DAY_MINUTES = 450
-INSTRUCTIONAL_HOURS = 7
-CLOCK_HOURS = 7.5
-DAILY_TIMING = "9:00 am - 5:30 pm (1-hour lunch; two 15-minute tea breaks included)"
-DARK_THEME = False
+# ------------------------------------------------------------------ scenario
+# ONE fictitious brand runs through every lab, so each lab builds on the last.
+COMPANY       = "Lumo Kopi Co."
+COMPANY_SHORT = "Lumo Kopi"
+PROJECT_NAME  = "Lumo Cold Kopi Launch"
+COMPANY_BLURB = (
+    "Lumo Kopi Co. is a fictitious Singapore coffee brand about to launch Lumo Cold "
+    "Kopi — a ready-to-drink oat-milk kopi cold brew in a 240 ml can — in Singapore "
+    "on 1 December 2026 and Kuala Lumpur in January 2027. You are its marketing team. "
+    "All brands, figures, survey answers and documents in this course are synthetic "
+    "and used for training only."
+)
 
-REJOIN_PATH = [
-    (
-        "Before Lab 2",
-        "Create a working copy of labs/starter/northstar-operations and connect only that copy to a Cowork project. Complete Lab 1 or reconstruct its full trainer-verified checkpoint: reviewed project instructions; 00-inbox-baseline.csv on Windows or 00-inbox-baseline.sha256 on macOS; 01-file-inventory.md; 01-file-inventory.csv; and 01-verification.md. Recalculate the current inbox comparison and continue only when every original file is present exactly once and the hashes match.",
+# The story every lab belongs to, shown at the top of the prompts page, the
+# lab PDFs and the Learner Guide. Each lab adds one chapter to it.
+COURSE_SCENARIO = dict(
+    title="The Lumo Cold Kopi launch",
+    situation=(
+        "It is late October 2026. Lumo Kopi Co. launches Lumo Cold Kopi, its first "
+        "ready-to-drink canned kopi, in Singapore on 1 December — six weeks away — and in "
+        "Kuala Lumpur in January. The marketing team is small, the budget is S$60,000, and "
+        "nothing has been produced yet: no research, no deck, no posts, no video."
     ),
-    (
-        "Before Lab 3",
-        "Restore the complete Lab 1 checkpoint and a verified Lab 2 package containing organised-copy, 02-source-register.md, 02-evidence-register.md, 02-operations-analysis.xlsx, 02-management-report.docx, 02-leadership-brief.pptx, 02-quality-review.md, and 02-run-log.md. Confirm the unchanged inbox includes the three Week 32 and three Week 33 inputs, the current hashes match the Lab 1 baseline, and the Week 32 workbook reports 2,000 orders, SGD 339,350 revenue, 92.80% on-time fulfilment, and a 5.65% return rate.",
+    role=(
+        "You are the Lumo marketing team. Instead of juggling a dozen separate chats, you "
+        "run the whole launch from one Claude Project. Its lead agent plans each job, "
+        "starts parallel threads for the pieces, and brings the results back for you to "
+        "check and approve."
     ),
-]
+    mission=(
+        "By the end of the day the project holds everything the launch needs — verified "
+        "market research, a dashboard, a deck and brief, a brand-voice skill, two weeks "
+        "of social posts, a launch video — and scheduled tasks that keep it moving while "
+        "you are away."
+    ),
+)
 
-ICE_BREAKER = [
-    "Your name, your role, and one repetitive file-based task you would like to delegate.",
-    "One business output you would never use without a human quality check.",
-    "One type of work data that should remain outside an AI workspace unless specifically approved.",
-]
+# The figures the labs quote. build_mockdata.py generates the data FROM these and
+# asserts them, so a check step can never disagree with the file it checks.
+FACTS = dict(
+    product="Lumo Cold Kopi",
+    can_ml=240,
+    sugar_g=5,
+    price_can="S$3.90",
+    price_pack="S$42.00",           # 12-pack
+    launch_sg="1 December 2026",
+    launch_kl="15 January 2027",
+    campaign="Kopi, Chilled Right",
+    hashtags=["#LumoKopi", "#KopiChilledRight"],
+    # Consumer survey (lumo-consumer-survey-2026.csv)
+    survey_n=400, survey_sg=240, survey_kl=160,
+    age_bands=[("18-24", 88), ("25-34", 152), ("35-44", 96), ("45+", 64)],
+    likely_to_buy=248,               # purchase_intent 4 or 5 -> 62%
+    likely_25_34=112,                # of 152 -> 74%
+    pay_350_plus=228,                # willing to pay >= S$3.50 -> 57%
+    channels=[("Instagram", 136), ("TikTok", 104), ("Friends & family", 72),
+              ("Shopee / Lazada", 48), ("Other", 40)],
+    drivers=[("Taste", 124), ("Less sugar", 108), ("Price", 72),
+             ("Convenience", 60), ("Sustainability", 36)],
+    # Competitors (lumo-competitors.csv) — all fictional
+    competitors=[("Kopi Kaki Cold", 3.20), ("Daily Grind RTD", 3.70), ("Frostbean", 4.20),
+                 ("OatRush", 4.40), ("ChillBrew Co.", 4.80), ("Northpoint Cold Brew", 5.60)],
+    competitor_median="S$4.30",
+    # Launch budget — the Drive sheet and the brief deliberately disagree on two lines
+    budget_total="S$60,000",
+    budget_sheet=[("Instagram", 18000), ("TikTok", 15000), ("Influencers", 12000),
+                  ("Google Search", 8000), ("Shopee / Lazada ads", 7000)],
+    budget_brief=[("Instagram", 20000), ("TikTok", 15000), ("Influencers", 10000),
+                  ("Google Search", 8000), ("Shopee / Lazada ads", 7000)],
+    top_trend="Taste tests and first-sip reactions",
+    social_posts=10,                 # weekdays 1-14 December 2026
+)
+
+BRAND_COLOURS = [("Kopi Brown", "#5B3A29"), ("Oat Cream", "#F3E9DC"),
+                 ("Lumo Teal", "#1F8A8A"), ("Sunrise Orange", "#F28C38")]
+
+# Lab folder slugs, keyed by lab number: labs/lab-NN-<slug>/
+LAB_SLUGS = {
+    1: "set-up-the-launch-project",
+    2: "market-research-threads",
+    3: "market-insights-artefact",
+    4: "connect-drive-and-gmail",
+    5: "launch-deck-and-brief",
+    6: "brand-voice-skill",
+    7: "marketing-plugin",
+    8: "social-posts-threads",
+    9: "launch-video",
+    10: "schedule-and-review",
+}
 
 # ------------------------------------------------------------------ outcomes
 LEARNING_OUTCOMES = [
-    "LO1: Explain Claude Cowork's agentic operating model, execution surfaces, connected-folder boundary, task lifecycle, permissions, and the human responsibilities that remain.",
-    "LO2: Set up a Cowork project, write an outcome-based task brief, run and monitor a bounded session, review its evidence, and recover from common setup or scope problems.",
-    "LO3: Use Cowork to organise synthetic files, analyse spreadsheet data, synthesise research and notes, and produce consistent document, spreadsheet, and presentation outputs with traceable sources.",
-    "LO4: Design and run a multi-step workflow that separates parallel workstreams from dependencies, uses integrations deliberately, and places human approval gates before consequential writes or sharing.",
-    "LO5: Convert a successful session into a reusable playbook with parameters, project instructions, quality checks, exception paths, ownership, security controls, and a practical team rollout plan.",
+    "LO1: Set up a Claude Project with a goal, instructions, context and memory, and explain how its lead agent splits work into parallel threads.",
+    "LO2: Run multi-subject market research as parallel threads and consolidate it into one verified research brief.",
+    "LO3: Build, refine, save and download a Live Artefact dashboard from supplied research data.",
+    "LO4: Connect Google Drive and Gmail so Claude reads campaign files and sends an approved summary.",
+    "LO5: Produce a launch deck and a campaign brief with Claude's Slides and Docs, using built-in skills.",
+    "LO6: Capture a brand voice as an Agent Skill with /skill-creator, and install and use a marketing plugin.",
+    "LO7: Create a two-week, multi-platform set of social media posts in parallel threads using the brand-voice skill.",
+    "LO8: Produce a short vertical launch video from a script, storyboard and supplied brand assets.",
+    "LO9: Schedule recurring project tasks, maintain project memory and review thread usage, keeping a human approval step.",
 ]
 LO_TITLES = [
-    "Cowork Foundations",
-    "Effective Delegation",
-    "Management Outputs",
-    "Controlled Workflows",
-    "Repeatable Practice",
+    "Set up the Project", "Research in threads", "Build a Live Artefact",
+    "Connect Drive and Gmail", "Slides and Docs", "Skills and plugins",
+    "Social posts in threads", "Make a launch video", "Schedule and review",
 ]
 
 # ------------------------------------------------------------------ topics
 TOPICS = [
-    dict(
-        num=1,
-        code="01",
-        title="Getting Started with Claude Cowork",
-        subtitle="Agentic AI for everyday work | setup and connected folders | effective task briefs | monitoring and review | responsible use",
-        concepts=[
-            ("Agentic workspace", "Cowork works toward an outcome through a sequence of planning, tool use, observation, correction, and evidence rather than returning one isolated answer."),
-            ("Connected-folder boundary", "Local file access is limited to the folders a learner deliberately connects; scope should be as small as the task allows."),
-            ("Task contract", "A strong brief names the outcome, sources, deliverables, constraints, quality checks, approval points, and finish line."),
-            ("Permission", "Reading, writing, using a connector, operating a browser, and acting in another system have different consequences and deserve different controls."),
-            ("Steering", "Progress indicators, plans, questions, and intermediate files let a person redirect the work before errors spread."),
-            ("Evidence", "A source register, file manifest, calculation check, preview, or change log is stronger than a confident completion statement."),
-        ],
-        teaching=[
-            dict(
-                title="Chat Assistance and Agentic Delegation",
-                kind="compare",
-                kicker="TOPIC 01 - OPERATING MODEL",
-                left_title="Chat assistance",
-                right_title="Cowork delegation",
-                left=[
-                    "Responds to the context supplied in one conversation",
-                    "Usually produces text for the user to transfer elsewhere",
-                    "Waits for the next prompt between stages",
-                    "Leaves file operations and checking to the user",
-                ],
-                right=[
-                    "Plans and executes a bounded multi-step task",
-                    "Reads and writes permitted files and can use connected tools",
-                    "Observes intermediate results and adapts the next step",
-                    "Returns finished artifacts plus visible work evidence",
-                ],
-                paragraphs=[
-                    "Cowork changes the unit of work from a reply to an outcome. A learner can delegate a bounded task such as inventorying a folder, analysing a spreadsheet, and drafting a report. Claude selects tools, performs steps, observes results, and continues until the stated finish line or a stop condition is reached.",
-                    "Delegation does not transfer accountability. The person still owns the business purpose, permitted data, authority to act, review standard, and release decision. The most reliable tasks therefore combine useful autonomy with explicit boundaries and observable evidence.",
-                ],
-            ),
-            dict(
-                title="The Cowork Task Lifecycle",
-                kind="flow",
-                kicker="TOPIC 01 - AGENT LOOP",
-                visual=[
-                    "Receive the outcome and boundaries",
-                    "Inspect permitted context",
-                    "Plan the work and identify questions",
-                    "Use tools and create intermediate results",
-                    "Review evidence, correct, and deliver",
-                ],
-                paragraphs=[
-                    "A useful Cowork session begins with an outcome and a boundary. Claude inspects the available context, proposes a route, uses permitted tools, and compares intermediate results with the requested quality checks. Errors and missing information are observations that should change the plan, not details to conceal.",
-                    "The finish line must be testable. Examples include a manifest that accounts for every source file, a workbook whose totals match a control calculation, or a report whose factual claims name their source. A stop condition is equally important: missing authority, sensitive data, an unclear destination, or a consequential external action should return control to the user.",
-                ],
-            ),
-            dict(
-                title="Anatomy of a High-Signal Task Brief",
-                kind="tiles",
-                kicker="TOPIC 01 - BRIEFING",
-                visual=[
-                    ("Outcome", "Describe the business result and intended audience, not only the activity."),
-                    ("Sources", "Name the allowed folders, files, links, and systems; exclude everything else."),
-                    ("Deliverables", "Specify filenames, formats, structure, location, and presentation standard."),
-                    ("Constraints", "State data rules, non-goals, protected files, time range, and assumptions."),
-                    ("Approval gates", "Identify which writes, revisions, or external actions require confirmation."),
-                    ("Evidence", "Define control totals, citations, previews, logs, or other observable checks."),
-                ],
-                paragraphs=[
-                    "Prompt quality is task design quality. An adjective such as 'professional' is too elastic on its own; a stronger brief names the audience, sections, length, file format, source period, calculation rules, and review checklist. This reduces avoidable interpretation while leaving Claude room to solve the task.",
-                    "Separate facts, preferences, and permissions. Facts come from named sources. Preferences cover tone and layout. Permissions define what Claude may read or change. When these categories are mixed, a stylistic suggestion can be misread as authority to alter data or publish an output.",
-                ],
-            ),
-            dict(
-                title="Authority Should Match Consequence",
-                kind="compare",
-                kicker="TOPIC 01 - CONTROL",
-                left_title="Lower-consequence work",
-                right_title="Higher-consequence work",
-                left=[
-                    "Read a synthetic training folder",
-                    "Create a draft in a new output directory",
-                    "Summarise supplied notes with citations",
-                    "Calculate metrics that a person will verify",
-                ],
-                right=[
-                    "Overwrite or remove source files",
-                    "Send messages or share files externally",
-                    "Use financial, personal, legal, or confidential data",
-                    "Make commitments, purchases, access changes, or final decisions",
-                ],
-                paragraphs=[
-                    "Risk depends on both access and action. Reading a narrow synthetic folder is materially different from browsing a broad drive, and producing a draft is different from sending it. Start with the smallest scope and the most reversible output that can prove value.",
-                    "Human review should concentrate at consequence boundaries. A manager may allow automatic calculations in a working copy but require confirmation before source files are replaced, a document is shared, or a conclusion becomes an operational decision. These gates preserve speed without making authority ambiguous.",
-                ],
-            ),
-            dict(
-                title="Monitor, Review, and Recover",
-                kind="flow",
-                kicker="TOPIC 01 - SUPERVISION",
-                visual=[
-                    "Read the plan",
-                    "Watch scope and tool use",
-                    "Inspect intermediate evidence",
-                    "Steer with precise feedback",
-                    "Verify the final state",
-                ],
-                paragraphs=[
-                    "Monitoring is not continuous micromanagement. It means checking the points where a misunderstanding would become expensive: the proposed source set, an inferred calculation rule, the first artifact, and any action outside the local workspace. A short correction at the plan stage is cheaper than rebuilding a complete output.",
-                    "Recovery begins from evidence. If an output is wrong, identify the failing claim, calculation, source selection, or format rule; provide the observed mismatch and the expected state; then request a focused revision. Do not restart a long task with the same vague brief and hope for a different result.",
-                ],
-            ),
-        ],
-    ),
-    dict(
-        num=2,
-        code="02",
-        title="Automating Everyday Work with Cowork",
-        subtitle="File organisation | documents, reports and presentations | spreadsheet analysis | research and summarisation | end-to-end multi-step tasks",
-        concepts=[
-            ("Inventory before organisation", "A manifest reveals what exists, duplicates, uncertain items, and protected sources before any move or rename is proposed."),
-            ("Working-copy pattern", "Transform copies into a new destination so originals remain a stable reference and recovery path."),
-            ("Structured extraction", "Convert documents and notes into fields, evidence, assumptions, and open questions before writing a narrative."),
-            ("Calculation contract", "Define each metric's numerator, denominator, period, unit, rounding, and control total before interpreting it."),
-            ("Artifact system", "A workbook, report, and presentation should share one fact base while serving different reading behaviours."),
-            ("Provenance", "Important claims remain traceable to a filename, row, note, or authoritative external source."),
-        ],
-        teaching=[
-            dict(
-                title="From Messy Inputs to a Decision-Ready Pack",
-                kind="flow",
-                kicker="TOPIC 02 - INFORMATION PIPELINE",
-                visual=[
-                    "Inventory and classify inputs",
-                    "Extract facts and unresolved questions",
-                    "Calculate and reconcile metrics",
-                    "Compose audience-specific artifacts",
-                    "Review, revise, and package evidence",
-                ],
-                paragraphs=[
-                    "Multi-file work becomes reliable when it is treated as a pipeline. Inventory establishes the source boundary. Extraction separates observed facts from assumptions. Calculation turns raw rows into defined metrics. Composition produces artifacts for different audiences. Review reconciles every output to the same evidence.",
-                    "The stages are connected but should not be collapsed. If Claude drafts a polished narrative before reconciling the numbers, presentation quality can hide a factual error. A staged workflow makes intermediate artifacts inspectable and gives the learner a safe place to correct the process.",
-                ],
-            ),
-            dict(
-                title="Safe File-Organisation Patterns",
-                kind="tiles",
-                kicker="TOPIC 02 - FILES",
-                visual=[
-                    ("Manifest", "Record filename, type, date, purpose, likely owner, sensitivity, and proposed destination."),
-                    ("Classification", "Use stable business categories and an explicit Unknown bucket instead of guessing."),
-                    ("Working copy", "Create an organised copy first; leave the source folder unchanged until reviewed."),
-                    ("Naming rule", "Apply predictable dates, subjects, and versions without erasing original identifiers."),
-                    ("Duplicate handling", "Flag likely duplicates using name, size, hash, or content evidence; do not remove automatically."),
-                    ("Change log", "List each proposed or completed action so a person can reconcile the new structure."),
-                ],
-                paragraphs=[
-                    "Organisation is an information-governance task, not cosmetic tidying. A useful structure reflects how work is retrieved, owned, retained, and reviewed. An Unknown category is safer than a confident but unsupported classification.",
-                    "Reversibility is the governing design principle. The first run should create a manifest and an organised working copy, not silently rename or remove originals. The source folder remains the control set until a person approves the proposed structure and confirms that every input is accounted for.",
-                ],
-            ),
-            dict(
-                title="One Fact Base, Three Reading Experiences",
-                kind="tiles",
-                kicker="TOPIC 02 - OUTPUT DESIGN",
-                visual=[
-                    ("Spreadsheet", "Calculation detail, formulas, data dictionary, filters, and control totals for analytical review."),
-                    ("Report", "Context, findings, evidence, risks, recommendations, owners, and open questions for considered reading."),
-                    ("Presentation", "A short decision arc with headline metrics, exceptions, actions, and minimal supporting detail."),
-                    ("Source register", "The shared evidence map that prevents values and claims drifting across formats."),
-                ],
-                paragraphs=[
-                    "Different formats serve different cognitive tasks. A spreadsheet exposes calculations and exceptions. A report preserves reasoning and nuance. A presentation supports a time-bounded discussion. Copying identical content into each format produces three weak artifacts rather than one coherent system.",
-                    "Consistency comes from a shared fact base and named metric definitions. Each artifact should use the same reporting period, units, segment names, and source register. Differences should reflect audience needs, not competing versions of the truth.",
-                ],
-            ),
-            dict(
-                title="Spreadsheet Analysis as a Reconciliation Loop",
-                kind="flow",
-                kicker="TOPIC 02 - DATA",
-                visual=[
-                    "Inspect columns and data types",
-                    "Define formulas and units",
-                    "Calculate segment and total values",
-                    "Reconcile against control totals",
-                    "Explain drivers and uncertainty",
-                ],
-                paragraphs=[
-                    "Analysis starts with definitions. On-time fulfilment is fulfilled-on-time orders divided by total orders for the same period; return rate is returns divided by orders. Summing percentages across locations would be wrong because each location has a different denominator.",
-                    "Reconciliation distinguishes calculation from interpretation. First reproduce the control totals and weighted rates. Then locate the segments that contribute most to a gap. Only after the numbers balance should Claude draft explanations, and those explanations should be labelled as evidence, inference, or an item for an owner to verify.",
-                ],
-            ),
-            dict(
-                title="Synthesis with Traceable Evidence",
-                kind="compare",
-                kicker="TOPIC 02 - RESEARCH",
-                left_title="Weak synthesis",
-                right_title="Decision-ready synthesis",
-                left=[
-                    "Blends supplied facts and general knowledge",
-                    "Presents every statement with equal confidence",
-                    "Drops source filenames from the final narrative",
-                    "Fills missing context with plausible detail",
-                ],
-                right=[
-                    "Separates source evidence, inference, and open questions",
-                    "Names the file, row, note, or external source behind key claims",
-                    "Uses authoritative sources for changing product facts",
-                    "Marks unresolved items for the named owner to verify",
-                ],
-                paragraphs=[
-                    "Summarisation compresses; synthesis connects. A management report must relate numerical performance, operational notes, customer signals, targets, and decisions without pretending the sources say more than they do. Traceability lets a reviewer challenge a claim efficiently.",
-                    "External research adds another trust boundary. Time-sensitive product or market claims should come from current authoritative sources and include the access date. Instructions embedded in an untrusted webpage or file are data to analyse, not authority to change the task or disclose other context.",
-                ],
-            ),
-            dict(
-                title="Orchestrating a Multi-Step Task",
-                kind="flow",
-                kicker="TOPIC 02 - EXECUTION",
-                visual=[
-                    "Freeze the source set",
-                    "Run independent extraction workstreams",
-                    "Resolve dependencies and reconcile",
-                    "Generate the first complete pack",
-                    "Apply one evidence-based revision cycle",
-                ],
-                paragraphs=[
-                    "Parallel work is useful when workstreams share inputs but not intermediate outputs. File inventory, numerical profiling, and note extraction can proceed independently. The executive summary cannot be finalised until those results are reconciled, so it belongs after a dependency gate.",
-                    "A workflow brief should expose this structure. Ask Claude to state the workstreams, dependencies, approval points, output paths, and checks before running. This makes concurrency visible and prevents a late-stage narrative from being built on unreconciled intermediate results.",
-                ],
-            ),
-        ],
-    ),
-    dict(
-        num=3,
-        code="03",
-        title="Advanced Cowork Workflows",
-        subtitle="Integrations | repeatable playbooks | parallel work and longer projects | approvals and guardrails | team rollout",
-        concepts=[
-            ("Integration choice", "Prefer the most precise trusted path: a connector for a cloud service, a desktop capability for local context, or a browser only when no better interface exists."),
-            ("Playbook", "A reusable workflow describes triggers, parameters, sources, stages, deliverables, checks, gates, exceptions, and ownership."),
-            ("Project instructions", "Durable local context stores stable conventions and boundaries; task-specific details remain in the individual brief."),
-            ("Parallel workstream", "Independent stages can run together, while dependent stages wait for reconciled inputs."),
-            ("Human-in-the-loop", "A named person reviews evidence and explicitly authorises consequential action at a defined gate."),
-            ("Operational rollout", "A team needs approved use cases, data boundaries, ownership, monitoring, incident handling, and a feedback cycle."),
-        ],
-        teaching=[
-            dict(
-                title="Choose the Most Precise Trusted Tool",
-                kind="compare",
-                kicker="TOPIC 03 - INTEGRATIONS",
-                left_title="Structured connection",
-                right_title="Screen interaction",
-                left=[
-                    "Connector returns defined records from a cloud service",
-                    "Authentication and scope are explicit",
-                    "Faster and less sensitive to interface changes",
-                    "Prefer for repeatable cloud workflows when available",
-                ],
-                right=[
-                    "Browser or computer use navigates the visible interface",
-                    "Can reach tools without a direct connection",
-                    "Slower and more vulnerable to layout or state changes",
-                    "Use cautiously and review before consequential actions",
-                ],
-                paragraphs=[
-                    "A tool is not interchangeable with another merely because both can reach the same system. Structured connectors are usually more precise for cloud data. Desktop capabilities are appropriate for local files or applications. Browser and screen interaction are fallback paths when no direct interface exists.",
-                    "Integration design begins with trust and scope: who owns the connection, which records it exposes, which actions it allows, where results are stored, and how access is removed. Convenience does not answer these governance questions.",
-                ],
-            ),
-            dict(
-                title="A Playbook Is an Operational Contract",
-                kind="tiles",
-                kicker="TOPIC 03 - REPEATABILITY",
-                visual=[
-                    ("Trigger and parameters", "Define when the workflow starts and which period, team, folder, or audience changes each run."),
-                    ("Source contract", "Name required inputs, freshness, owner, fallback, and the condition that stops the run."),
-                    ("Stages and dependencies", "Separate parallel extraction from reconciliation and dependent composition."),
-                    ("Deliverables", "Fix output names, formats, destinations, and minimum required sections."),
-                    ("Quality gates", "Attach calculations, source checks, visual review, and approval to named stages."),
-                    ("Exceptions and ownership", "State who resolves missing inputs, conflicting data, access failure, and release decisions."),
-                ],
-                paragraphs=[
-                    "A saved prompt is not yet a playbook. Repeatability requires variable parameters, a stable source contract, defined intermediate artifacts, observable quality checks, and a response when an input is missing or contradictory. Ownership turns the document from advice into an operating procedure.",
-                    "The playbook should remain tool-aware without becoming a transcript of one successful run. Describe the intended capability and preferred path, then identify a safe fallback. This makes the workflow resilient when an interface or connection changes.",
-                ],
-            ),
-            dict(
-                title="Parallelism Needs Dependency Control",
-                kind="compare",
-                kicker="TOPIC 03 - WORKSTREAMS",
-                left_title="Can run in parallel",
-                right_title="Must wait",
-                left=[
-                    "Profile a frozen spreadsheet source",
-                    "Extract themes from supplied notes",
-                    "Inventory files and build a source register",
-                    "Draft format shells without final claims",
-                ],
-                right=[
-                    "Reconcile metrics across workstreams",
-                    "Choose the final management narrative",
-                    "Approve recommendations and owners",
-                    "Share, send, publish, or replace source material",
-                ],
-                paragraphs=[
-                    "Parallel work reduces elapsed time only when workstreams are independent and their outputs have clear contracts. If two workstreams redefine the same metric or edit the same artifact, coordination cost can exceed the gain.",
-                    "A longer project needs merge points. At each one, reconcile terminology, periods, totals, source references, and unresolved questions before dependent work continues. The merge point is also a natural place for a human review gate.",
-                ],
-            ),
-            dict(
-                title="Human Gates in a Cowork Workflow",
-                kind="flow",
-                kicker="TOPIC 03 - APPROVALS",
-                visual=[
-                    "Approve source scope",
-                    "Approve metric definitions",
-                    "Review the first complete draft",
-                    "Authorise consequential actions",
-                    "Record release evidence and owner",
-                ],
-                paragraphs=[
-                    "A human gate is useful only when it names the decision, reviewer, evidence, and permitted next action. 'Check with me' is vague; 'pause after the workbook reconciles and show the totals, exceptions, and source register before drafting recommendations' is operational.",
-                    "Not every stage needs a gate. Frequent low-value interruptions encourage reflexive approval. Place gates where access broadens, an assumption becomes a business conclusion, a source is changed, or an output leaves the working environment.",
-                ],
-            ),
-            dict(
-                title="From Personal Workflow to Team Practice",
-                kind="flow",
-                kicker="TOPIC 03 - ROLLOUT",
-                visual=[
-                    "Choose a bounded low-consequence use case",
-                    "Define baseline time and quality",
-                    "Pilot with synthetic or approved data",
-                    "Review value, errors, and control load",
-                    "Standardise, train, monitor, and improve",
-                ],
-                paragraphs=[
-                    "A team rollout should begin with a narrow process whose inputs, outputs, owner, and current baseline are known. Synthetic or explicitly approved data lowers risk during learning. The pilot should measure both benefit and control cost: time saved, revision rate, factual corrections, missed exceptions, and reviewer effort.",
-                    "Scaling means standardising the useful parts while preserving escalation. Teams need approved use cases, data classification, access provisioning, playbook ownership, versioning, monitoring, incident response, and a channel for lessons from real runs to improve the workflow.",
-                ],
-            ),
-            dict(
-                title="Guardrails Across the Workflow",
-                kind="tiles",
-                kicker="TOPIC 03 - RESPONSIBLE USE",
-                visual=[
-                    ("Data", "Use the minimum necessary approved sources and keep sensitive records outside training workspaces."),
-                    ("Access", "Grant the narrowest folder and connection scope; review and remove access when the workflow ends."),
-                    ("Action", "Default to drafts and working copies; gate external writes, deletion, sharing, and commitments."),
-                    ("Evidence", "Retain source registers, control totals, assumptions, reviewer decisions, and run logs."),
-                    ("Quality", "Use defined metrics, exception checks, visual inspection, and a named accountable reviewer."),
-                    ("Change", "Version playbooks and project instructions; retest after source, tool, or policy changes."),
-                ],
-                paragraphs=[
-                    "Guardrails are layered. A narrow folder reduces exposure; a working-copy rule reduces impact; a calculation check reduces factual error; a human gate reduces the chance that a draft becomes an unauthorised action. No single control covers every failure mode.",
-                    "The controls must evolve with the workflow. New connectors, broader source sets, scheduled execution, computer use, or a change from drafting to acting all increase consequence and require a fresh review of permissions, monitoring, ownership, and recovery.",
-                ],
-            ),
-        ],
-    ),
+    dict(num=1, code="01",
+         title="Claude Projects and Market Research",
+         subtitle="The Claude family · the new Projects · lead agent and threads · market research · Live Artefacts",
+         agenda=["The Claude family and setup", "Projects: goal, instructions, context, memory",
+                 "Lead agent and parallel threads", "Market research and Live Artefacts"],
+         concepts=[
+            ("Claude Project", "A home for a long-running goal. Context, memory and work build up over time instead of resetting each chat."),
+            ("Lead agent", "The project's coordinator. You tell it the goal; it plans, splits the work and reports back."),
+            ("Threads", "Parallel workers the lead agent starts — one per subject — each with its own focused context."),
+            ("Goal", "One clear statement of what the project must achieve. Every decision the lead agent makes points at it."),
+            ("Instructions vs memory", "Instructions are the rules you write. Memory is what the project learns and keeps — and you can edit it."),
+            ("Live Artefacts", "Interactive tools — dashboards, trackers — that persist in your workspace instead of scrolling away in chat."),
+         ]),
+    dict(num=2, code="02",
+         title="Connectors, Skills and Plugins",
+         subtitle="Google Drive and Gmail · the context window · Slides and Docs · Agent Skills · plugins and mods",
+         agenda=["Connectors: Drive and Gmail", "Context window housekeeping",
+                 "Slides, Docs and built-in skills", "Agent Skills, plugins and mods"],
+         concepts=[
+            ("Connectors", "Toggle Gmail, Drive and Calendar on from the + menu so Claude can reach data outside the chat."),
+            ("Scope the folder", "Point Claude at one Drive folder for the task — not your whole Drive."),
+            ("Approval to send", "Claude drafts, sends and replies in Gmail — sending asks for explicit approval by default."),
+            ("Slides and Docs", "Claude's own deck and document formats: shareable, editable, and downloadable as PowerPoint, Word or PDF."),
+            ("Agent Skills", "A folder of instructions Claude loads on demand, so a task runs the same way every time."),
+            ("/skill-creator", "Do the task once, verify the output, then let skill-creator write the SKILL.md for you."),
+            ("Plugins", "A bundle somebody else packaged — several skills plus the tools they need, installed in one click."),
+            ("Mods", "Changes to Claude's own interface or behaviour — a side panel, a status line, a slash command or a hook."),
+         ]),
+    dict(num=3, code="03",
+         title="Content Production and Scheduled Work",
+         subtitle="Social posts in parallel threads · a launch video · scheduled tasks · memory and usage",
+         agenda=["One thread per channel", "Social post specs and brand checks",
+                 "Script, storyboard, render: the video pipeline", "Scheduled tasks, memory and usage"],
+         concepts=[
+            ("One thread per channel", "The lead agent gives Instagram, TikTok, LinkedIn and Facebook a thread each, then merges one calendar."),
+            ("Skill inside a thread", "Every thread loads the same brand-voice skill, so four channels still sound like one brand."),
+            ("Video as code", "Claude writes and runs the code that turns a storyboard and your images into an MP4."),
+            ("Scheduled tasks", "A prompt that runs on a timetable inside the project — daily, weekly or monthly — while you are away."),
+            ("Approval stays human", "A scheduled task drafts and emails the post to you. Publishing is still your click."),
+            ("Usage per thread", "Project settings show the tokens the lead agent and each thread used — the cost of parallel work."),
+         ]),
 ]
 
-# ------------------------------------------------------------------ day theme and schedule
-DAY_THEMES = {1: "Delegate, produce, and operationalise work with Claude Cowork"}
+DAY_THEMES = {1: "From a blank project to a researched, branded, scheduled product launch"}
 
-
+# ------------------------------------------------------------------ schedule
 def SCHEDULE(lab_titles):
+    """The one-day timetable, 9:00–18:00.
+
+    Lunch is fixed at 12:30–13:30 and both tea breaks are 15 minutes. 315 of the
+    day's 540 minutes are lab minutes: theory is taught in short blocks placed
+    immediately before the lab that uses it.
+
+    Rows must stay contiguous — each start equals the previous end, and the
+    duration must equal end minus start. Consumers split the day at lunch by
+    comparing times NUMERICALLY (see _mins in build_slides.py); never compare
+    "9:00" and "12:30" as strings.
+    """
     return {
-        1: (
-            DAY_THEMES[1],
-            [
-                ("9:00", "9:20", 20, "admin", "Welcome, course orientation, learning outcomes, working agreement, and synthetic-data scenario"),
-                ("9:20", "10:05", 45, "topic", "Topic 1 - Getting Started with Claude Cowork: operating model, setup, task briefs, permissions, monitoring, and review"),
-                ("10:05", "10:20", 15, "break", "Tea break"),
-                ("10:20", "11:35", 75, "lab", "Hands-on: " + lab_titles([1])),
-                ("11:35", "12:20", 45, "topic", "Topic 2 - Automating Everyday Work with Cowork: file, document, spreadsheet, research, and multi-step workflow concepts"),
-                ("12:20", "13:20", 60, "lunch", "Lunch break"),
-                ("13:20", "15:05", 105, "lab", "Hands-on: " + lab_titles([2])),
-                ("15:05", "15:20", 15, "break", "Tea break"),
-                ("15:20", "15:50", 30, "topic", "Topic 3 - Advanced Cowork Workflows: integrations, playbooks, parallel work, human gates, security, and rollout"),
-                ("15:50", "17:15", 85, "lab", "Hands-on: " + lab_titles([3])),
-                ("17:15", "17:30", 15, "recap", "Course recap, action plan, and questions mapped to the five learning outcomes"),
-            ],
-        )
+     1: (DAY_THEMES[1], [
+        ("9:00", "9:20",  20, "admin", "Welcome, introductions and ground rules"),
+        ("9:20", "9:55",  35, "topic", "Topic 1 — Claude Projects and Market Research: the Claude family, setup, the new Projects, lead agent and threads, goal, instructions, context and memory"),
+        ("9:55", "10:20", 25, "lab",   "Hands-on: " + lab_titles([1])),
+        ("10:20","10:35", 15, "break", "Tea break"),
+        ("10:35","11:15", 40, "lab",   "Hands-on: " + lab_titles([2])),
+        ("11:15","11:25", 10, "topic", "Topic 1 — Live Artefacts: what they are, the sandbox, saving and downloading"),
+        ("11:25","12:05", 40, "lab",   "Hands-on: " + lab_titles([3])),
+        ("12:05","12:30", 25, "topic", "Topic 2 — Connectors, Skills and Plugins: connectors, Drive scope, Gmail approval and the context window"),
+        ("12:30","13:30", 60, "lunch", "Lunch break"),
+        ("13:30","14:05", 35, "lab",   "Hands-on: " + lab_titles([4])),
+        ("14:05","14:15", 10, "topic", "Topic 2 — Slides, Docs and Agent Skills: built-in skills, the three layers and /skill-creator"),
+        ("14:15","14:45", 30, "lab",   "Hands-on: " + lab_titles([5])),
+        ("14:45","15:15", 30, "lab",   "Hands-on: " + lab_titles([6])),
+        ("15:15","15:30", 15, "break", "Tea break"),
+        ("15:30","15:40", 10, "topic", "Topic 2 — Plugins and mods: skills versus plugins, Discover, namespaced commands"),
+        ("15:40","16:00", 20, "lab",   "Hands-on: " + lab_titles([7])),
+        ("16:00","16:10", 10, "topic", "Topic 3 — Content Production and Scheduled Work: threads per channel, the video pipeline, scheduled tasks"),
+        ("16:10","16:45", 35, "lab",   "Hands-on: " + lab_titles([8])),
+        ("16:45","17:15", 30, "lab",   "Hands-on: " + lab_titles([9])),
+        ("17:15","17:45", 30, "lab",   "Hands-on: " + lab_titles([10])),
+        ("17:45","18:00", 15, "recap", "Recap, your reusable launch project and Q&A"),
+     ]),
     }
 
+# ------------------------------------------------------------------ deck content
+# Chat and Cowork are now one app, "Claude" — matching the Agentic AI
+# Applications with Claude Code deck (v19, October 2026).
+CLAUDE_PRODUCTS = [
+    ("Claude (Chat + Cowork)", "Chat + Cowork in one app — web, desktop & mobile."),
+    ("Claude Code",            "The agentic tool for building — terminal, IDE & web."),
+    ("Claude Design",          "Polished UI, prototypes & front-end designs."),
+    ("Claude for Microsoft",   "Claude inside Excel, PowerPoint, Word & Outlook."),
+    ("Claude for Chrome",      "Browser agent that clicks & fills forms in Chrome."),
+    ("Claude for Science",     "Speeds up research workflows for scientists and labs."),
+]
+CLAUDE_PRODUCTS_TIP = ("All are powered by the same Claude models — they differ in "
+                       "where they run and who they're for. Projects span Claude and Claude Code.")
 
-# ------------------------------------------------------------------ deck and guide framing
-COURSE_OVERVIEW = dict(
-    section_title="Delegating Knowledge Work with Control",
-    concepts_title="Cowork in One View",
-    concepts=[
-        ("Outcome", "Delegate a finished business result rather than a sequence of vague requests."),
-        ("Context", "Provide the smallest trustworthy set of files, instructions, and connections."),
-        ("Agency", "Let Claude plan, use tools, observe results, and coordinate bounded workstreams."),
-        ("Control", "Set scope, approval gates, stop conditions, and evidence before the run."),
-        ("Artifacts", "Create documents, spreadsheets, presentations, and organised files from one fact base."),
-        ("Learning loop", "Review the output and process, then convert a successful run into a versioned playbook."),
-    ],
-    framework_title="The DELEGATE Framework",
-    framework=[
-        ("D - Define", "State the outcome, audience, purpose, and finish line."),
-        ("E - Expose context", "Name approved sources and exclude unrelated data."),
-        ("L - Limit authority", "Bound reads, writes, connections, and consequential actions."),
-        ("E - Establish evidence", "Specify source references, control totals, previews, and logs."),
-        ("G - Gate consequences", "Pause before source changes, external writes, sharing, or commitments."),
-        ("A - Allow execution", "Let independent work proceed while monitoring important merge points."),
-        ("T - Test the result", "Reconcile facts, formulas, visuals, filenames, and promised deliverables."),
-        ("E - Evolve the playbook", "Record improvements, ownership, exceptions, and the next safe scope."),
-    ],
-    statement=dict(
-        headline="Delegate the work; retain the judgement.",
-        body="The best Cowork workflow combines useful agency with narrow scope, visible evidence, and human authority at consequence boundaries.",
-        kicker="COURSE PRINCIPLE",
-    ),
-    pillars_title="What You Will Build",
-    pillars=[
-        ("First delegated task", ["A bounded Cowork project", "A complete file inventory", "A visible verification record"]),
-        ("Management-ready pack", ["A reconciled spreadsheet", "A written operations report", "A concise leadership presentation"]),
-        ("Repeatable workflow", ["A parameterised playbook", "Human approval gates", "A Week 33 run and rollout plan"]),
-    ],
-    arc_title="How Every Lab Progresses",
-    arc=[
-        "Start from a verified synthetic checkpoint.",
-        "Brief the outcome, boundary, deliverables, and evidence.",
-        "Review the proposed plan before broad work begins.",
-        "Let Cowork execute and steer at important merge points.",
-        "Test the artifacts and retain the checkpoint for the next lab.",
-    ],
+# Two columns now that Chat and Cowork have merged (title set in build_slides.py).
+CLAUDE_THREE = [
+    ("Claude (Chat + Cowork)", "Thinking and work partner — this course",
+     ["Chat: ask, draft, analyse and research with web search",
+      "Cowork: plans and runs multi-step tasks on your files",
+      "Projects, connectors and skills: Drive, Gmail, Calendar",
+      "For everyone — web, desktop and mobile apps"]),
+    ("Claude Code", "Build partner",
+     ["Builds software, sites and automations",
+      "Runs in the terminal, VS Code, desktop app and web",
+      "Edits files, runs commands and calls MCP tools",
+      "Extended with CLAUDE.md, skills, sub agents and hooks"]),
+]
+CLAUDE_THREE_FOOT = (
+    "Chat and Cowork are now one app: Claude. A marketing team works there — and a "
+    "Project ties the work together around one goal."
 )
 
-LAB_SHOTS = {}
+# What Cowork mode — the work half of the merged Claude app — adds to a chat.
+COWORK_CAPABILITIES = [
+    ("Access local files", "Read, write and reorganise the folders on your computer."),
+    ("Write & run code", "It writes the code a task needs — a chart, a video — and runs it for you."),
+    ("Connect to tools", "Reach Google Drive, Gmail and Calendar through connectors."),
+    ("Skills & plugins", "Reusable instructions it loads on demand, shareable with your team."),
+    ("Agent loop", "Plan, act, check, correct — it keeps working until the task is done."),
+]
+COWORK_CAPABILITIES_FOOT = (
+    "Together these are why Claude finishes a task instead of describing how to do it."
+)
 
+# Plan pricing — verify at claude.com/pricing before each delivery.
+PRICING_INTRO = ("Projects, Cowork and Live Artefacts are features of the paid Claude "
+                 "plans — the same subscription that covers Chat and Claude Code.")
+PRICING_PLANS = [
+    ("Pro", "$17/mo (annual) · $20 monthly. Cowork and the new Projects (beta) included."),
+    ("Max", "From $100/mo — 5× or 20× more usage than Pro. Best for heavy parallel threads."),
+    ("Team", "$20/seat standard · $100/seat premium. New Projects rolling out later."),
+    ("Enterprise", "$20/seat + usage at API rates. Contact sales."),
+]
+PRICING_BAND = ("Parallel threads multiply usage: four threads cost roughly four times one chat. "
+                "Watch Project settings → Usage.")
+PRICING_TIP = ("A free plan is also available, but it does not include Cowork or Projects. "
+               "Prices as of October 2026 — verify at claude.com/pricing.")
+
+AI_EVOLUTION = [
+    ("Prompt Engineering",  "2023", "Craft the wording of a single prompt to get good output."),
+    ("Context Engineering", "2024", "Curate what the model sees — files, memory and tools."),
+    ("Harness Engineering", "2025", "Build the system around the model: loop, tools, verification."),
+    ("Agent Teams",         "2026", "A lead agent runs parallel threads toward one goal — Claude Projects."),
+]
+AI_EVOLUTION_FOOT = ("More capable models shift the work from wording prompts → curating "
+                     "context → directing a team of agents toward a goal.")
+
+# Two trainer profile slides: a blank template the delivering trainer fills in,
+# then Alfred's — with the Claude Certified Associate badge, as on the Agentic AI
+# Applications with Claude Code deck.
+TRAINER_BLANK = dict(
+    name="[ Trainer Name ]",
+    role="[ Title / Role ]",
+    rows=[
+        "Qualifications:  ____________________________________________",
+        "Expertise:  _________________________________________________",
+        "Experience:  ________________________________________________",
+        "Contact / Profile:  __________________________________________",
+    ],
+    links=[],
+)
+
+TRAINER_PROFILE = dict(
+    name=TRAINER,
+    role=TRAINER_ROLE,
+    initials="AC",          # Ang Chew Hoe — matches the linkedin.com/in/angchewhoe handle
+    rows=[
+        "PhD-qualified trainer specialising in AI, software engineering and developer tooling.",
+        "Hands-on experience building agentic AI applications and automations with Claude.",
+        "Trains professionals across Singapore on practical, project-based AI skills.",
+        "Certifications: Claude Certified Associate (Foundations), PMP, AWS, Microsoft, CompTIA, CKA, CKAD.",
+    ],
+    links=["linkedin.com/in/angchewhoe", "github.com/alfredang"],
+    # Shown under the avatar; file lives in the skill's assets/ folder.
+    badge="claude-certified-associate.png",
+    badge_label="Claude Certified Associate",
+)
+
+ICE_BREAKER = [
+    ("Your name and role", "Which team you sit in and what you are responsible for."),
+    ("Your marketing work", "One piece of content or report you produce again and again."),
+    ("Your channels", "Which social platforms and tools your team actually uses."),
+    ("Your goal today", "What you would most like Claude to take off your plate."),
+]
+
+GROUND_RULES = [
+    ("Phones on silent", "Step out quietly if you need to take a call."),
+    ("Ask as you go", "No question is too small — others usually have the same one."),
+    ("Learn by doing", "Every block of theory is followed by a lab you build yourself."),
+    ("Use the mock data", "Never bring real customer or personal data into a training exercise."),
+    ("Check before you publish", "Approve every post and email against the source facts."),
+    ("Mutual respect", "One conversation at a time; agree to disagree."),
+]
+
+COWORK_SETUP = [
+    ("Install the desktop app", "Download Claude for Mac or Windows from claude.ai/download — Projects, Cowork and Live Artefacts all run there."),
+    ("Sign in on a paid plan", "Use the account that has your Pro or Max subscription — the new Projects are in beta on those plans."),
+    ("Find Projects", "Open Projects from the sidebar. If you cannot see it yet, the beta has not reached your account — use Cowork mode instead."),
+    ("Download the lab files", "Get the course labs from the GitHub repository; each lab has a prompt PDF and a data folder."),
+    ("Enable what it needs", "Turn on only the connectors a lab needs, from the + menu."),
+    ("Keep the app open", "Local work stops when the app closes. Cloud environments keep going — covered in Topic 3."),
+]
+
+# ---- The new Claude Projects (redesigned September 2026) ---------------------
+PROJECTS_BEFORE_AFTER = dict(
+    left=("Before — one chat per job", [
+        "A chat for copy, one for visuals, one for competitors.",
+        "Re-explain the brand in every new chat.",
+        "Copy and paste results between chats yourself.",
+        "Nothing happens while your laptop is closed.",
+        "You are the project manager.",
+    ]),
+    right=("Now — a Project with a lead agent", [
+        "You state the goal once, to the lead agent.",
+        "It splits the work and starts parallel threads.",
+        "Each thread reports back; the lead merges the results.",
+        "Goal, memory and context persist across every thread.",
+        "It only comes back to you when it needs a decision.",
+    ]),
+)
+
+# The project as a team: one lead agent and its threads, drawn as a container.
+PROJECT_TEAM_SUBTITLE = "One goal, one lead agent, many threads"
+PROJECT_TEAM_PARTS = [
+    ("Lead agent", "Plans, splits\nand merges", "clay"),
+    ("Thread 1", "Competitors", "violet"),
+    ("Thread 2", "Customer\nsurvey", "violet"),
+    ("Thread 3", "Pricing", "violet"),
+    ("Thread 4", "Social\ntrends", "violet"),
+    ("Memory", "Shared by\nevery thread", "amber"),
+]
+PROJECT_TEAM_FOOT = (
+    "You talk to the lead agent. It decides how many threads a job needs, gives each a "
+    "focused brief, and brings one merged answer back to you."
+)
+
+PROJECT_WHEN = [
+    ("A long-running goal", "Work keeps arriving for weeks — a product launch, a channel, an app."),
+    ("A job that splits", "One big job breaks into pieces that can run at once — assets, ads, competitors, email."),
+    ("Lots of research", "Many subjects to look into — one thread per competitor, market or segment."),
+    ("Regular check-ins", "You want to review each workstream's progress, not one long chat."),
+]
+PROJECT_WHEN_FOOT = "A one-off question that is done in one reply? Use an ordinary chat."
+
+PROJECT_ANATOMY = [
+    ("Goal", "What the project must achieve. The lead agent steers every decision toward it."),
+    ("Instructions", "Standing rules you write: brand voice, currency, never publish without approval."),
+    ("Context", "What Claude reads: files, folders, a Google Drive folder or a GitHub repository."),
+    ("Memory", "What the project learns and keeps between threads. Open the memory files to edit them."),
+    ("Threads", "The parallel workers the lead agent starts for each piece of a job."),
+    ("Scheduled", "Tasks that run on a timetable inside the project — the daily post, the weekly report."),
+]
+
+PROJECT_DIALOG = [
+    ("Name", "What you are working on — " + PROJECT_NAME + ". This is how you find it in the sidebar."),
+    ("Goal", "What the project must achieve, in two or three sentences. You can type it or dictate it."),
+    ("Context", "Add the brand kit files now, or a folder or Drive folder. You can skip and add them later."),
+    ("Create project", "The lead agent opens, reads the goal and context, and is ready for its first job."),
+]
+PROJECT_DIALOG_FOOT = ("New project is at the top right of the Projects page. Instructions "
+                       "and memory are edited afterwards, in Project settings.")
+
+PROJECT_SETTINGS = [
+    ("General", "The project name, the goal, and the models and effort for the lead agent and the threads."),
+    ("Memory", "The project instructions and the memory files the project has written — open one to edit it."),
+    ("Environment", "Local, or a cloud environment so threads keep working with your laptop closed."),
+    ("Usage", "Input and output tokens, for the lead agent and for each thread separately."),
+    ("Debug access", "Let another project read this one's conversations, read-only, to help diagnose a problem."),
+]
+PROJECT_SETTINGS_FOOT = "Open Project settings from the gear icon at the top right of the project."
+
+PROJECT_MODELS_HEAD = ("Role", "Typical default", "Effort", "Change it when")
+PROJECT_MODELS_ROWS = [
+    ("Lead agent", "Opus 5.5", "Low", "It misreads your requests — raise to Medium."),
+    ("Threads", "Opus 5.5", "Medium", "Research is shallow — raise; drafts are simple — lower."),
+    ("Effort", "—", "Low · Medium · High", "Higher effort thinks harder and uses more of your limit."),
+]
+PROJECT_MODELS_FOOT = ("Defaults vary by account and change over time — read yours in "
+                       "Project settings → General → Models.")
+
+# Instructions, context and memory are easy to confuse — the difference matters
+# for what you edit when the output is wrong.
+MEMORY_CONTEXT_HEAD = ("", "Instructions", "Context", "Memory")
+MEMORY_CONTEXT_ROWS = [
+    ("Who writes it", "You", "You add it", "The project, as it works"),
+    ("What it holds", "Rules and style", "Files and folders to read", "Facts and decisions learned"),
+    ("Lumo example", "Prices in S$; no health claims", "Brand guidelines, launch brief", "Launch date moved; IG performs best"),
+    ("Edit it in", "Settings → Memory", "Context panel", "Settings → Memory → memory files"),
+    ("When output is wrong", "Tighten the rule", "Add the missing file", "Correct or delete the fact"),
+]
+
+PROJECT_VS_CHAT = dict(
+    left=("Working in one-off chats", [
+        "You re-attach the brand kit every session.",
+        "Rules are restated from memory each time.",
+        "Research, posts and artefacts are scattered.",
+        "A colleague has to be told how you set it up.",
+        "Work stops when you stop typing.",
+    ]),
+    right=("Working in a Claude Project", [
+        "Context is added once and read by every thread.",
+        "Instructions apply to every job in the project.",
+        "Artefacts, skills and outputs live together.",
+        "A colleague opens the project and is ready.",
+        "Scheduled tasks run while you are away.",
+    ]),
+)
+
+# Market research by thread — the subjects Lab 2 hands to the lead agent.
+RESEARCH_THREADS = [
+    ("Competitors", "Six cold-brew brands: price, pack, positioning, and the gap Lumo can own."),
+    ("Customer survey", "400 respondents: who is likely to buy, why, and where they discover drinks."),
+    ("Pricing", "Where S$3.90 sits against the market, and what the survey says people will pay."),
+    ("Social trends", "Which content themes earn the most engagement in the category right now."),
+]
+RESEARCH_FOOT = ("Each thread gets one subject and its own data file. The lead agent merges "
+                 "the four findings into one research brief — and flags where they disagree.")
+
+# ---- Live Artefacts ----------------------------------------------------------
+ARTEFACT_LIMITS = dict(
+    left=("An artefact CAN", [
+        "Run interactive code — inputs, filters, charts.",
+        "Use data you gave it, or that Claude looked up while building.",
+        "Keep what you type into it between sessions.",
+        "Be saved, reopened and shared.",
+        "Be downloaded as a file you own.",
+    ]),
+    right=("An artefact CANNOT", [
+        "Call an external API or website — the sandbox blocks it.",
+        "Load a script, font or image from another site.",
+        "Reach your local files or network.",
+        "Refresh third-party data on its own.",
+        "So: bake the data in, or download the HTML and run it yourself.",
+    ]),
+)
+
+LIVE_ARTEFACT_FLOW = [
+    ("Describe", "Tell Claude the tool you want — a dashboard, tracker or planner — and what data it shows."),
+    ("Generate", "Claude writes the code and renders it in the preview pane beside the chat."),
+    ("Refine", "Ask for changes in plain English until the layout and figures are right."),
+    ("Save", "Save it so it persists as a reusable tool, not a lost chat message."),
+    ("Download", "Export a copy to file, attach or hand on to someone without Claude."),
+]
+
+ARTEFACT_VS_CHAT = dict(
+    left=("A normal chat answer", [
+        "A static snapshot in the conversation.",
+        "Scrolls away as the chat grows.",
+        "Figures are frozen at the moment they were written.",
+        "You copy and paste to reuse anything.",
+        "Nothing to click, filter or explore.",
+    ]),
+    right=("A Live Artefact", [
+        "An interactive tool with its own place in the workspace.",
+        "Reopenable — it stays available after the chat ends.",
+        "Can refresh from connected data when reopened.",
+        "Keeps what you typed into it between sessions.",
+        "Clickable: filter, sort and drill into the numbers.",
+    ]),
+)
+
+# ---- Connectors and context -------------------------------------------------
+CONNECTOR_STEPS = [
+    ("Open the + menu", "In the chat composer, click the plus sign."),
+    ("Hover Connectors", "The list of available connectors appears."),
+    ("Toggle Drive and Gmail", "Switch each on and sign in to your Google account."),
+    ("Grant access", "Approve the permissions Google asks for — including file read access."),
+    ("Name the folder", "Tell Claude which Drive folder to use for this task."),
+]
+
+CONNECTOR_CAPABILITIES = [
+    ("Google Drive", "Search and read Sheets, Docs, Slides and PDFs; upload files; create folders; save Claude's output back to Drive."),
+    ("Gmail", "Search and read mail, draft messages, send / reply / forward with approval, and manage labels."),
+    ("Google Calendar", "View events, find availability, and create or update meetings."),
+    ("Social and ads tools", "Where your workspace has them, connectors for scheduling and ad platforms reach the same way — always with approval."),
+    ("Approval by default", "Claude asks for explicit approval before it sends, replies to or forwards an email."),
+    ("Where to manage them", "Individually from the + menu; account-wide under Customize → Connectors."),
+]
+
+CONTEXT_WINDOW_QUOTE = (
+    "The context window is all the information the model can “see” "
+    "when producing a response."
+)
+CONTEXT_WINDOW_SEGMENTS = [
+    ("System", 9.0, "ink"),
+    ("Project instructions", 2.0, "amber"),
+    ("Tool definitions", 2.5, "blue"),
+    ("Skill definitions", 4.0, "clay"),
+    ("Conversation", 6.5, "green"),
+]
+CONTEXT_WINDOW_FOOT = (
+    "At the start of a thread only the fixed overhead is loaded — most of the "
+    "window is still free."
+)
+CONTEXT_WINDOW_SEGMENTS_FULL = [
+    ("System", 6.0, "ink"),
+    ("Project instructions", 1.4, "amber"),
+    ("Tool definitions", 1.6, "blue"),
+    ("Skill definitions", 3.0, "clay"),
+    ("Conversation", 34.0, "green"),
+    ("Files read", 14.0, "violet"),
+    ("Tool call results", 11.0, "sky"),
+    ("Skills executed", 9.0, "blush"),
+]
+CONTEXT_WINDOW_FULL_FOOT = (
+    "As the task runs, files, tool results and executed skills all accumulate. This is "
+    "why a project splits big jobs into threads: each thread gets a fresh window."
+)
+CONTEXT_COMMAND_ROWS = [
+    ("System prompt", "35.3k", "3.5%"),
+    ("System tools", "768", "0.1%"),
+    ("MCP tools", "2.6k", "0.3%"),
+    ("MCP tools (deferred)", "301.7k", "30.2%"),
+    ("Memory files", "81", "0.0%"),
+    ("Skills", "9k", "0.9%"),
+    ("Messages", "13", "0.0%"),
+    ("Free space", "650.5k", "65.0%"),
+]
+CONTEXT_COMMAND_HEAD = ("Category", "Tokens", "Percentage")
+CONTEXT_COMMAND_NOTE = (
+    "In Claude Code, run /context to see this for your own session. Note how much a large set of "
+    "connectors costs before you have typed anything — turn off the ones you do not need."
+)
+CONTEXT_ROT = [
+    ("Context rot",
+     "Performance degrades. Recall of specific facts gets worse, the model starts "
+     "confusing similar entities, and reasoning quality drops."),
+    ("Tool confusion",
+     "Claude sees every tool definition. The more options competing for its attention, "
+     "the more likely it picks the wrong one or fills in the wrong parameters."),
+    ("Slower responses",
+     "The model processes every token on every turn. A bigger context means more work "
+     "per message, which means longer waits before you see a reply."),
+    ("Eats up your usage faster",
+     "Your entire context gets resent with each new message — so more tokens are burned "
+     "per turn, and your limits are reached sooner."),
+]
+CONTEXT_ROT_FOOT = (
+    "The fix is housekeeping: one job per thread, only the connectors you need, and "
+    "only the files the job actually reads."
+)
+CONTEXT_LEVERS = [
+    ("Conversation", "Your prompt. The messages you send, including both text and attachments."),
+    ("Project context", "The files, folders and Drive folder the project reads from."),
+    ("Connectors", "The connected tools Claude can pull data from, and take actions in."),
+    ("Skills", "A set of instructions Claude follows for a repeatable workflow."),
+    ("Instructions & memory", "Project rules you wrote, and facts the project has learned."),
+]
+CONTEXT_LEVERS_FOOT = (
+    "Every lab today pulls one of these levers — context in Lab 1, connectors in Lab 4, "
+    "skills in Labs 5–7, and memory in Lab 10."
+)
+
+# ---- Slides and Docs ---------------------------------------------------------
+SLIDES_DOCS = [
+    ("Slides", "A deck Claude builds and you edit in place — download as PowerPoint or PDF for the meeting."),
+    ("Docs", "A living document — a campaign brief, a plan — that you and Claude edit and comment on together."),
+    ("Dashboards", "A page of live numbers — the Live Artefact you build in Lab 3 is one."),
+    ("Built-in skills", "Claude's pptx, docx and xlsx skills load on their own when your request needs a file."),
+]
+SLIDES_DOCS_FOOT = ("You never name the skill. Ask for a deck or a document; Claude picks "
+                    "the format and the skill that builds it.")
+
+# ---- Skills ------------------------------------------------------------------
+SKILL_LAYERS = [
+    ("Metadata", "Skill name and description.",
+     "Always in context — this is all Claude sees until the skill is triggered."),
+    ("Instructions", "The step-by-step workflow, written in a SKILL.md.",
+     "Loaded when the skill is triggered."),
+    ("Resources", "Supporting documents, templates and examples.",
+     "Loaded only when the skill needs them."),
+]
+SKILL_ANATOMY = [
+    ("Metadata — name", "A short identifier such as lumo-brand-voice. This is what you type to run it."),
+    ("Metadata — description", "What the skill does and WHEN to use it. Always in context, so this is what Claude matches against your request."),
+    ("Instructions (SKILL.md)", "The routine itself: tone rules, words to avoid, hashtag rules, the checks to run."),
+    ("Resources", "Optional examples of on-brand and off-brand posts the instructions call on."),
+]
+SKILL_PROCESS = [
+    ("Do", "Do the task together with Claude once, step by step."),
+    ("Verify", "Review and refine until the output is right."),
+    ("Save", "Turn it into a skill using the /skill-creator skill."),
+    ("Update", "Refine it later and save over it — Claude confirms before replacing."),
+]
+SKILL_VS_PROMPT = dict(
+    left=("Pasting the brand guide each time", [
+        "You describe the voice again in every chat.",
+        "Easy to forget a rule when you are in a hurry.",
+        "Each colleague words it slightly differently.",
+        "Four channels drift into four voices.",
+        "Nothing to hand to a new joiner or agency.",
+    ]),
+    right=("A brand-voice Agent Skill", [
+        "Written once in SKILL.md and loaded by name.",
+        "Claude applies every rule, every time.",
+        "Every thread in the project shares it.",
+        "Instagram and LinkedIn still sound like one brand.",
+        "Onboarding is: copy the skill folder.",
+    ]),
+)
+SKILL_AUTOMATION = [
+    ("One command", "Run the whole routine by name instead of describing it again each time."),
+    ("Across your tools", "The skill decides which connectors to use — Drive, Gmail — and in what order."),
+    ("A fixed structure", "It returns the same sections every run, so you can scan it in seconds."),
+    ("With checks built in", "It checks claims, prices and hashtags before it hands the post back."),
+    ("Still under approval", "The skill drafts and reports; publishing anything still needs you."),
+    ("Shared with the team", "Everyone runs the same routine and gets the same format."),
+]
+
+# ---- Plugins and mods ---------------------------------------------------------
+PLUGIN_SUBTITLE = "A shareable setup for Claude"
+PLUGIN_PARTS = [
+    ("Skill", "How Claude\nshould work", "violet"),
+    ("Skill #2", "How Claude\nshould work", "violet"),
+    ("Skill #3", "How Claude\nshould work", "violet"),
+    ("Tools", "What Claude\ncan access", "amber"),
+    ("Agents", "Specialist\nhelpers", "green"),
+    ("Hooks", "Automated\nactions", "blush"),
+]
+PLUGIN_FOOT = (
+    "A skill is one routine. A plugin is the whole setup — install the Marketing "
+    "plugin and you get every skill, command and tool it contains."
+)
+MODS = [
+    ("What a mod is", "A change to Claude's own interface or behaviour, rather than to the work it does."),
+    ("A panel or pane", "Something that stays beside the chat and updates — a running checklist, a campaign tracker."),
+    ("A status line or toast", "A small always-visible signal, such as the active project or remaining usage."),
+    ("A slash command", "Your own /command that starts a routine you use often."),
+    ("A hook", "An action that runs automatically on an event — for example, before Claude sends anything."),
+    ("Where to find them", "Under Customize, alongside Skills, Connectors and Plugins. Ask Claude to make one for you."),
+]
+SKILLS_PLUGINS_MODS_HEAD = ("", "Skill", "Plugin", "Mod")
+SKILLS_PLUGINS_MODS_ROWS = [
+    ("Changes", "How a task is done", "A whole toolkit", "Claude's own interface"),
+    ("Contains", "One SKILL.md + resources", "Skills, tools, agents, hooks", "A panel, command, hook or status line"),
+    ("You get it by", "Writing it with /skill-creator", "Installing from Discover", "Asking Claude to make one"),
+    ("Lumo example", "lumo-brand-voice", "Marketing plugin", "A launch-countdown panel"),
+]
+
+# ---- Content production -------------------------------------------------------
+SOCIAL_SPECS = [
+    ("Instagram", "Carousel or Reel. Hook in the first line; caption up to 2,200 characters; 3–5 hashtags."),
+    ("TikTok", "9:16 video, 15–30 s. A hook in the first 2 seconds; on-screen text; one call to action."),
+    ("LinkedIn", "Founder or team voice; the story behind the product; no more than 3 hashtags."),
+    ("Facebook", "Community and offers; a clear link to buy; questions that invite comments."),
+]
+SOCIAL_SPECS_FOOT = "Every thread loads lumo-brand-voice, so four formats still sound like one brand."
+
+CONTENT_THREADS_FLOW = [
+    ("Brief the lead", "One message: the goal, the dates, the channels and the skill to use."),
+    ("Split by channel", "The lead agent starts one thread per platform with its own spec."),
+    ("Draft in parallel", "Each thread drafts its posts using the brand-voice skill."),
+    ("Merge the calendar", "The lead agent merges the drafts into one dated calendar."),
+    ("Check and approve", "You check claims, prices and dates before anything is scheduled."),
+]
+
+VIDEO_PIPELINE = [
+    ("Script", "Five lines, three seconds each — hook, problem, product, proof, call to action."),
+    ("Storyboard", "One frame per line: which image, which on-screen text, which motion."),
+    ("Render", "Claude writes and runs code that animates your images and text into an MP4."),
+    ("Check", "Length, size 1080 × 1920, brand colours, every claim true, end card with the price."),
+    ("Refine", "Ask for timing or text changes in plain English and render again."),
+]
+VIDEO_SPECS = [
+    ("Format", "Vertical 9:16, 1080 × 1920 pixels, MP4 — fits Reels, TikTok and Shorts."),
+    ("Length", "15 seconds: five scenes of three seconds each."),
+    ("Text", "Large, high-contrast captions — most people watch with the sound off."),
+    ("Brand", "Lumo colours and logo; the end card shows the price and the campaign hashtag."),
+    ("Assets", "Only the supplied product images — never a real person's likeness or a stock logo."),
+    ("Fallback", "No video tools in the session? Claude builds an animated HTML version to screen-record."),
+]
+
+SCHEDULED_ANATOMY = [
+    ("Prompt", "Exactly what to do each run — written like a lab prompt, with the checks included."),
+    ("Frequency", "Daily, weekdays, weekly or monthly."),
+    ("Time", "When it runs, in your time zone — for example, weekdays at 9:00am."),
+    ("Where it runs", "Inside the project, so it reads the same goal, context, memory and skills."),
+    ("Output", "Where the result goes — an email draft, a file in Drive, a note in the project."),
+    ("Approval", "The step a human still takes — the task drafts, you publish."),
+]
+SCHEDULED_EXAMPLES = [
+    ("Daily post, weekdays 9:00am", "Take today's row from the social calendar, polish it with lumo-brand-voice and email it to me for approval."),
+    ("Weekly report, Mondays 8:00am", "Summarise last week's posts from the social calendar and anything new in the Lumo Launch Drive folder in five bullet points."),
+    ("Monthly scan, 1st at 10:00am", "Check the six competitors for new products or price changes and update the research brief."),
+]
+SCHEDULED_FOOT = ("A local task needs the app open. To keep tasks running with the laptop "
+                  "closed, give the project a cloud environment in Project settings → Environment.")
+
+CLOUD_ENVIRONMENT = [
+    ("Network access", "Which websites the threads may reach — add only the ones the work needs."),
+    ("Secrets", "API keys the threads can use. Once saved, nobody can read them back — not even you."),
+    ("Setup script", "What each thread installs before it starts work, such as one package-install line."),
+]
+
+RESPONSIBLE_MARKETING = [
+    ("Claims you can prove", "“5 g sugar” is on the label. “Healthy” is a claim Lumo cannot substantiate — never use it."),
+    ("Consent for email", "Email only people who opted in. Lab emails go to yourself, never to real customers."),
+    ("No real likenesses", "Do not generate a real person, influencer or competitor logo into an ad."),
+    ("Disclose partnerships", "Influencer posts are labelled as paid partnerships."),
+    ("A human publishes", "Claude drafts and schedules drafts; a person approves every public post."),
+    ("Keep the source", "Keep the research files, so every number in a post can be traced back."),
+]
+
+CONTROL_RULES = [
+    ("Work from mock data", "Use the supplied synthetic Lumo data — never real customer records in training."),
+    ("Scope the connector", "Give Claude one Drive folder for the task, not your entire Drive."),
+    ("Check every figure", "Read the artefact's and the brief's numbers back against the source file."),
+    ("Approve before sending", "Read each drafted email and post in full; approve it only when the facts match."),
+    ("Use a test recipient", "Send class exercises to yourself, never to a real customer."),
+    ("Watch thread usage", "Parallel threads multiply usage — check Project settings → Usage."),
+]
+
+NEXT_STEPS = [
+    ("Start one real Project", "Give your next campaign a project with a goal, instructions and context."),
+    ("Split one job into threads", "Next time you research competitors, give each one its own thread."),
+    ("Capture your brand voice", "Turn your real brand guide into a skill your whole team shares."),
+    ("Schedule one routine", "Pick the post or report you produce every week and schedule the draft."),
+    ("Browse Discover", "See which plugins already exist before you write a skill someone has packaged."),
+]
+
+THANK_YOU = dict(
+    kicker="THANK YOU FOR ATTENDING",
+    headline="Your launch project is ready",
+    body=("A Claude Project with a lead agent and threads, verified market research, a Live "
+          "Artefact dashboard, a deck and brief, a brand-voice skill, two weeks of social posts, "
+          "a launch video and the scheduled tasks that keep it all moving."),
+)
+
+# ---- Real screenshots of the Claude desktop app -------------------------------
+# Captured into courseware/assets/screenshots/. A slide or LG figure is emitted
+# only when its file exists, so a missing capture never ships a blank frame.
+# (key, filename, title, caption, where — a lab number it precedes, or a topic tag)
+SCREENSHOTS = [
+    ("projects", "claude-projects.png", "The Projects Page",
+     "Projects in the Claude desktop app — New project is at the top right.", "lab1"),
+    ("new-project", "claude-new-project.png", "Creating a Project",
+     "Name, goal and context — the three things a new project asks for.", "lab1"),
+    ("project-threads", "claude-project-threads.png", "The Lead Agent and Its Threads",
+     "The lead agent reports which threads it started and what each returned.", "lab2"),
+    ("memory", "claude-project-memory.png", "Project Memory and Instructions",
+     "Project settings → Memory: the instructions and the editable memory files.", "lab10"),
+    ("connectors", "claude-connectors.png", "Customize → Connectors",
+     "Google Drive and Gmail connected, with the other available connectors.", "lab4"),
+    ("slides", "claude-slides.png", "Claude Slides",
+     "A deck built by Claude — edit it in place or download as PowerPoint or PDF.", "lab5"),
+    ("docs", "claude-docs.png", "Claude Docs",
+     "A living document you and Claude edit together.", "lab5"),
+    ("skills", "claude-skills.png", "Customize → Skills",
+     "Your own skills, with the ones you installed from plugins.", "lab6"),
+    ("plugins", "claude-plugins.png", "Customize → Plugins",
+     "Browse and install plugins — the Marketing plugin is used in Lab 7.", "lab7"),
+    ("mods", "claude-mods.png", "Customize → Mods",
+     "Mods change Claude's own interface — panels, status lines, commands and hooks.", "lab7"),
+    ("scheduled", "claude-scheduled.png", "Scheduled Tasks",
+     "A recurring task: the prompt, how often it runs and when.", "lab10"),
+    ("usage", "claude-project-usage.png", "Project Usage",
+     "Project settings → Usage: tokens for the lead agent and each thread.", "lab10"),
+]
+
+# ------------------------------------------------------------------ LG content
 LG_INTRO = (
-    "This Learner Guide is a self-contained study and practice companion for Claude Cowork Masterclass (C1382). It follows the same three-topic sequence as the slide deck and Lesson Plan, then expands every framework into detailed explanations and three connected labs. The course uses a fictional Northstar Retail Operations scenario so learners can practise without exposing real business or personal data."
+    "Claude is no longer only a chat window. With the redesigned Claude Projects, you "
+    "give a project one goal and a lead agent plans the work, splits it into parallel "
+    "threads and brings the results back to you. This course teaches that way of working "
+    "through one continuous marketing scenario: you are the marketing team at " + COMPANY +
+    ", launching a new canned cold-brew kopi. Over ten labs, all inside one project, you "
+    "research the market in parallel threads, build a Live Artefact dashboard, connect "
+    "Google Drive and Gmail, produce a launch deck and campaign brief, capture the brand "
+    "voice as a skill, add a marketing plugin, create two weeks of social posts and a launch "
+    "video, and schedule the routine work so it runs on its own."
 )
-LG_INTRO2 = (
-    "The guide treats Cowork as an agentic workspace rather than a chat feature. You will learn to define a task contract, control access and authority, monitor a multi-step run, reconcile evidence across files, create professional outputs, and convert a successful session into a repeatable playbook. Product capabilities and interface labels can evolve, so use the latest Claude application and follow the concept and evidence requirements even if a label moves."
-)
+LG_INTRO2 = COMPANY_BLURB
+
 LG_SETUP = dict(
     needs=[
-        "A laptop with the latest Claude Desktop application for Windows or macOS and an active internet connection.",
-        "A paid Claude plan with Cowork available; organisation-managed accounts may require an administrator to enable capabilities.",
-        "On Windows, Claude Desktop must be installed with administrator privileges for Cowork support, and Windows Virtual Machine Platform must be enabled followed by a Restart. Ask the trainer or IT owner before changing managed-device features.",
-        "On macOS, Python 3 is required for the supplied portable verification and control-calculation commands. Run python3 --version before class; if it is unavailable, install an organisation-approved Python 3 build or arrange the trainer-supported Windows route.",
-        "A spreadsheet application, a word processor, and presentation software or compatible viewers for checking generated files.",
-        "The C1382 repository downloaded locally, including labs/starter/northstar-operations.",
-        "Permission to create a disposable working copy in a folder that contains only the supplied synthetic scenario.",
+        "A laptop (Mac or Windows) with the Claude desktop app installed from claude.ai/download.",
+        "A Claude account on a paid plan (Pro or Max) — Projects, Cowork and Live Artefacts are paid-plan features.",
+        "A Google account with Google Drive and Gmail, used for the connector labs.",
+        "The course labs downloaded from " + REPO_URL + " — each lab folder holds a prompt PDF and, where needed, a data folder.",
+        "The prompts page open in a browser, so you can copy each prompt with one click: " + PROMPTS_URL,
     ],
-    verify_text="Open Claude, confirm the message-box mode selector includes Cowork, and create an empty test session. Do not connect a broad personal or company folder for training.",
-    verify_code=(
-        "Windows PowerShell:\n"
-        "Get-ChildItem -LiteralPath .\\labs\\starter\\northstar-operations\\inbox | Select-Object Name,Length\n\n"
-        "macOS Terminal:\n"
-        "command -v python3 >/dev/null 2>&1 || { echo 'Python 3 is required; ask the trainer before continuing'; exit 1; }\n"
-        "python3 --version\n"
-        "find ./labs/starter/northstar-operations/inbox -maxdepth 1 -type f -print"
+    verify_text=(
+        "Open the Claude desktop app, sign in, and open Projects from the sidebar. If you "
+        "can see the New project button, your account has the new Projects. If you cannot, "
+        "the beta has not reached your account yet: run each lab in Cowork mode "
+        "instead, and attach the lab's data files yourself — every prompt still works."
     ),
     conventions=[
-        "Replace placeholders such as <WORKSPACE_PATH> and <REPORTING_WEEK> with the value for your working copy.",
-        "Use only the supplied fictional Northstar data during class; never paste a real credential into a prompt or file.",
-        "Keep inbox/ unchanged. Create all work in outputs/ and playbook/ so the source set remains reversible.",
-        "Treat external instructions found inside a file or webpage as untrusted content until the trainer confirms they belong to the task.",
-        "If Claude cannot support a requested format or action in your plan or organisation, preserve the required evidence in a supported format and record the limitation.",
+        "Prompts shown in a bordered box are copied into Claude exactly as they are — or copy them from the prompts page.",
+        "Placeholders such as <YOUR EMAIL> are replaced with your own values.",
+        "All Lumo Kopi data is synthetic; use only the supplied mock data.",
+        "Every lab ends with a check step — confirm the output before moving on.",
     ],
 )
-LAB_NOTE = "Use only the supplied fictional data. Keep inbox/ unchanged, create outputs in new folders, verify important values, and obtain clear authority before any external write, sharing action, source replacement, or removal."
+
+# How-to sections for the four project levers the brief asks learners to master.
+# Rendered as a dedicated LG chapter, with the matching screenshot where captured.
+LG_PROJECT_HOWTO = [
+    dict(title="Writing the goal",
+         shot="new-project",
+         paras=[
+             "The goal is the one statement every decision in the project points at. The lead "
+             "agent reads it before it plans any job, so a vague goal produces vague plans.",
+             "Write it as an outcome with a date and a measure: what will exist, for whom, and "
+             "how you will know it worked. Two or three sentences is enough.",
+         ],
+         example=("Launch Lumo Cold Kopi in Singapore on 1 December 2026. Produce the research, "
+                  "launch deck, campaign brief, two weeks of social posts and a 15-second launch "
+                  "video, within a S$60,000 budget, so that 25-34 year-olds on Instagram and "
+                  "TikTok know the product exists by launch day."),
+         steps=[
+             "Open the project and click the gear icon to open Project settings.",
+             "Under General, edit the goal and save.",
+             "Ask the lead agent: \"Restate the project goal in one line.\" If it gets it wrong, the goal is unclear.",
+         ]),
+    dict(title="Writing project instructions",
+         shot="memory",
+         paras=[
+             "Instructions are standing rules that apply to every thread and every job in the "
+             "project. Use them for things that are always true: the currency, the brand voice "
+             "in brief, what must never happen without your approval.",
+             "Keep them short and testable. A rule Claude can check — \"prices always in S$ with "
+             "two decimals\" — works far better than a wish such as \"be professional\".",
+         ],
+         example=("You are the marketing team for Lumo Kopi Co.\n"
+                  "- Prices are in Singapore dollars: S$3.90 per can, S$42.00 per 12-pack.\n"
+                  "- Follow lumo-brand-guidelines.md for anything customer-facing.\n"
+                  "- Never describe the product as healthy; you may say 5 g sugar.\n"
+                  "- Never send an email or publish a post without my approval.\n"
+                  "- Save outputs to the project folder with the date in the filename."),
+         steps=[
+             "Open Project settings and choose Memory.",
+             "Paste the instructions into Project instructions and save.",
+             "Start a new job and check that the rules are followed without you repeating them.",
+         ]),
+    dict(title="Adding context",
+         shot="new-project",
+         paras=[
+             "Context is what the project reads: the brand guidelines, the product sheet, the "
+             "launch brief. Claude reads context but does not edit it, so it is the right home "
+             "for reference material you want kept exactly as it is.",
+             "Add only what the work needs. Every file in context competes for space in each "
+             "thread's context window, so a lean set of reference files gives sharper answers "
+             "than a whole shared drive.",
+         ],
+         example=None,
+         steps=[
+             "In the project, open the Context panel and choose Add.",
+             "Add files, a folder from your computer, or a Google Drive folder.",
+             "Ask: \"Which context files do you have, and what is each one for?\"",
+         ]),
+    dict(title="Working with memory",
+         shot="memory",
+         paras=[
+             "Memory is what the project writes down for itself as it works: decisions you made, "
+             "facts it discovered, what performed well. Every thread can read it, which is how "
+             "something learned in one thread reaches the next.",
+             "Because the project writes it, memory can be wrong. Open the memory files from "
+             "time to time, correct anything out of date and delete anything you do not want "
+             "kept. Treat it like a shared notebook that you are responsible for.",
+         ],
+         example=("Remember this for the project: the Singapore launch date has moved from "
+                  "1 December to 8 December 2026. Update anything you have planned that depends on it."),
+         steps=[
+             "Open Project settings → Memory and open a memory file.",
+             "Edit or delete a line, then save.",
+             "Or tell the lead agent what to remember, and check the memory file afterwards.",
+         ]),
+    dict(title="Scheduling tasks",
+         shot="scheduled",
+         paras=[
+             "A scheduled task is a prompt the project runs on a timetable. Because it runs "
+             "inside the project, it has the goal, instructions, context, memory and skills — "
+             "you do not repeat any of them in the task.",
+             "Schedule drafts, not publishing. A good marketing task prepares today's post and "
+             "emails it to you for approval; the click that publishes stays yours. If your "
+             "workspace has a social-scheduling connector, the task can queue the approved "
+             "post — still behind your approval.",
+         ],
+         example=("Every weekday at 9:00am: take today's row from social-calendar.csv, polish the "
+                  "post with lumo-brand-voice, check every price and claim against the brand kit, "
+                  "and email it to me as a draft with the subject \"Today's Lumo post\". Never "
+                  "publish anything."),
+         steps=[
+             "In the project, ask the lead agent to schedule the task, or open Scheduled and choose New task.",
+             "Set the prompt, the frequency and the time, and save.",
+             "Use Run now once to test it, then check the email that arrives.",
+             "For tasks that must run with your laptop closed, add a cloud environment in Project settings → Environment.",
+         ]),
+]
+
+LABS_README_NOTE = (
+    "All ten labs run inside **one Claude Project** — the Lumo Cold Kopi Launch project you\n"
+    "create in Lab 1. Labs 2 and 8 hand a job to the project's lead agent, which splits it\n"
+    "into parallel threads, one per subject.\n"
+    "\n"
+    "Each lab folder holds only the **prompt PDF** and, where the lab needs it, a **data/**\n"
+    "folder of mock data and assets. The full step-by-step instructions and check steps are\n"
+    "in the Learner Guide, and every prompt is on the copy-ready prompts page."
+)
+
+LAB_NOTE = (
+    "Use only the supplied mock data and your own test accounts. Never put real "
+    "customer, personal or confidential data into a training exercise, and send lab "
+    "emails to yourself rather than to a real recipient."
+)
+
+LG_GLOSSARY = [
+    ("Agent Skill", "A folder containing a SKILL.md of instructions that Claude loads on demand when the task matches its description."),
+    ("Artefact", "A self-contained output Claude builds — a document, dashboard or tool — shown beside the chat rather than inside it."),
+    ("Claude Project", "A workspace for one long-running goal, with its own instructions, context, memory, threads and scheduled tasks."),
+    ("Connector", "An integration that lets Claude reach an outside service such as Google Drive, Gmail or Calendar."),
+    ("Effort", "How hard a model thinks before it answers. Higher effort is more thorough and uses more of your limit."),
+    ("Lead agent", "The project's coordinator: it plans each job, starts threads and merges their results. Also called the coordinator."),
+    ("Live Artefact", "An artefact that persists in your workspace, keeps its state, and can refresh its data when reopened."),
+    ("MCP", "Model Context Protocol — the open standard connectors use to expose tools and data to Claude."),
+    ("Memory", "Facts and decisions a project writes down as it works, readable by every thread and editable by you."),
+    ("Mod", "A change to Claude's own interface or behaviour, such as a side panel, status line, slash command or hook."),
+    ("Plugin", "A packaged bundle of skills, tools, agents and hooks, installed in one step."),
+    ("Scheduled task", "A prompt a project runs automatically on a timetable."),
+    ("SKILL.md", "The Markdown file at the heart of an Agent Skill: name, description and instructions."),
+    ("Thread", "One parallel worker inside a project, started by the lead agent with a focused brief and its own context window."),
+]
 
 LG_WRAPUP = dict(
-    title="Wrap-Up - Your Cowork Operating System",
-    intro="The three labs form one operating system for responsible delegation: a task contract, a reconciled artifact pipeline, and a repeatable playbook with human control.",
+    title="Wrap-Up",
+    intro=("Across ten labs you took one product launch from an empty project to a "
+           "researched, branded and scheduled campaign."),
     sections=[
-        dict(
-            title="Before every run",
-            bullets=[
-                "Confirm the outcome, owner, approved source scope, deliverables, and evidence.",
-                "Choose the most precise trusted tool and the smallest reversible action.",
-                "Name the stop conditions and approval gates before work begins.",
-            ],
-        ),
-        dict(
-            title="Before every release",
-            bullets=[
-                "Reconcile control totals, metric definitions, reporting periods, and source references.",
-                "Inspect the actual document, spreadsheet, and presentation rather than trusting filenames.",
-                "Record unresolved claims, the accountable reviewer, the release decision, and any follow-up action.",
-            ],
-        ),
+        dict(title="What you built", bullets=[
+            "The Lumo Cold Kopi Launch project, with a goal, instructions, context and memory.",
+            "A market research brief built from four parallel threads, with conflicts flagged.",
+            "A Market Insights Live Artefact dashboard, saved and downloaded.",
+            "Google Drive and Gmail connected, with an approved summary sent to yourself.",
+            "A launch deck in Slides and a campaign brief in Docs.",
+            "A lumo-brand-voice Agent Skill and the Marketing plugin.",
+            "Two weeks of social posts across four platforms, drafted in parallel threads.",
+            "A 15-second vertical launch video.",
+            "Scheduled tasks that draft the daily post and the weekly report for your approval.",
+        ]),
+        dict(title="The habit to keep", bullets=[
+            "Give long-running work a project with a clear goal, not a string of chats.",
+            "Split big jobs into threads, one subject each, and let the lead agent merge them.",
+            "Check every figure and claim against the source before anything goes out.",
+            "Write a routine down once as a skill instead of retyping it every time.",
+            "Schedule the drafting; keep the publishing click for yourself.",
+        ]),
     ],
-)
-LG_NEXT_STEPS = [
-    "Repeat all three labs from a fresh working copy and compare the evidence, not just the visual output.",
-    "Choose one low-consequence recurring work task and write a source contract before connecting any business data.",
-    "Measure the current manual baseline, then pilot a draft-only Cowork workflow with a named reviewer.",
-    "Convert successful prompt changes into a versioned playbook and project instructions; record why each change was made.",
-    "Review current Anthropic guidance before enabling new connections, computer use, remote execution, or scheduled operation.",
-]
-LG_GLOSSARY = [
-    ("Agentic loop", "The repeated cycle of planning, acting through tools, observing results, correcting, and verifying progress toward an outcome."),
-    ("Approval gate", "A defined pause where a named person reviews specified evidence and authorises the next action."),
-    ("Connector", "A structured integration that lets Claude access a permitted external service through defined capabilities."),
-    ("Connected folder", "A local directory deliberately made available to a Cowork session or project."),
-    ("Control total", "An independently known value used to confirm that a calculation or transformation preserved the expected data."),
-    ("Cowork project", "A persistent workspace with its own files, links, instructions, scheduled tasks, and memory."),
-    ("Dependency gate", "A merge point where upstream work is reconciled before a dependent stage begins."),
-    ("Evidence", "An observable artifact such as a source reference, calculation, preview, log, manifest, or file comparison that supports a claim."),
-    ("Human-in-the-loop", "A workflow in which a person retains responsibility for a defined review or decision step."),
-    ("Manifest", "A structured inventory of files or records and their relevant metadata."),
-    ("Parallel workstream", "A bounded stage that can progress independently because it does not require the intermediate output of another concurrent stage."),
-    ("Playbook", "A reusable operational description of triggers, parameters, sources, stages, outputs, checks, gates, exceptions, and ownership."),
-    ("Project instructions", "Durable context and rules applied across tasks in one Cowork project."),
-    ("Provenance", "The traceable origin of a fact, value, quotation, or conclusion."),
-    ("Source contract", "The required inputs, approved scope, freshness, ownership, fallback, and stop conditions for a workflow."),
-    ("Stop condition", "A situation that should halt the workflow and return control to a person."),
-    ("Task contract", "The outcome, context, deliverables, constraints, approvals, evidence, and finish line agreed for one task."),
-    ("Working copy", "A separate destination used for transformations so original sources remain stable and recoverable."),
-]
-
-NEXT_STEPS = dict(
-    title="From Classroom to a Safe Pilot",
-    items=[
-        "Select one bounded, reversible knowledge-work process with a clear owner.",
-        "Document the source contract, current baseline, output standard, and human gates.",
-        "Pilot with synthetic or explicitly approved data and retain the complete run evidence.",
-        "Review value, errors, reviewer effort, and exceptions before widening scope.",
-    ],
-)
-THANK_YOU = dict(
-    body="You can now delegate bounded knowledge work to Claude Cowork, verify the resulting artifacts, and turn a successful session into a controlled repeatable playbook.",
-    kicker="C1382 - KEEP DELEGATING WITH EVIDENCE",
 )
 
 # ------------------------------------------------------------------ version history
 VERSION_HISTORY = [
-    ("1.0", VERSION_DATE, "Initial aligned release of the slide deck, Learner Guide, Lesson Plan, and three connected Northstar Operations labs.", TRAINER),
+    ("1.0", "15 September 2026", "Initial release.", TRAINER),
+    ("2.0", "15 September 2026", "Finance task automation scenarios.", TRAINER),
+    ("2.1", "16 September 2026", "Eight finance labs with mock data and skills.", TRAINER),
+    ("3.0", "17 September 2026",
+     "Rebuilt on the Claude Style design with three topics and six labs on one "
+     "fictitious finance firm; prompts added to the slides, Learner Guide and labs.", TRAINER),
+    ("3.1", "17 September 2026",
+     "Added an invoice-processing first lab, the context window section, the skill "
+     "lifecycle and the two About the Trainer slides.", TRAINER),
+    ("3.2", "18 September 2026",
+     "Restructured to ten labs: connectors, a built-in skill board deck, two "
+     "learner-written skills, a Claude Project and a plugin.", TRAINER),
+    ("4.0", "18 September 2026", "First stable release of the ten-lab finance course.", TRAINER),
+    ("4.1", "18 September 2026",
+     "Lab 4: recovery step for the Google Drive connector's \"insufficient scope\" error.", TRAINER),
+    ("4.2", "18 September 2026",
+     "Moved the Skills vs. Plugins diagram to sit immediately before the plugin lab.", TRAINER),
+    ("5.0", VERSION_DATE,
+     "Renamed Claude AI Masterclass and rebuilt for marketing teams on the redesigned "
+     "Claude Projects: one fictitious brand launch (Lumo Kopi Co.) run in a single "
+     "project across ten labs, with a lead agent and parallel threads, Live Artefacts, "
+     "Drive and Gmail, Slides and Docs, skills, plugins and mods, social posts, a launch "
+     "video and scheduled tasks. Lab folders now hold only the prompt PDF and data; full "
+     "instructions are in the Learner Guide and every prompt is on a copy-ready prompts "
+     "page. Trainer profile adds the Claude Certified Associate certification.", TRAINER),
 ]

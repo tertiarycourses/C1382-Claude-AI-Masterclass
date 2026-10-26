@@ -1,48 +1,63 @@
-# Claude Cowork Masterclass — Labs
+# Claude AI Masterclass — Labs
 
-Meridian Capital Partners is a fictitious Singapore-based investment and advisory firm with four revenue desks — Advisory, Asset Management, Private Credit and Corporate Finance. All figures, clients, staff and documents in this course are synthetic and used for training only.
+Lumo Kopi Co. is a fictitious Singapore coffee brand about to launch Lumo Cold Kopi — a ready-to-drink oat-milk kopi cold brew in a 240 ml can — in Singapore on 1 December 2026 and Kuala Lumpur in January 2027. You are its marketing team. All brands, figures, survey answers and documents in this course are synthetic and used for training only.
 
-Ten labs, one continuous build, opening with Process a Folder of Invoices.
-Every lab after it extends the same scenario, so work through them in order.
+Ten labs, one continuous build, opening with Set Up the Lumo Launch Project.
+Every lab after it extends the same project, so work through them in order.
 
-Lab 3b is an optional extra on the same footing as Lab 3: where Lab 3 uses an
-artefact to **show** data, Lab 3b uses one to **collect** it, filling a real
-4-page insurance PDF. Nothing later depends on it, so skip it if time is short.
+## The scenario — The Lumo Cold Kopi launch
 
-Topic 02 runs in two halves. Labs 4 and 5 are the **tools** demo — connectors
-reaching data outside the chat. Labs 6, 7 and 8 are the **skills** demo: Lab 6
-watches a built-in skill do the work, then Labs 7 and 8 use `/skill-creator` to
-write skills of your own.
+**The situation.** It is late October 2026. Lumo Kopi Co. launches Lumo Cold Kopi, its first ready-to-drink canned kopi, in Singapore on 1 December — six weeks away — and in Kuala Lumpur in January. The marketing team is small, the budget is S$60,000, and nothing has been produced yet: no research, no deck, no posts, no video.
 
-Topic 03 is about work becoming shareable. Lab 9 packages your own setup into a
-project folder a colleague can open; Lab 10 installs a toolkit somebody else
-packaged. Same idea, opposite direction.
+**Your role.** You are the Lumo marketing team. Instead of juggling a dozen separate chats, you run the whole launch from one Claude Project. Its lead agent plans each job, starts parallel threads for the pieces, and brings the results back for you to check and approve.
 
-| Lab | Topic | Title | You build |
-|---|---|---|---|
-| 01 | 01 Claude Cowork Fundamentals | [Process a Folder of Invoices](lab-01-invoices-to-csv/INSTRUCTIONS.md) | An invoices_2025.csv summary plus the PDFs filed into YEAR-MONTH folders. |
-| 02 | 01 Claude Cowork Fundamentals | [Your First Live Artefact](lab-02-first-live-artefact/INSTRUCTIONS.md) | An FX converter as a saved artefact, plus a downloadable HTML version with live rates. |
-| 03 | 01 Claude Cowork Fundamentals | [The Meridian Sales Dashboard](lab-03-sales-dashboard-live-artefact/INSTRUCTIONS.md) | A saved Live Artefact dashboard showing Meridian's FY2025 revenue by desk. |
-| 03b | 01 Claude Cowork Fundamentals | [Fill a Claim Form from an Artefact](lab-03b-claim-form-artefact/INSTRUCTIONS.md) | A claim-form artefact that collects the answers, plus a genuinely filled claimants-statement-FILLED.pdf. |
-| 04 | 02 Tools and Skills | [Connect Google Drive](lab-04-connect-google-drive/INSTRUCTIONS.md) | A working Google Drive connection scoped to the Meridian finance folder. |
-| 05 | 02 Tools and Skills | [Refresh the Dashboard and Send the Summary](lab-05-gmail-summary-delivery/INSTRUCTIONS.md) | An updated dashboard plus an approved quarterly summary email sent to yourself. |
-| 06 | 02 Tools and Skills | [Generate the Meridian Board Deck](lab-06-meridian-board-deck/INSTRUCTIONS.md) | A board-ready PowerPoint with charts and Q4 recommendations, built by Claude's built-in pptx skill. |
-| 07 | 02 Tools and Skills | [Build a /daily-brief Skill](lab-07-daily-brief-skill/INSTRUCTIONS.md) | A daily-brief Agent Skill you can run by name each morning, updated once and scheduled to run itself at 9am. |
-| 08 | 02 Tools and Skills | [Brand the Board Deck](lab-08-brand-the-board-deck/INSTRUCTIONS.md) | A brand-deck Agent Skill that applies the Meridian house style to any presentation. |
-| 09 | 03 Claude Projects and Plugins | [Build the Meridian Claude Project](lab-09-meridian-claude-project/INSTRUCTIONS.md) | A Meridian Finance Reporting project holding the data, instructions, skills and dashboard. |
-| 10 | 03 Claude Projects and Plugins | [Add the Productivity Plugin](lab-10-productivity-plugin/INSTRUCTIONS.md) | The Productivity plugin installed, with a TASKS.md tracking your Meridian follow-ups. |
+**The mission.** By the end of the day the project holds everything the launch needs — verified market research, a dashboard, a deck and brief, a brand-voice skill, two weeks of social posts, a launch video — and scheduled tasks that keep it moving while you are away.
+
+All ten labs run inside **one Claude Project** — the Lumo Cold Kopi Launch project you
+create in Lab 1. Labs 2 and 8 hand a job to the project's lead agent, which splits it
+into parallel threads, one per subject.
+
+Each lab folder holds only the **prompt PDF** and, where the lab needs it, a **data/**
+folder of mock data and assets. The full step-by-step instructions and check steps are
+in the Learner Guide, and every prompt is on the copy-ready prompts page.
+
+**Copy-ready prompts:** every prompt below is also on the [Lab Prompts page](https://tertiarycourses.github.io/C1382-Claude-AI-Masterclass/prompts/),
+with a one-click **Copy** button for each block.
+
+| Lab | Topic | Title | Prompt PDF | Data |
+|---:|---|---|---|---|
+| 01 | 01 Claude Projects and Market Research | Set Up the Lumo Launch Project | [PDF](lab-01-set-up-the-launch-project/lab-01-set-up-the-launch-project.pdf) | [3 files](lab-01-set-up-the-launch-project/data/) |
+| 02 | 01 Claude Projects and Market Research | Run Market Research in Parallel Threads | [PDF](lab-02-market-research-threads/lab-02-market-research-threads.pdf) | [3 files](lab-02-market-research-threads/data/) |
+| 03 | 01 Claude Projects and Market Research | Build the Market Insights Live Artefact | [PDF](lab-03-market-insights-artefact/lab-03-market-insights-artefact.pdf) | [2 files](lab-03-market-insights-artefact/data/) |
+| 04 | 02 Connectors, Skills and Plugins | Connect Google Drive and Gmail | [PDF](lab-04-connect-drive-and-gmail/lab-04-connect-drive-and-gmail.pdf) | [2 files](lab-04-connect-drive-and-gmail/data/) |
+| 05 | 02 Connectors, Skills and Plugins | Create the Launch Deck and Campaign Brief | [PDF](lab-05-launch-deck-and-brief/lab-05-launch-deck-and-brief.pdf) | — |
+| 06 | 02 Connectors, Skills and Plugins | Capture the Brand Voice as an Agent Skill | [PDF](lab-06-brand-voice-skill/lab-06-brand-voice-skill.pdf) | [1 file](lab-06-brand-voice-skill/data/) |
+| 07 | 02 Connectors, Skills and Plugins | Add the Marketing Plugin | [PDF](lab-07-marketing-plugin/lab-07-marketing-plugin.pdf) | — |
+| 08 | 03 Content Production and Scheduled Work | Create Social Media Posts in Parallel Threads | [PDF](lab-08-social-posts-threads/lab-08-social-posts-threads.pdf) | [1 file](lab-08-social-posts-threads/data/) |
+| 09 | 03 Content Production and Scheduled Work | Produce a 15-Second Launch Video | [PDF](lab-09-launch-video/lab-09-launch-video.pdf) | [5 files](lab-09-launch-video/data/) |
+| 10 | 03 Content Production and Scheduled Work | Schedule the Posts and Review the Project | [PDF](lab-10-schedule-and-review/lab-10-schedule-and-review.pdf) | — |
+
+## Lab objectives
+
+- **Lab 01.** By the end of this lab you can create a Claude Project with a goal, instructions, context and memory.
+- **Lab 02.** By the end of this lab you can hand a multi-subject research job to the lead agent and verify the merged brief.
+- **Lab 03.** By the end of this lab you can turn research data into an interactive Live Artefact dashboard and save it.
+- **Lab 04.** By the end of this lab you can connect Google Drive and Gmail, read campaign files from Drive and send an approved summary.
+- **Lab 05.** By the end of this lab you can produce a launch deck in Slides and a campaign brief in Docs from the project's research.
+- **Lab 06.** By the end of this lab you can rewrite content in the brand voice, verify it, and save the routine as a skill with /skill-creator.
+- **Lab 07.** By the end of this lab you can install a plugin and use its namespaced commands alongside your own skill.
+- **Lab 08.** By the end of this lab you can produce a two-week, four-platform social calendar with one thread per channel.
+- **Lab 09.** By the end of this lab you can script, storyboard and render a vertical launch video from supplied brand assets.
+- **Lab 10.** By the end of this lab you can schedule recurring project tasks, edit project memory and review thread usage.
 
 ## What each lab folder holds
 
-- `INSTRUCTIONS.md` — goal, prompt, numbered steps and the check step.
-- `PROMPT.md` — the ready-to-paste prompt on its own.
-- `TOOLS.md` — which tools and connectors the lab needs.
-- `CHECKLIST.md` — tick off each step as you go.
-- `mock-data/` — the synthetic Meridian files the lab uses (where applicable).
-- `outputs/` — save your finished work here.
+- `lab-NN-<name>.pdf` — the course scenario, the lab's scenario and objective, then the
+  steps with each prompt in a copy-friendly box under the step that sends it, and the check.
+- `data/` — the synthetic Lumo Kopi files and assets the lab uses (where it needs any).
 
-Lab 3b also carries a `FIELD-MAP.md` — the verified PDF field map, for the trainer.
+Labs with no `data/` folder work from what the project already holds.
 
 ## Ground rules
 
-Use only the supplied mock data and your own test accounts. Never put real client, personal or confidential data into a training exercise, and send lab emails to yourself rather than to a real recipient.
+Use only the supplied mock data and your own test accounts. Never put real customer, personal or confidential data into a training exercise, and send lab emails to yourself rather than to a real recipient.

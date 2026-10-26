@@ -81,6 +81,18 @@ def add_cover_page(doc, kind, title, version, conducted_by=ORG,
     _line(doc, f"Version {version}", 12, bold=True, color=BRAND)
     doc.add_paragraph().add_run().add_break(WD_BREAK.PAGE)
 
+def set_col_widths(table, widths_in):
+    """Fix a table's column widths (inches) in BOTH the grid and every cell, so
+    Word and LibreOffice agree on them."""
+    from docx.shared import Inches
+    table.autofit = False
+    grid = table._tbl.tblGrid
+    for gc, w in zip(grid.findall(qn("w:gridCol")), widths_in):
+        gc.set(qn("w:w"), str(int(w * 1440)))
+    for tr in table.rows:
+        for c, w in zip(tr.cells, widths_in):
+            c.width = Inches(w)
+
 def add_version_control(doc, rows):
     """rows: list of (version, effective_date, changes, author)."""
     h = doc.add_paragraph(); r = h.add_run("DOCUMENT VERSION CONTROL RECORD")
@@ -97,6 +109,9 @@ def add_version_control(doc, rows):
         cells = t.add_row().cells
         for i, val in enumerate(row):
             cells[i].text = ""; rr = cells[i].paragraphs[0].add_run(str(val)); rr.font.size = Pt(9.5)
+    # Give the summary column the room: with equal auto widths a long change
+    # summary wraps a few words per line and the record runs for pages.
+    set_col_widths(t, (0.8, 1.2, 3.0, 1.0))
     doc.add_paragraph().add_run().add_break(WD_BREAK.PAGE)
 
 def add_toc(doc, levels="1-3"):
@@ -127,3 +142,12 @@ def enable_update_fields(doc):
     """Tell Word to refresh all fields (TOC, PAGE) when the document opens."""
     settings = doc.settings.element
     uf = OxmlElement("w:updateFields"); uf.set(qn("w:val"), "true"); settings.append(uf)
+
+
+def set_properties(doc, title, subject=""):
+    """Author, title and subject in the file's properties, not the library defaults."""
+    import course_data as C
+    cp = doc.core_properties
+    cp.author = cp.last_modified_by = C.ORG
+    cp.title, cp.subject = title, subject
+    cp.comments = ""

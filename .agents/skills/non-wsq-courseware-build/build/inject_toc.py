@@ -8,7 +8,7 @@ numbers do not shift between passes.
 
 Usage: python3 inject_toc.py <docx> <pdf> [maxlevel]
 """
-import os, re, sys, tempfile, zipfile
+import sys, re
 from docx import Document
 from docx.shared import Pt, Inches, RGBColor
 from docx.enum.text import WD_TAB_ALIGNMENT, WD_TAB_LEADER
@@ -17,41 +17,6 @@ from pypdf import PdfReader
 
 def norm(s):
     return re.sub(r'[^a-z0-9]', '', s.lower())
-
-
-def update_document_statistics(docx_path, pages, text_parts):
-    """Populate the extended properties that python-docx leaves at 1/0."""
-    full_text = "\n".join(part for part in text_parts if part)
-    values = {
-        "Pages": pages,
-        "Words": len(re.findall(r"\b\w[\w'-]*\b", full_text, flags=re.UNICODE)),
-        "Characters": len(re.sub(r"\s", "", full_text)),
-        "CharactersWithSpaces": len(full_text),
-        "Lines": max(1, len(full_text.splitlines())),
-        "Paragraphs": sum(1 for part in text_parts if part.strip()),
-    }
-    with zipfile.ZipFile(docx_path, "r") as source:
-        members = [(item, source.read(item.filename)) for item in source.infolist()]
-    fd, temp_path = tempfile.mkstemp(suffix=".docx", dir=os.path.dirname(os.path.abspath(docx_path)))
-    os.close(fd)
-    try:
-        with zipfile.ZipFile(temp_path, "w") as target:
-            for item, data in members:
-                if item.filename == "docProps/app.xml":
-                    xml = data.decode("utf-8")
-                    for tag, value in values.items():
-                        xml = re.sub(
-                            fr"(<{tag}>).*?(</{tag}>)",
-                            fr"\g<1>{value}\g<2>",
-                            xml,
-                            count=1,
-                        )
-                    data = xml.encode("utf-8")
-                target.writestr(item, data)
-        os.replace(temp_path, docx_path)
-    finally:
-        if os.path.exists(temp_path):
-            os.unlink(temp_path)
 
 def main():
     docx_path, pdf_path = sys.argv[1], sys.argv[2]
@@ -75,21 +40,9 @@ def main():
     reader = PdfReader(pdf_path)
     pages = [norm(pg.extract_text() or "") for pg in reader.pages]
 
-    # 3) Locate the body after the rendered TOC. LibreOffice may populate the
-    #    placeholder field in pass 1, so searching from page 1 would match the
-    #    heading names inside the TOC itself rather than their body pages.
-    toc_page = next((i for i, page in enumerate(pages) if norm("TABLE OF CONTENTS") in page), None)
-    body_start = 0
-    if toc_page is not None and heads:
-        first_key = norm(heads[0][1])[:24]
-        body_start = next(
-            (i for i in range(toc_page + 1, len(pages)) if first_key and first_key in pages[i]),
-            toc_page + 1,
-        )
-
-    # 4) map each heading -> first body page (>= cursor) whose text contains it
+    # 3) map each heading -> first page (>= cursor) whose text contains it
     entries = []
-    cursor = body_start
+    cursor = 0
     for lvl, text in heads:
         key = norm(text)[:24]
         page = None
@@ -98,25 +51,27 @@ def main():
                 page = i + 1  # 1-based, matches footer "Page N"
                 cursor = i
                 break
-        if page is None:  # fallback: search from the body start, never the TOC
-            for i in range(body_start, len(pages)):
+        if page is None:  # fallback: search from start
+            for i in range(len(pages)):
                 if key and key in pages[i]:
                     page = i + 1
                     break
         entries.append((lvl, text, page or 1))
 
-    # 4b) Compensate only when the static TOC page count differs from the TOC
-    #     already rendered in pass 1. In normal LibreOffice builds both counts
-    #     match, so body page numbers remain unchanged.
-    LINES_PER_PAGE = 44
+    # 3b) a multi-page static TOC pushes every body page down between passes
+    #     (the pass-1 PDF was measured with the ~1-page placeholder). Offset by
+    #     the extra pages the injected TOC occupies. offset is 0 for small TOCs
+    #     (e.g. the Lesson Plan), so this never regresses single-page documents.
+    # Measured on a rendered Learner Guide: the heading plus 37 entries fill one
+    # page, so 39 "lines" (entries + 2) is the most a single TOC page holds.
+    LINES_PER_PAGE = 39
     toc_lines = len(entries) + 2            # "Contents" heading + spacing
     toc_pages = max(1, -(-toc_lines // LINES_PER_PAGE))
-    existing_toc_pages = max(1, body_start - toc_page) if toc_page is not None else 1
-    offset = toc_pages - existing_toc_pages
+    offset = toc_pages - 1
     if offset:
         entries = [(lvl, text, pg + offset) for lvl, text, pg in entries]
 
-    # 5) find the placeholder TOC paragraph (contains a TOC field or the hint text)
+    # 4) find the placeholder TOC paragraph (contains a TOC field or the hint text)
     placeholder = None
     for p in doc.paragraphs:
         xml = p._p.xml
@@ -124,14 +79,9 @@ def main():
             placeholder = p
             break
     if placeholder is None:
-        text_parts = [p.text for p in doc.paragraphs]
-        for table in doc.tables:
-            text_parts.extend(cell.text for row in table.rows for cell in row.cells)
-        update_document_statistics(docx_path, len(pages), text_parts)
-        print("  [inject_toc] static TOC already present; refreshed document statistics in", docx_path)
-        return
+        print("  [inject_toc] no TOC placeholder found in", docx_path); return
 
-    # 6) build static TOC paragraphs, insert before placeholder, then delete it
+    # 5) build static TOC paragraphs, insert before placeholder, then delete it
     anchor = placeholder._p
     GREY = RGBColor(0x33, 0x33, 0x33)
     for lvl, text, page in entries:
@@ -149,13 +99,21 @@ def main():
         r.font.name = "Arial"
         r.bold = (lvl == 1)
         r.font.color.rgb = GREY
+    # A TOC that exactly fills its page pushes the trailing page-break paragraph
+    # onto a page of its own, leaving a blank page. Replace that paragraph with
+    # "page break before" on the first body paragraph, which never adds a page.
+    nxt = anchor.getnext()
+    if (nxt is not None and nxt.tag == qn('w:p')
+            and not "".join(t.text or "" for t in nxt.iter(qn('w:t'))).strip()
+            and any(b.get(qn('w:type')) == 'page' for b in nxt.iter(qn('w:br')))):
+        body = nxt.getnext()
+        if body is not None and body.tag == qn('w:p'):
+            from docx.text.paragraph import Paragraph
+            Paragraph(body, placeholder._parent).paragraph_format.page_break_before = True
+            nxt.getparent().remove(nxt)
     anchor.getparent().remove(anchor)
 
-    text_parts = [p.text for p in doc.paragraphs]
-    for table in doc.tables:
-        text_parts.extend(cell.text for row in table.rows for cell in row.cells)
     doc.save(docx_path)
-    update_document_statistics(docx_path, len(pages) + offset, text_parts)
     print(f"  [inject_toc] {docx_path}: wrote {len(entries)} TOC entries "
           f"(pages {entries[0][2]}..{entries[-1][2]})")
 

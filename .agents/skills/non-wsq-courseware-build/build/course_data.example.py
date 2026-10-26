@@ -2,7 +2,7 @@
 SINGLE SOURCE OF TRUTH — non-WSQ course metadata (TEMPLATE).
 
 Copy this to course_data.py in your course's
-.agents/skills/non-wsq-courseware-build/build/ folder and fill in the values,
+.claude/skills/non-wsq-courseware-build/build/ folder and fill in the values,
 then add data_domain1.py … data_domainN.py (one per topic) using
 data_domain.example.py as the pattern. Every artifact (PPT, LP, LG, LG.md) is
 generated from these files so they stay 100% aligned.

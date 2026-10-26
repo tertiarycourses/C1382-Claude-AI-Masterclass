@@ -1,105 +1,243 @@
-"""Topic 3 lab for Claude Cowork Masterclass (C1382)."""
+"""Topic 3 — Content Production and Scheduled Work. Labs 8-10.
+
+Lab 8 is the second multi-thread job: the lead agent gives each social platform
+its own thread, every thread loads the Lab 6 brand-voice skill, and the drafts
+merge into one dated calendar. Lab 9 turns a script and the supplied brand
+assets into a 15-second vertical video. Lab 10 schedules the routine work
+inside the project, edits its memory and reads the usage of every thread.
+"""
 
 DOMAIN3 = [
     dict(
-        num=3,
-        topic=3,
-        title="Build a Repeatable Cowork Workflow for Your Own Work",
-        objective="LO4 and LO5: convert a successful multi-step session into a parameterised playbook, choose tools and integrations deliberately, control parallel work with human gates, rerun the workflow on a new period, and define a safe team rollout",
-        duration="85 minutes",
+        num=8, topic=3,
+        title="Create Social Media Posts in Parallel Threads",
+        objective="produce a two-week, four-platform social calendar with one thread per channel",
         desc=(
-            "You turn the verified Lab 2 run into a reusable weekly-operations playbook instead of saving one long prompt. "
-            "The playbook defines parameters, source contracts, parallel workstreams, dependency gates, deliverables, control checks, exception paths, and ownership. You then change the reporting-week parameter to Week 33, run the workflow, reconcile the new outputs, and document whether local files, connectors, browser actions, or scheduled execution are appropriate."
+            "Launch fortnight needs ten posts across Instagram, TikTok, LinkedIn and Facebook. "
+            "Each platform has its own format, so you hand the job to the lead agent and let it "
+            "start one thread per platform. Every thread loads lumo-brand-voice, drafts its "
+            "posts to its platform's spec, and the lead agent merges them into one dated "
+            "calendar that you check before anything is scheduled."
         ),
-        build="A parameterised playbook, integration decision, verified Week 33 pack, quality record, and bounded rollout plan.",
-        services="Claude Cowork projects, project instructions, local files, parallel workstreams, office artifact creation, optional trusted connectors, human review gates",
-        prerequisites=[
-            "Labs 1 and 2 are complete or the Lab 3 rejoin baseline has been reconstructed and verified.",
-            "The protected inbox matches the Lab 1 baseline and the Lab 2 quality review has a clear final state.",
-            "The Lab 2 workbook reconciles to the Week 32 controls and the report and presentation agree with it.",
-            "Week 33 source files are present in inbox/ and have not been analysed or altered for this lab.",
-            "On macOS, python3 --version succeeds; the independent controls and revision-hash records require Python 3.",
-        ],
-        deck_steps=[
-            "Extract a reusable playbook and durable project rules.",
-            "Choose the tool path in an integration decision.",
-            "Run Week 33 in parallel; pause at both human gates.",
-            "Verify the pack, log exceptions, and plan a bounded rollout.",
-        ],
-        deck_verify="Verify Week 33 reconciles and both gates and rollout evidence are recorded.",
+        build="social-calendar.csv with ten dated posts across four platforms, plus lumo-social-posts.docx with the full copy.",
+        services="Claude Projects, lead agent and threads, Agent Skills",
+        data=["social-calendar-template.csv"],
+        prompt_step=1,
+        prompt_title="Draft two weeks of posts, one thread per platform",
+        prompt=(
+            "Create the launch social calendar for Lumo Cold Kopi: ten posts,\n"
+            "one each weekday from Tuesday 1 December to Monday 14 December\n"
+            "2026, using social-calendar-template.csv for the columns.\n"
+            "\n"
+            "Split the drafting into four threads, one per platform, and run\n"
+            "them in parallel:\n"
+            "- Instagram: 3 posts (carousel or Reel), caption with a hook in\n"
+            "  the first line, 3-5 hashtags.\n"
+            "- TikTok: 3 posts, each a 15-second video script with a hook in\n"
+            "  the first 2 seconds and on-screen text.\n"
+            "- LinkedIn: 2 posts in the founder's voice, the story behind the\n"
+            "  product, no more than 3 hashtags.\n"
+            "- Facebook: 2 posts for community and the 12-pack offer.\n"
+            "\n"
+            "Every thread must use the lumo-brand-voice skill and our top\n"
+            "content theme from the research. The 1 December launch-day\n"
+            "post is an Instagram Reel; TikTok follows on 2 December.\n"
+            "\n"
+            "Then merge the threads into social-calendar.csv (date, platform,\n"
+            "format, hook, copy, hashtags, visual idea, call to action) and\n"
+            "lumo-social-posts.docx with the full copy. Report the brand-voice\n"
+            "checklist result for every post, and list any post that failed."
+        ),
+        prompt_note="Attach social-calendar-template.csv from the Lab 08 data folder.",
         steps=[
-            (
-                "Verify the connected checkpoint before deriving a reusable process. Confirm the Lab 2 artifacts and quality review exist, read the final result and remaining owner questions, and recalculate the inbox hash comparison. Create the playbook and Week 33 output directories only after the source boundary is confirmed.",
-                "Windows PowerShell:\n$required = @('.\\outputs\\lab-01\\00-inbox-baseline.csv','.\\outputs\\lab-01\\01-file-inventory.md','.\\outputs\\lab-01\\01-file-inventory.csv','.\\outputs\\lab-01\\01-verification.md','.\\outputs\\lab-02\\02-source-register.md','.\\outputs\\lab-02\\02-evidence-register.md','.\\outputs\\lab-02\\02-operations-analysis.xlsx','.\\outputs\\lab-02\\02-management-report.docx','.\\outputs\\lab-02\\02-leadership-brief.pptx','.\\outputs\\lab-02\\02-quality-review.md','.\\outputs\\lab-02\\02-run-log.md','.\\inbox\\northstar-sales-w33.csv','.\\inbox\\customer-feedback-w33.csv','.\\inbox\\operations-notes-w33.md')\n$required | ForEach-Object { if (-not (Test-Path -LiteralPath $_)) { throw \"Missing checkpoint: $_\" } }\n$before = Import-Csv .\\outputs\\lab-01\\00-inbox-baseline.csv\n$after = Get-ChildItem .\\inbox -File | Sort-Object Name | ForEach-Object { [pscustomobject]@{Name=$_.Name;Bytes=$_.Length;SHA256=(Get-FileHash -Algorithm SHA256 $_.FullName).Hash} }\nif (Compare-Object $before $after -Property Name,Bytes,SHA256) { throw 'Inbox changed; restore the verified checkpoint' }\nNew-Item -ItemType Directory -Force .\\playbook, .\\outputs\\lab-03\\week-33 | Out-Null\n\nmacOS Terminal:\nset -euo pipefail\ncommand -v python3 >/dev/null 2>&1 || { echo 'Python 3 is required; ask the trainer before continuing'; exit 1; }\npython3 --version\nfor f in outputs/lab-01/00-inbox-baseline.sha256 outputs/lab-01/01-file-inventory.md outputs/lab-01/01-file-inventory.csv outputs/lab-01/01-verification.md outputs/lab-02/02-source-register.md outputs/lab-02/02-evidence-register.md outputs/lab-02/02-operations-analysis.xlsx outputs/lab-02/02-management-report.docx outputs/lab-02/02-leadership-brief.pptx outputs/lab-02/02-quality-review.md outputs/lab-02/02-run-log.md inbox/northstar-sales-w33.csv inbox/customer-feedback-w33.csv inbox/operations-notes-w33.md; do test -f \"$f\" || { echo \"Missing $f\"; exit 1; }; done\nshasum -a 256 -c outputs/lab-01/00-inbox-baseline.sha256\nmkdir -p playbook outputs/lab-03/week-33\n\n85-minute phase budget: checkpoint and playbook 18; integration and project rules 7; independent controls and Stage 1 15; reconciliation gate 7; Stage 2 artifact generation 13; artifact and visual review 10; rollout planning 7; final reconciliation, hash review, release decision, and close-out 8. If the playbook is not approved by minute 20, adapt checkpoints/lab-03-playbook-starter.md. If Stage 1 has not reconciled by minute 47, use checkpoints/lab-03-week33-reconciliation.md to locate and correct the mismatch. If Stage 2 is incomplete by minute 62, use checkpoints/lab-03-stage2-review-checkpoint.md to focus the remaining review; no checkpoint replaces either human gate.",
-            ),
-            (
-                "In the Northstar Operations Lab project, ask Claude to inspect the task brief, run log, quality review, source register, and final artifacts from Lab 2 without changing them. Require it to distinguish stable workflow rules from Week 32-specific parameters and conclusions.",
-                "Read these Lab 2 artifacts without changing files: 02-source-register.md, 02-evidence-register.md, 02-quality-review.md, 02-run-log.md, the workbook structure and definitions, the report structure, and the presentation structure. Produce a response with two tables: (A) stable workflow elements that should repeat every week, and (B) Week 32-specific parameters, values, exceptions, and conclusions that must never be copied into a new run. Cite the artifact behind each item.",
-            ),
-            (
-                "Ask Claude to draft the reusable workflow files below. The playbook must describe a process, not preserve Week 32 results. Project instructions must remain concise and durable. The quality checklist must contain observable checks and a named evidence location for each stage.",
-                "Using the stable elements you identified, create three files.\n\n1. playbook/weekly-operations-review.md with: purpose; owner; trigger; parameters REPORTING_WEEK, SOURCE_FOLDER, OUTPUT_FOLDER, AUDIENCE, and TARGET_SET; required-source contract; stop conditions; three parallel extraction workstreams; dependency and reconciliation gate; artifact-generation stage; draft-review gate; deliverables; metric definitions; quality checks; exception paths; run log; release owner; and version history.\n\n2. playbook/project-instructions.md with no more than 12 concise rules covering synthetic or approved data, read-only sources, output boundaries, evidence versus inference, weighted rates, owner verification, human gates, no external action without approval, run logs, and final reconciliation.\n\n3. playbook/quality-checklist.md as a table with stage, check, expected evidence, owner, and response when the check fails. Include source completeness, freshness, control totals, weighted rates, formula preservation, cross-artifact consistency, visual review, inbox comparison, unresolved questions, and release decision.\n\nDo not copy Week 32 values, exception locations, or recommendations into reusable rules. Do not change the project settings yet.",
-            ),
-            (
-                "Review the three files. Search for Week 32 values, location conclusions, or recommendations that were accidentally hard-coded. Confirm the playbook contains every required parameter, gate, exception path, and owner. Revise the files before using them if any required element is missing or any old conclusion survives.",
-                "Windows PowerShell:\nSelect-String -Path .\\playbook\\*.md -Pattern '339,350|92.80|5.65|Woodlands|Jurong' -CaseSensitive:$false\n\nExpected result: no Week 32 value or exception is encoded as a reusable rule. A location name may appear only in an explicitly labelled example that cannot affect execution; remove it for this lab.\n\nManual playbook check:\n- five parameters present\n- source contract and stop conditions present\n- parallel workstreams and dependency gate present\n- reconciliation and draft-review gates present\n- deliverables and metric definitions present\n- exception paths, owner, run log, and version history present",
-            ),
-            (
-                "Create an integration decision record with Claude. Require one row each for local files, a remote connector, a desktop capability, browser interaction, computer use, and scheduled execution. For this lab, choose an on-demand local-file run. Distinguish a remote built-in schedule, which cannot be tied to a computer folder, from a manually configured schedule that requires local files or apps and therefore runs only locally. Any future schedule requires an approved source, an available execution surface, and a fresh control review.",
-                "Create playbook/integration-decision.md as a decision table with capability, candidate use, data location, access scope, read or write actions, reliability, key risk, human gate, fallback, owner, and decision. Include local connected folder, remote connector, desktop capability, browser interaction, computer use, and scheduled task.\n\nDecision for this training run: use the connected local working copy on demand; use no external connector, browser action, computer use, or scheduled task. Record both scheduling modes: remote built-in schedules run without the computer and must use connectors or files saved to the Claude account, not a computer folder; a manually configured schedule that requires local files or apps runs locally and depends on the local device and required app being available. Before either mode is approved, review source access, freshness, availability, monitoring, failure handling, and release authority.",
-            ),
-            (
-                "Compare playbook/project-instructions.md with the current project instructions. In the Cowork project settings, update the instructions only after reading the final text. Preserve the original local-source protections, and do not paste Week 32 values or the Week 33 task brief into durable instructions.",
-                "Project-instruction review:\n- stable across reporting weeks\n- no metric values or location conclusions\n- no broad folder or connection authority\n- explicit read-only source and output rules\n- explicit evidence, owner-verification, and release gates\n\nThen paste the reviewed contents of playbook/project-instructions.md into the Northstar Operations Lab project instructions and save.",
-            ),
-            (
-                "Calculate Week 33 control totals independently from northstar-sales-w33.csv and record them in a new outputs/lab-03/03-week-33-quality-review.md before the run. This proves the playbook processes a new period instead of repeating Week 32 values.",
-                "Windows PowerShell:\n$rows = Import-Csv .\\inbox\\northstar-sales-w33.csv\n$orders = ($rows | Measure-Object orders -Sum).Sum\n$onTime = ($rows | Measure-Object fulfilled_on_time -Sum).Sum\n$revenue = ($rows | Measure-Object revenue_sgd -Sum).Sum\n$returns = ($rows | Measure-Object returns -Sum).Sum\n$hours = ($rows | Measure-Object labour_hours -Sum).Sum\n$controls = [pscustomobject]@{Orders=$orders;OnTime=$onTime;RevenueSGD=$revenue;Returns=$returns;LabourHours=$hours;OnTimeRate=('{0:P2}' -f ($onTime/$orders));ReturnRate=('{0:P2}' -f ($returns/$orders));RevenuePerOrder=('{0:N2}' -f ($revenue/$orders))}\n$controls | Format-List\n@\"\n# Week 33 Quality Review\n\n## Independent controls\n$($controls | Format-List | Out-String)\n## Source contract\n## Reconciliation gate\n## Draft-review gate\n## Artifact and visual review\n## Cross-artifact consistency\n## Revision hash comparison\n## Inbox comparison\n## Exceptions and owner questions\n## Release decision\n\"@ | Set-Content -Encoding utf8 .\\outputs\\lab-03\\03-week-33-quality-review.md\n\nmacOS Terminal:\npython3 - <<'PY'\nfrom pathlib import Path\nimport csv\nwith open('inbox/northstar-sales-w33.csv', newline='', encoding='utf-8-sig') as f:\n    rows = list(csv.DictReader(f))\ndef total(name): return sum(float(r[name]) for r in rows)\norders, on_time = total('orders'), total('fulfilled_on_time')\nrevenue, returns = total('revenue_sgd'), total('returns')\nhours = total('labour_hours')\nlines = [\n    '# Week 33 Quality Review', '', '## Independent controls',\n    f'- Orders: {orders:.0f}', f'- Fulfilled on time: {on_time:.0f}',\n    f'- Revenue: SGD {revenue:.0f}', f'- Returns: {returns:.0f}',\n    f'- Labour hours: {hours:.0f}', f'- On-time fulfilment: {on_time/orders:.2%}',\n    f'- Return rate: {returns/orders:.2%}', f'- Revenue per order: SGD {revenue/orders:.2f}',\n    '', '### Exceptions below 95%',\n]\nlines += [f\"- {r['location']}: {float(r['fulfilled_on_time'])/float(r['orders']):.2%}\" for r in rows if float(r['fulfilled_on_time'])/float(r['orders']) < .95]\nlines += ['', '## Source contract', '## Reconciliation gate', '## Draft-review gate', '## Artifact and visual review', '## Cross-artifact consistency', '## Revision hash comparison', '## Inbox comparison', '## Exceptions and owner questions', '## Release decision']\nPath('outputs/lab-03/03-week-33-quality-review.md').write_text('\\n'.join(lines) + '\\n', encoding='utf-8')\nprint('\\n'.join(lines[:15]))\nPY\n\nExpected controls:\nOrders = 2100\nFulfilled on time = 1985\nRevenue = SGD 358050\nReturns = 101\nLabour hours = 2777\nOn-time fulfilment = 94.52%\nReturn rate = 4.81%\nRevenue per order = SGD 170.50\nExceptions below 95% = Woodlands 90.91% and Jurong 92.11%",
-            ),
-            (
-                "Start a new Cowork task and run the playbook with explicit Week 33 parameters. Require a plan and source-contract check first, then a pause at the reconciliation gate. The workstreams may run in parallel, but dependent narrative work must wait.",
-                "Run playbook/weekly-operations-review.md with these parameters:\nREPORTING_WEEK = Week 33\nSOURCE_FOLDER = inbox\nOUTPUT_FOLDER = outputs/lab-03/week-33\nAUDIENCE = Head of Operations\nTARGET_SET = the targets in management-brief.md\n\nUse only inbox/northstar-sales-w33.csv, inbox/customer-feedback-w33.csv, inbox/operations-notes-w33.md, management-brief.md, and brand-style.md. Do not use Week 32 values, exception locations, or recommendations as evidence for Week 33.\n\nFirst show the parameter resolution, exact source set, write set, parallel workstreams, dependencies, stop conditions, two human gates, and quality checks. Wait for approval. After approval, complete Stage 1 and create only source-register.md, evidence-register.md, operations-analysis.xlsx, and reconciliation.md in the Week 33 output folder. Pause at the reconciliation gate with those four paths, the calculated controls, exceptions, and unresolved questions. Do not generate the report, slides, or run log until I approve the gate.",
-            ),
-            (
-                "Review and approve the plan only if it resolves the correct Week 33 files and paths. After extraction, compare Claude's reconciliation with the independent controls. Confirm the overall rates are weighted and the workflow identified Week 33 exceptions from Week 33 data. Record the checks, discrepancies, corrections, and approval decision in 03-week-33-quality-review.md.",
-                "Required Stage 1 paths:\n- outputs/lab-03/week-33/source-register.md\n- outputs/lab-03/week-33/evidence-register.md\n- outputs/lab-03/week-33/operations-analysis.xlsx\n- outputs/lab-03/week-33/reconciliation.md\n\nExpected Week 33 reconciliation:\n- Orders: 2,100\n- Fulfilled on time: 1,985\n- Revenue: SGD 358,050\n- Returns: 101\n- Labour hours: 2,777\n- Weighted on-time fulfilment: 94.52%\n- Weighted return rate: 4.81%\n- Revenue per order: SGD 170.50\n- On-time exceptions against 95%: Woodlands 90.91% and Jurong 92.11%\n\nIf any path or value differs, do not approve the gate. Give the observed and expected state, metric definition, and source file; require a focused correction and rerun all controls.",
-            ),
-            (
-                "Approve Stage 2 only after the reconciliation gate. The source register, evidence register, workbook, and reconciliation already exist from Stage 1; Stage 2 creates only the report, presentation, and run log. Require a second pause at the draft-review gate before any release decision.",
-                "Reconciliation gate approved. Continue the playbook and create only these remaining Week 33 artifacts inside outputs/lab-03/week-33:\n- management-report.docx\n- leadership-brief.pptx\n- run-log.md\n\nUse the four approved Stage 1 artifacts as the reconciled Week 33 fact base. Preserve the playbook's structures, definitions, checks, and owner fields, but derive all values, exceptions, customer themes, and recommendations from Week 33 sources. In run-log.md, record the exact Stage 1 gate evidence and decision. Pause at the draft-review gate. Do not share, send, publish, replace a source, or mark the pack released.",
-            ),
-            (
-                "At the draft-review gate, open the workbook, document, and every slide. Run the quality checklist: file presence, source completeness, formulas and controls, metric definitions, period labels, evidence versus inference, owner questions, layout, cross-artifact consistency, and inbox comparison. Before any revision, record hashes for all seven Week 33 artifacts. Record exact locations for defects and request focused revisions. Repeat every affected check after a change. After the reviewer makes the draft-review decision, update the run log with the actual second-gate evidence before final reconciliation.",
-                "Windows PowerShell:\nGet-ChildItem .\\outputs\\lab-03\\week-33 -File | Sort-Object Name | ForEach-Object { [pscustomobject]@{Name=$_.Name;SHA256=(Get-FileHash -Algorithm SHA256 $_.FullName).Hash} } | Export-Csv -NoTypeInformation -Encoding utf8 .\\outputs\\lab-03\\03-pre-revision-hashes.csv\n\nmacOS Terminal:\npython3 - <<'PY'\nfrom hashlib import sha256\nfrom pathlib import Path\nfolder = Path('outputs/lab-03/week-33')\nfiles = sorted((p for p in folder.iterdir() if p.is_file()), key=lambda p: p.name)\nPath('outputs/lab-03/03-pre-revision-hashes.sha256').write_text(''.join(f\"{sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\\n\" for p in files), encoding='utf-8')\nprint(f'Recorded {len(files)} pre-revision hashes')\nPY\n\nArtifact review:\n- all seven named files exist: source and evidence registers, reconciliation, workbook, report, presentation, and run log\n- every artifact says Week 33\n- workbook and reconciliation agree with the independent controls\n- report and slides use 94.52%, 4.81%, SGD 358,050, and the same rounding\n- no Week 32 value or conclusion appears as Week 33 evidence\n- source register names the Week 33 inputs\n- unsupported claims are labelled OWNER TO VERIFY\n- report has no blank or clipped page\n- slides have no overlap, cut-off text, or unreadable density\n\nAfter all revisions and repeated checks, record the draft-review decision in 03-week-33-quality-review.md. Then say:\nUpdate only outputs/lab-03/week-33/run-log.md. Record the actual draft-review gate reviewer, evidence examined, corrections, decision, date and time, and precisely permitted next action. Do not invent approval, share a file, or change another artifact. Reopen run-log.md and verify this second-gate record before continuing.",
-            ),
-            (
-                "Ask Claude for a read-only final reconciliation. Compare its evidence with your quality review, then make the release decision for the local training pack. The decision authorises only retaining the files in the workspace; it does not authorise sharing or any external action.",
-                "Read the Week 33 artifacts, playbook, quality checklist, and current quality review without changing them. Reconcile the source set, period, metric definitions, values, rounding, exceptions, recommendations, owner questions, file list, gate decisions, and run log. Report mismatches and limitations. If none remain, state the evidence for local training-pack readiness. Do not share, send, publish, or change a file.",
-            ),
-            (
-                "Create the rollout plan with Claude, then edit it to your own work context without naming real data or credentials. Keep the first pilot draft-only and bounded. Include a baseline, owner, approved source class, access process, evidence, review burden, monitoring, incident response, and stop conditions.",
-                "Create outputs/lab-03/03-rollout-plan.md for a four-week pilot of one recurring knowledge-work process. Include: use-case boundary and non-goals; accountable owner and reviewers; permitted data classes and prohibited data; source and access provisioning; task and playbook owner; current time and quality baseline; draft-only Week 1 run; success and guardrail metrics; human gates; run evidence; exception and incident response; access removal; weekly review; version control; criteria to continue, narrow, pause, or stop. Use placeholders rather than real names, systems, data, or credentials.",
-            ),
-            (
-                "Run the final inbox hash comparison and inspect the project for all promised outputs. Complete the quality review's Inbox comparison, Exceptions and owner questions, and Release decision sections. Record one playbook improvement discovered during the Week 33 run and update the playbook version history to v1.1 only if you actually make that improvement.",
-                "Windows PowerShell:\n$before = Import-Csv .\\outputs\\lab-01\\00-inbox-baseline.csv\n$after = Get-ChildItem .\\inbox -File | Sort-Object Name | ForEach-Object { [pscustomobject]@{Name=$_.Name;Bytes=$_.Length;SHA256=(Get-FileHash -Algorithm SHA256 $_.FullName).Hash} }\nif (Compare-Object $before $after -Property Name,Bytes,SHA256) { throw 'Inbox changed' } else { 'Inbox unchanged' }\n$postRevision = Get-ChildItem .\\outputs\\lab-03\\week-33 -File | Sort-Object Name | ForEach-Object { [pscustomobject]@{Name=$_.Name;SHA256=(Get-FileHash -Algorithm SHA256 $_.FullName).Hash} }\n$postRevision | Export-Csv -NoTypeInformation -Encoding utf8 .\\outputs\\lab-03\\03-post-revision-hashes.csv\nCompare-Object (Import-Csv .\\outputs\\lab-03\\03-pre-revision-hashes.csv) $postRevision -Property Name,SHA256 | Format-Table -AutoSize\nGet-ChildItem .\\playbook -File | Select-Object Name,Length\nGet-ChildItem .\\outputs\\lab-03\\week-33 -File | Select-Object Name,Length\nif (-not (Test-Path .\\outputs\\lab-03\\03-week-33-quality-review.md)) { throw 'Missing quality review' }\nif (-not (Test-Path .\\outputs\\lab-03\\03-rollout-plan.md)) { throw 'Missing rollout plan' }\n\nmacOS Terminal:\nset -euo pipefail\nshasum -a 256 -c outputs/lab-01/00-inbox-baseline.sha256\npython3 - <<'PY'\nfrom hashlib import sha256\nfrom pathlib import Path\nfolder = Path('outputs/lab-03/week-33')\nfiles = sorted((p for p in folder.iterdir() if p.is_file()), key=lambda p: p.name)\nPath('outputs/lab-03/03-post-revision-hashes.sha256').write_text(''.join(f\"{sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\\n\" for p in files), encoding='utf-8')\nprint(f'Recorded {len(files)} post-revision hashes')\nPY\ndiff -u outputs/lab-03/03-pre-revision-hashes.sha256 outputs/lab-03/03-post-revision-hashes.sha256 || true\nfind playbook outputs/lab-03 -maxdepth 2 -type f -print\ntest -f outputs/lab-03/03-week-33-quality-review.md\ntest -f outputs/lab-03/03-rollout-plan.md\n\nRecord which artifact hashes changed and why in the Revision hash comparison section. Only intended revision targets should differ. Confirm run-log.md contains the actual second-gate reviewer, evidence, decision, time, and permitted next action before making the release decision.",
-            ),
+            ("In the project, attach social-calendar-template.csv and send the lab prompt.",
+             "This is the same pattern as Lab 2 — one message, independent subjects — applied to production instead of research."),
+            ("Watch the lead agent start the four platform threads.",
+             "Each thread has its own spec and its own context window, so the TikTok scripts never crowd out the LinkedIn story."),
+            ("Open the Instagram thread and check it loaded lumo-brand-voice.",
+             "The skill you wrote in Lab 6 is now doing its real job: keeping four parallel writers on one voice."),
+            ("When the merged calendar arrives, count the rows and check the dates.",
+             "Ten rows, weekdays only: 1, 2, 3, 4, 7, 8, 9, 10, 11 and 14 December. Instagram 3, TikTok 3, LinkedIn 2, Facebook 2."),
+            ("Read the brand-voice checklist results.",
+             "Every post should pass. If one fails, ask the lead agent to send it back to its thread for a fix."),
+            ("Spot-check three posts against the campaign brief's \"claims we must not make\".",
+             "Parallel production is fast; a human check on the claims is what makes it safe to publish."),
+            ("Open lumo-social-posts.docx and confirm the copy matches the calendar.",
+             "The calendar is what Lab 10's scheduled task reads every morning."),
         ],
         test=(
-            "Confirm the four playbook files contain the required parameters, source contract, workstreams, dependencies, two human gates, deliverables, controls, exception paths, ownership, and tool decision, with no Week 32 conclusion hard-coded. Confirm Stage 1 produced source-register.md, evidence-register.md, operations-analysis.xlsx, and reconciliation.md before approval, then Stage 2 produced management-report.docx, leadership-brief.pptx, and run-log.md. Reconcile the seven Week 33 artifacts to 2,100 orders, 1,985 fulfilled on time, SGD 358,050 revenue, 101 returns, 2,777 labour hours, 94.52% on-time fulfilment, 4.81% return rate, and SGD 170.50 revenue per order. "
-            "Open and visually inspect the report and every slide, confirm the registers, reconciliation, and run log describe Week 33, confirm both human gates are recorded, confirm the pre/post revision hash comparison explains only intended changes, confirm the inbox is unchanged, and confirm the rollout plan names the bounded use case, data rules, owner, baseline, evidence, monitoring, incident response, and stop criteria."
+            "social-calendar.csv has ten rows dated on the ten weekdays from 1 to 14 December "
+            "2026 — Instagram 3, TikTok 3, LinkedIn 2, Facebook 2 — with the 1 December launch "
+            "post an Instagram Reel and TikTok on 2 December. Every post passed the lumo-brand-voice checklist, none "
+            "uses \"healthy\", every price is written S$3.90 or S$42.00, and "
+            "lumo-social-posts.docx carries the same copy."
         ),
-        checkpoint="Retain the verified local Week 33 pack, playbook files, quality review, and rollout plan as the final C1382 learning portfolio. Before applying the workflow to real work, obtain the relevant data and system approvals, substitute an explicitly approved source contract, and rerun every control in a draft-only pilot.",
-        troubleshooting=[
-            ("The playbook contains Week 32 values or recommendations", "Remove results from the reusable procedure. Replace them with parameters, definitions, target references, and instructions for deriving the new period's exceptions."),
-            ("Parallel workstreams produce conflicting definitions", "Stop at the dependency gate. Select the definitions in the playbook, reconcile the upstream outputs, update the shared source register and control sheet, then restart dependent work."),
-            ("Week 33 output repeats a Week 32 conclusion", "Treat it as contamination from prior context. Name the copied claim, require Claude to locate Week 33 evidence, remove unsupported carry-over, and rerun the complete reconciliation across every artifact."),
-            ("A scheduled run cannot access its source", "Keep this lab on demand while diagnosing the execution mode. A remote built-in schedule cannot be tied to a computer folder, so use an approved connector or a file saved to the Claude account. A manually configured schedule that requires local files or apps runs locally, so confirm the device and required app are available. Re-review access, freshness, monitoring, failure handling, and release authority before enabling either route."),
-            ("A connector is unavailable or not approved", "Use the local synthetic source for this lab. Record the connector as Not approved or Not available in integration-decision.md and keep the workflow's source contract independent of that tool."),
-            ("The project instructions become a long task prompt", "Keep only durable rules that apply across reporting weeks. Move parameters, sources, audience, and one-run deliverables back into the task invocation."),
-            ("The run log omits a human gate", "Do not declare the local pack ready. Add the actual reviewer, evidence examined, decision, time, and permitted next action; never fabricate an approval that did not occur."),
+    ),
+    dict(
+        num=9, topic=3,
+        title="Produce a 15-Second Launch Video",
+        objective="script, storyboard and render a vertical launch video from supplied brand assets",
+        desc=(
+            "The TikTok and Instagram posts need a launch video. You give the project the "
+            "supplied product images and logo; one thread writes a five-scene script and "
+            "storyboard with lumo-brand-voice, another writes and runs the code that animates "
+            "the images and captions into a 15-second, 1080 × 1920 MP4. You check it frame by "
+            "frame and ask for changes in plain English."
+        ),
+        build="lumo-launch-15s.mp4 (1080 × 1920, 15 seconds), with its script and storyboard.",
+        services="Claude Projects, threads, code execution",
+        data=["video-assets/lumo-can.png", "video-assets/lumo-12pack.png",
+              "video-assets/lumo-logo.png", "video-assets/scene-hawker.png",
+              "video-assets/scene-office.png"],
+        prompt_step=2,
+        prompt_title="Script, storyboard and render the video",
+        prompt=(
+            "Make a 15-second vertical launch video for Lumo Cold Kopi, using\n"
+            "only the five images in the attached video-assets folder.\n"
+            "\n"
+            "Use two threads:\n"
+            "Thread 1 - SCRIPT: with lumo-brand-voice, write five scenes of\n"
+            "  three seconds each: hook, problem, product, proof, call to action.\n"
+            "  For each scene give the image, the on-screen text (max 6 words)\n"
+            "  and the motion. Save it as lumo-video-storyboard.md.\n"
+            "Thread 2 - RENDER: when the storyboard is ready, write and run\n"
+            "  code that renders it to lumo-launch-15s.mp4: 1080 x 1920, 30 fps,\n"
+            "  exactly 15 seconds, large high-contrast captions in the Lumo\n"
+            "  colours, a gentle zoom on each image, and an end card with the\n"
+            "  logo, \"From S$3.90\" and #KopiChilledRight.\n"
+            "\n"
+            "If you cannot render video in this session, build the same thing\n"
+            "as an animated HTML page at 1080 x 1920 and tell me, so I can\n"
+            "screen-record it. Report the file's duration and size when done."
+        ),
+        prompt_note=("Attach the whole video-assets folder. Use only the supplied images — "
+                     "never a real person's likeness or another brand's logo."),
+        steps=[
+            ("Open the Lab 09 data/video-assets folder and look at the five images.",
+             "These are the only images the video may use. Supplying assets is how you keep likenesses and logos safe."),
+            ("In the project, attach the folder and send the lab prompt.",
+             "Two threads, but not in parallel this time: the render thread waits for the script. The lead agent manages that order."),
+            ("Read the storyboard when Thread 1 finishes.",
+             "Five scenes, three seconds each, captions of six words or fewer, and no health claims — the brand-voice skill applies to scripts too."),
+            ("When the video arrives, check the reported duration and size.",
+             "Exactly 15 seconds and 1080 × 1920. A wrong size is the most common reason a platform crops your captions."),
+            ("Play it through, then scrub it frame by frame.",
+             "Check every caption is readable with the sound off and the end card shows the logo, From S$3.90 and #KopiChilledRight."),
+            ("Ask for one change, for example: Hold the end card for one second longer and shorten scene 2.",
+             "The video is code, so a change is a re-render, not a re-edit. Check the length is still 15 seconds afterwards."),
+            ("If Claude built the HTML fallback instead, open it full screen and screen-record 15 seconds.",
+             "Same storyboard, different renderer. The checks stay the same."),
         ],
-        challenge="If the trainer provides an approved connector to a synthetic cloud folder, clone the playbook as a connector variant. Compare source resolution, access scope, evidence, latency, failure mode, and fallback with the local run. Do not add a real business connection and do not enable a schedule during class.",
-        reflection="Which element transformed the successful Lab 2 session into an operational playbook, and where did the Week 33 run reveal that a saved prompt alone would not have been enough?",
-    )
+        test=(
+            "lumo-launch-15s.mp4 is 1080 × 1920, 30 fps and 15 seconds long, uses only the "
+            "supplied images, shows five scenes with captions of six words or fewer in the Lumo "
+            "colours, and ends on a card with the logo, \"From S$3.90\" and #KopiChilledRight. "
+            "lumo-video-storyboard.md sits beside it and matches what plays. No scene makes a "
+            "health claim."
+        ),
+    ),
+    dict(
+        num=10, topic=3,
+        title="Schedule the Posts and Review the Project",
+        objective="schedule recurring project tasks, edit project memory and review thread usage",
+        desc=(
+            "The launch needs a post drafted every weekday morning and a report every Monday, "
+            "and nobody should have to remember either. You schedule both inside the project, "
+            "test one with Run now, then do the housekeeping a real project needs: correct its "
+            "memory when a plan changes, and read the usage of the lead agent and each thread "
+            "to see what parallel work costs."
+        ),
+        build="Two scheduled tasks in the project, a tested daily-post email, an updated memory file and a usage review.",
+        services="Claude Projects, scheduled tasks, memory, Gmail connector",
+        data=[],
+        prompt_intro=("This lab has **three blocks**. Block 1 schedules the two tasks. Block 2 "
+                      "changes the plan through memory. Block 3 is a review you send at the end."),
+        prompt_intro_md=("This lab has **three blocks**: schedule, change the plan through memory,\n"
+                         "then review."),
+        prompt_intro_lg=("This lab has three blocks. Block 1 schedules the two recurring tasks. "
+                         "Block 2 changes the launch plan through project memory. Block 3 asks "
+                         "the project to review itself."),
+        prompt_title="Schedule, update memory, review",
+        prompt_blocks=[
+            dict(
+                label="Block 1 — SCHEDULE", step=1,
+                lead="Send this to the lead agent:",
+                text=(
+                    "Schedule two recurring tasks in this project.\n"
+                    "\n"
+                    "Task 1 - \"Today's Lumo post\", every weekday at 9:00am:\n"
+                    "take today's row from social-calendar.csv, polish it with\n"
+                    "lumo-brand-voice, check every price and claim against the brand\n"
+                    "kit, and email it to <YOUR EMAIL> as a draft with the subject\n"
+                    "\"Today's Lumo post - <date>\". Never publish anything.\n"
+                    "\n"
+                    "Task 2 - \"Weekly launch report\", Mondays at 8:00am:\n"
+                    "summarise last week's posts from the calendar and anything new\n"
+                    "in the Lumo Launch Drive folder in five bullet points, and\n"
+                    "email it to <YOUR EMAIL>.\n"
+                    "\n"
+                    "Show me both tasks before you save them, then run Task 1 once\n"
+                    "now as a test, using 1 December 2026 as today."
+                ),
+                after="Check the test email in your inbox, then open **Scheduled** and confirm both tasks are listed with the right times.",
+                after_md="Check the test email, then confirm both tasks under **Scheduled**.",
+                slide_note="Replace <YOUR EMAIL>. The task drafts and emails — it never publishes.",
+            ),
+            dict(
+                label="Block 2 — MEMORY", step=5,
+                lead="Send this to the lead agent:",
+                text=(
+                    "Remember this for the project: the Singapore launch has moved\n"
+                    "from 1 December to 8 December 2026. Kuala Lumpur is unchanged.\n"
+                    "Tell me everything in the project that depends on the launch\n"
+                    "date - posts, tasks, the deck, the brief - and propose the\n"
+                    "changes. Do not make them yet."
+                ),
+                after="Open **Project settings → Memory**, find the new entry, and correct the wording if needed.",
+                after_md="Find the entry in **Project settings → Memory** and check it.",
+                slide_note="Then open Project settings → Memory and check what it wrote.",
+            ),
+            dict(
+                label="Block 3 — REVIEW", step=7,
+                lead="Send this at the end of the lab:",
+                text=(
+                    "Review this project for me: list the threads you started today,\n"
+                    "what each produced, and where each output is saved. Then tell\n"
+                    "me which context files, instructions or memory entries are now\n"
+                    "out of date."
+                ),
+                after="Compare its list with **Project settings → Usage**, which shows the tokens used by the lead agent and each thread.",
+                after_md="Compare its answer with **Project settings → Usage**.",
+                slide_note="Then open Project settings → Usage and compare.",
+            ),
+        ],
+        prompt_note=("Scheduled tasks that run locally need the desktop app open. To run them "
+                     "with your laptop closed, add a cloud environment in Project settings → Environment."),
+        steps=[
+            ("Send Block 1 with your own email address in place of <YOUR EMAIL>.",
+             "The tasks run inside the project, so they inherit the goal, instructions, context, memory and the brand-voice skill — the prompt stays short."),
+            ("Read both tasks before they are saved: name, prompt, frequency and time.",
+             "Weekdays at 9:00am and Mondays at 8:00am. A task scheduled at the wrong time is a silent failure."),
+            ("Open your inbox and read the test email for 1 December.",
+             "It should be the Instagram launch Reel from your calendar, polished, with S$ prices and no \"healthy\" claim — a draft, not a published post."),
+            ("Open Scheduled in the project and confirm both tasks are listed.",
+             "From here you can pause, edit or run a task now. This is where you would schedule a monthly competitor scan next."),
+            ("Send Block 2, then read the list of things that depend on the date.",
+             "Expect the calendar, Task 1, the deck's title slide and timeline, and the brief. Memory is how one fact reaches every thread."),
+            ("Open Project settings → Memory and find the new launch-date entry. Edit it if the wording is wrong.",
+             "The project writes memory, but you own it. Delete anything you would not want every future thread to believe."),
+            ("Send Block 3 at the end of the lab.",
+             "A project that can list its own threads and outputs is one a colleague can pick up tomorrow."),
+            ("Open Project settings → Usage and read the lead agent's and each thread's tokens.",
+             "Parallel threads finish faster but use more in total. Compare the research threads from Lab 2 with the single-thread labs."),
+        ],
+        test=(
+            "Two tasks are listed under Scheduled — Today's Lumo post on weekdays at 9:00am and "
+            "Weekly launch report on Mondays at 8:00am. The test run emailed you a polished 1 "
+            "December post as a draft, with S$ prices and no health claim, and nothing was "
+            "published. Project memory records the 8 December Singapore launch, and the lead "
+            "agent listed what depends on it. Project settings → Usage shows tokens for the lead "
+            "agent and for each thread you started today."
+        ),
+    ),
 ]
