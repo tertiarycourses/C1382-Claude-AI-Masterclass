@@ -10,7 +10,7 @@ Run a whole product launch from one Claude Project: market research in parallel,
 | Format | Instructor-led, with 10 hands-on labs in one Claude Project |
 | Registration | [View course details and register](https://www.tertiarycourses.com.sg/claude-ai-masterclass.html) |
 | Lab prompts | [Classic Projects Edition](https://tertiarycourses.github.io/C1382-Claude-AI-Masterclass/prompts/) · [Threads Edition](https://tertiarycourses.github.io/C1382-Claude-AI-Masterclass/prompts/threads/) |
-| Courseware version | v5.2 · 27 October 2026 · two editions |
+| Courseware version | v6.0 · 28 October 2026 · two editions |
 
 ---
 
@@ -48,9 +48,9 @@ By the end of the course, you will be able to:
 1. **Set up the Project.** Set up a Claude Project in Cowork with instructions, context, a working folder and a project memory file.
 2. **Research in parallel tasks.** Run multi-subject market research as parallel tasks in one project and consolidate it into one verified research brief.
 3. **Build a Live Artefact.** Build, refine, save and download a Live Artefact dashboard from supplied research data.
-4. **Connect Drive and Gmail.** Connect Google Drive and Gmail so Claude reads campaign files and sends an approved summary.
-5. **Slides and Docs.** Produce a launch deck and a campaign brief with Claude's Slides and Docs, using built-in skills.
-6. **Skills and plugins.** Capture a brand voice as an Agent Skill with /skill-creator, and install and use a marketing plugin.
+4. **Tools: Drive and Gmail.** Connect Google Drive and Gmail and use their tools to reconcile, search, save and draft, sending only what you approve.
+5. **Analysis, Slides and Docs.** Analyse survey data with Claude's code tool and Excel, and produce a launch deck and campaign brief with Slides and Docs using built-in skills.
+6. **Skills and plugins.** Capture a brand voice as an Agent Skill with /skill-creator, use and update it on workplace messages, and install and use a marketing plugin.
 7. **Social posts.** Create a two-week, multi-platform set of social media posts using the brand-voice skill.
 8. **Make a launch video.** Produce a short vertical launch video from a script, storyboard and supplied brand assets.
 9. **Schedule and review.** Schedule recurring project tasks and keep the project's instructions, context and memory file current, with a human approval step.
@@ -60,7 +60,7 @@ By the end of the course, you will be able to:
 | Topic | Content | Labs |
 |---|---|---|
 | **1. Claude Projects and Market Research** | The Claude family; Projects in Cowork; instructions, context and folder; market research; Live Artefacts | Labs 1–3 |
-| **2. Connectors, Skills and Plugins** | Google Drive and Gmail; the context window; Slides and Docs; Agent Skills; plugins and mods | Labs 4–7 |
+| **2. Connectors, Skills and Plugins** | Claude's tools; Drive and Gmail; tool calls; data analysis; the context window; Slides and Docs; Agent Skills; plugins and mods | Labs 4–7 |
 | **3. Content Production and Scheduled Work** | Social posts for four platforms; a launch video; scheduled tasks; the memory file | Labs 8–10 |
 
 ## Labs
@@ -80,9 +80,9 @@ See the [labs index](labs/README.md).
 | 1 | [Set Up the Lumo Launch Project](labs/lab-01-set-up-the-launch-project/lab-01-set-up-the-launch-project.pdf)<br>*Objective: create a Claude Project in Cowork with instructions, context, a working folder and a memory file.* | Claude Projects and Market Research | [PDF](labs/lab-01-set-up-the-launch-project/lab-01-set-up-the-launch-project.pdf) | [3 files](labs/lab-01-set-up-the-launch-project/data/) |
 | 2 | [Run Market Research in Parallel Tasks](labs/lab-02-market-research/lab-02-market-research.pdf)<br>*Objective: split a multi-subject research job into parallel tasks and verify the merged brief.* | Claude Projects and Market Research | [PDF](labs/lab-02-market-research/lab-02-market-research.pdf) | [3 files](labs/lab-02-market-research/data/) |
 | 3 | [Build the Market Insights Live Artefact](labs/lab-03-market-insights-artefact/lab-03-market-insights-artefact.pdf)<br>*Objective: turn research data into an interactive Live Artefact dashboard and save it.* | Claude Projects and Market Research | [PDF](labs/lab-03-market-insights-artefact/lab-03-market-insights-artefact.pdf) | [2 files](labs/lab-03-market-insights-artefact/data/) |
-| 4 | [Connect Google Drive and Gmail](labs/lab-04-connect-drive-and-gmail/lab-04-connect-drive-and-gmail.pdf)<br>*Objective: connect Google Drive and Gmail, read campaign files from Drive and send an approved summary.* | Connectors, Skills and Plugins | [PDF](labs/lab-04-connect-drive-and-gmail/lab-04-connect-drive-and-gmail.pdf) | [2 files](labs/lab-04-connect-drive-and-gmail/data/) |
-| 5 | [Create the Launch Deck and Campaign Brief](labs/lab-05-launch-deck-and-brief/lab-05-launch-deck-and-brief.pdf)<br>*Objective: produce a launch deck in Slides and a campaign brief in Docs from the project's research.* | Connectors, Skills and Plugins | [PDF](labs/lab-05-launch-deck-and-brief/lab-05-launch-deck-and-brief.pdf) | — |
-| 6 | [Capture the Brand Voice as an Agent Skill](labs/lab-06-brand-voice-skill/lab-06-brand-voice-skill.pdf)<br>*Objective: rewrite content in the brand voice, verify it, and save the routine as a skill with /skill-creator.* | Connectors, Skills and Plugins | [PDF](labs/lab-06-brand-voice-skill/lab-06-brand-voice-skill.pdf) | [1 file](labs/lab-06-brand-voice-skill/data/) |
+| 4 | [Connect Google Drive and Gmail](labs/lab-04-connect-drive-and-gmail/lab-04-connect-drive-and-gmail.pdf)<br>*Objective: connect Google Drive and Gmail and use their tools to reconcile, search, save and draft, sending only what you approve.* | Connectors, Skills and Plugins | [PDF](labs/lab-04-connect-drive-and-gmail/lab-04-connect-drive-and-gmail.pdf) | [2 files](labs/lab-04-connect-drive-and-gmail/data/) |
+| 5 | [Analyse the Survey, Then Build the Deck and Brief](labs/lab-05-launch-deck-and-brief/lab-05-launch-deck-and-brief.pdf)<br>*Objective: analyse survey data with Claude's code tool and save it to Excel, then produce a launch deck in Slides and a campaign brief in Docs.* | Connectors, Skills and Plugins | [PDF](labs/lab-05-launch-deck-and-brief/lab-05-launch-deck-and-brief.pdf) | [1 file](labs/lab-05-launch-deck-and-brief/data/) |
+| 6 | [Capture the Brand Voice as an Agent Skill](labs/lab-06-brand-voice-skill/lab-06-brand-voice-skill.pdf)<br>*Objective: capture the brand voice as an Agent Skill with /skill-creator, read its SKILL.md, use it on workplace messages and update it.* | Connectors, Skills and Plugins | [PDF](labs/lab-06-brand-voice-skill/lab-06-brand-voice-skill.pdf) | [2 files](labs/lab-06-brand-voice-skill/data/) |
 | 7 | [Add the Marketing Plugin and a Mod](labs/lab-07-marketing-plugin/lab-07-marketing-plugin.pdf)<br>*Objective: install a plugin, use its namespaced commands alongside your own skill, and build a mod that suggests the next social post.* | Connectors, Skills and Plugins | [PDF](labs/lab-07-marketing-plugin/lab-07-marketing-plugin.pdf) | — |
 | 8 | [Create and Schedule Two Weeks of Social Posts](labs/lab-08-social-posts/lab-08-social-posts.pdf)<br>*Objective: produce a two-week, four-platform social calendar using the brand-voice skill, and schedule the daily post.* | Content Production and Scheduled Work | [PDF](labs/lab-08-social-posts/lab-08-social-posts.pdf) | [1 file](labs/lab-08-social-posts/data/) |
 | 9 | [Produce a 15-Second Launch Video](labs/lab-09-launch-video/lab-09-launch-video.pdf)<br>*Objective: script, storyboard and render a vertical launch video from supplied brand assets.* | Content Production and Scheduled Work | [PDF](labs/lab-09-launch-video/lab-09-launch-video.pdf) | [5 files](labs/lab-09-launch-video/data/) |
@@ -100,12 +100,12 @@ See the [labs index](labs/README.md).
 
 | Item | Files |
 |---|---|
-| **Classic Projects Edition** slide deck | [PowerPoint](<courseware/Claude AI Masterclass-v5.2.pptx>) · [PDF](<courseware/Claude AI Masterclass-v5.2.pdf>) |
+| **Classic Projects Edition** slide deck | [PowerPoint](<courseware/Claude AI Masterclass-v6.0.pptx>) · [PDF](<courseware/Claude AI Masterclass-v6.0.pdf>) |
 | **Classic Projects Edition** Learner Guide | [Word](<courseware/LG-Claude AI Masterclass.docx>) · [PDF](<courseware/LG-Claude AI Masterclass.pdf>) · [Markdown](<LG-Claude AI Masterclass.md>) |
 | **Classic Projects Edition** Lesson Plan | [Word](<courseware/LP-Claude AI Masterclass.docx>) · [PDF](<courseware/LP-Claude AI Masterclass.pdf>) |
 | **Classic Projects Edition** labs | [labs/](labs/README.md): 10 lab folders, each with a prompt PDF and, where needed, a `data/` folder of mock data |
 | **Classic Projects Edition** lab prompts | [Copy-ready prompts page](https://tertiarycourses.github.io/C1382-Claude-AI-Masterclass/prompts/) (source in `docs/prompts/`) |
-| **Threads Edition** slide deck | [PowerPoint](<courseware/threads-edition/Claude AI Masterclass - Threads Edition-v5.2.pptx>) · [PDF](<courseware/threads-edition/Claude AI Masterclass - Threads Edition-v5.2.pdf>) |
+| **Threads Edition** slide deck | [PowerPoint](<courseware/threads-edition/Claude AI Masterclass - Threads Edition-v6.0.pptx>) · [PDF](<courseware/threads-edition/Claude AI Masterclass - Threads Edition-v6.0.pdf>) |
 | **Threads Edition** Learner Guide | [Word](<courseware/threads-edition/LG-Claude AI Masterclass - Threads Edition.docx>) · [PDF](<courseware/threads-edition/LG-Claude AI Masterclass - Threads Edition.pdf>) · [Markdown](<LG-Claude AI Masterclass - Threads Edition.md>) |
 | **Threads Edition** Lesson Plan | [Word](<courseware/threads-edition/LP-Claude AI Masterclass - Threads Edition.docx>) · [PDF](<courseware/threads-edition/LP-Claude AI Masterclass - Threads Edition.pdf>) |
 | **Threads Edition** labs | [labs-threads/](labs-threads/README.md): 10 lab folders, each with a prompt PDF and, where needed, a `data/` folder of mock data |

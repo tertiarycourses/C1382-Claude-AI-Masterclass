@@ -1,6 +1,6 @@
 # Claude AI Masterclass — Learner Guide
 
-**Classic Projects Edition**  |  **Course Code:** C1382  |  **Conducted by:** Tertiary Infotech Academy Pte Ltd (UEN 201200696W)  |  **Version v5.2 · 27 October 2026**
+**Classic Projects Edition**  |  **Course Code:** C1382  |  **Conducted by:** Tertiary Infotech Academy Pte Ltd (UEN 201200696W)  |  **Version v6.0 · 28 October 2026**
 
 ## Contents
 
@@ -24,10 +24,12 @@
   - [Live Artefacts](#live-artefacts)
   - [Lab 3 — Build the Market Insights Live Artefact](#lab-3--build-the-market-insights-live-artefact)
 - [Topic 02 — Connectors, Skills and Plugins](#topic-02--connectors-skills-and-plugins)
+  - [Tools and skills](#tools-and-skills)
   - [Connectors and the context window](#connectors-and-the-context-window)
   - [Lab 4 — Connect Google Drive and Gmail](#lab-4--connect-google-drive-and-gmail)
+  - [Analysing data with Claude](#analysing-data-with-claude)
   - [Slides, Docs and built-in skills](#slides-docs-and-built-in-skills)
-  - [Lab 5 — Create the Launch Deck and Campaign Brief](#lab-5--create-the-launch-deck-and-campaign-brief)
+  - [Lab 5 — Analyse the Survey, Then Build the Deck and Brief](#lab-5--analyse-the-survey-then-build-the-deck-and-brief)
   - [Agent Skills](#agent-skills)
   - [Lab 6 — Capture the Brand Voice as an Agent Skill](#lab-6--capture-the-brand-voice-as-an-agent-skill)
   - [Skills, plugins and mods](#skills-plugins-and-mods)
@@ -67,9 +69,9 @@ On completion of this course, you will be able to:
 - LO1: Set up a Claude Project in Cowork with instructions, context, a working folder and a project memory file.
 - LO2: Run multi-subject market research as parallel tasks in one project and consolidate it into one verified research brief.
 - LO3: Build, refine, save and download a Live Artefact dashboard from supplied research data.
-- LO4: Connect Google Drive and Gmail so Claude reads campaign files and sends an approved summary.
-- LO5: Produce a launch deck and a campaign brief with Claude's Slides and Docs, using built-in skills.
-- LO6: Capture a brand voice as an Agent Skill with /skill-creator, and install and use a marketing plugin.
+- LO4: Connect Google Drive and Gmail and use their tools to reconcile, search, save and draft, sending only what you approve.
+- LO5: Analyse survey data with Claude's code tool and Excel, and produce a launch deck and campaign brief with Slides and Docs using built-in skills.
+- LO6: Capture a brand voice as an Agent Skill with /skill-creator, use and update it on workplace messages, and install and use a marketing plugin.
 - LO7: Create a two-week, multi-platform set of social media posts using the brand-voice skill.
 - LO8: Produce a short vertical launch video from a script, storyboard and supplied brand assets.
 - LO9: Schedule recurring project tasks and keep the project's instructions, context and memory file current, with a human approval step.
@@ -202,7 +204,7 @@ How this changes the way you work:
 
 #### Projects and sessions
 
-The project is the room; a session is one working day in it. A session is one conversation with Claude; a project is the workspace that holds many of them and loads the same set-up into each.
+The project keeps the setup; a session does one piece of work inside it. A session is one conversation with Claude; a project is the workspace that holds many of them and loads the same set-up into each.
 
 | A session — one piece of work | A project — the whole goal |
 |---|---|
@@ -293,7 +295,7 @@ Quick test: a sentence that starts Always, Never or Write in… is an instructio
 |---|---|
 | Short standing rules you write in the Instructions panel. | Reference documents Claude reads but never edits. |
 | Followed by every session in the project. | Files you add in the Context panel. |
-| Like the house rules pinned on the office wall. | Like the reference binders on the office shelf. |
+| If an output breaks a rule, fix the instruction here. | If a fact in an output is wrong, fix or replace the file. |
 | Keep them short: they are loaded into every session. | Add them once; you never re-attach them again. |
 | Lumo: “Prices in S$. No health claims. Ask before sending.” | Lumo: brand guidelines, product sheet, launch brief. |
 
@@ -309,19 +311,19 @@ These three are easy to confuse, and the difference matters: when an output is w
 | Edit it in | The Instructions panel | The Context panel | lumo-project-memory.md in the folder |
 | When output is wrong | Tighten the rule | Add the missing file | Correct the line in the file |
 
-#### An analogy: the project room
+#### Where each part lives in Claude
 
-Picture the project as a room your team works in for the whole launch.
+Every part of a project, where you click to find it, and the Lumo example.
 
-| In Claude | In the office | What it means | Lumo example |
+| Part | Where you find it in Claude | What it does | Lumo example |
 |---|---|---|---|
-| Project | The project room | Stays set up for weeks | Lumo Cold Kopi Launch |
-| Session | One working day in the room | Starts fresh; the room is still set up | Draft the Instagram post |
-| Instructions | House rules on the wall | How every session must behave | Prices in S$; no health claims |
-| Context | Binders on the shelf | What Claude reads, never edits | Brand guidelines, product sheet |
-| Folder | The desk | Where work is done and left | Survey CSV in, posts out |
-| Scheduled | The room's recurring calendar | Work that runs on a timetable | Monday 9am: the week's posts |
-| Memory file | The team logbook | Decisions kept between sessions | Launch price confirmed at S$3.90 |
+| Project | Cowork → Projects → the project | Stays set up for weeks | Lumo Cold Kopi Launch |
+| Session | A new task inside the project | Starts fresh; the setup still applies | Draft the Instagram post |
+| Instructions | The Instructions panel | How every session must behave | Prices in S$; no health claims |
+| Context | The Context panel | What Claude reads, never edits | Brand guidelines, product sheet |
+| Folder | The Folder panel — a real folder | Where work is done and left | Survey CSV in, posts out |
+| Scheduled | The Scheduled panel | Work that runs on a timetable | Monday 9am: the week's posts |
+| Memory file | lumo-project-memory.md in the folder | Decisions kept between sessions | Launch price confirmed at S$3.90 |
 
 
 ### Creating the project
@@ -901,25 +903,80 @@ So: bake the data in, or download the HTML and run it yourself.
 
 ## Topic 02 — Connectors, Skills and Plugins
 
-Google Drive and Gmail · the context window · Slides and Docs · Agent Skills · plugins and mods
+Claude's tools · Drive and Gmail · tool calls · data analysis · the context window · Slides and Docs · Agent Skills · plugins and mods
 
 #### Key concepts
 
 | Concept | What it means |
 |---|---|
-| Connectors | Toggle Gmail, Drive and Calendar on from the + menu so Claude can reach data outside the chat. |
-| Scope the folder | Point Claude at one Drive folder for the task — not your whole Drive. |
-| Approval to send | Claude drafts, sends and replies in Gmail — sending asks for explicit approval by default. |
-| Slides and Docs | Claude's own deck and document formats: shareable, editable, and downloadable as PowerPoint, Word or PDF. |
-| Agent Skills | A folder of instructions Claude loads on demand, so a task runs the same way every time. |
-| /skill-creator | Do the task once, verify the output, then let skill-creator write the SKILL.md for you. |
-| Plugins | A bundle somebody else packaged — several skills plus the tools they need, installed in one click. |
-| Mods | Changes to Claude's own interface or behaviour — a side panel, a status line, a slash command or a hook. |
+| Tools | What Claude can DO: search the web, run code, create files — and reach Drive or Gmail through a connector. |
+| Tool calls | Each action shows as a step in Claude's reply. Click it to see the tool, its input and what came back. |
+| Connectors and approval | Drive and Gmail add their own tools. Reading runs freely; sending an email waits for your approval. |
+| Data analysis | Claude writes and runs code on your CSV or Excel file, so the numbers are calculated — and you can check the code. |
+| Skills | HOW Claude does a job: a SKILL.md of steps, rules and checks, loaded when your request matches its description. |
+| Built-in skills | pptx, xlsx and docx load by themselves when you ask for a deck, a workbook or a document. |
+| /skill-creator | Do the task once, verify it, save it as a skill — then use it, find the gaps and update it. |
+| Plugins and mods | A plugin bundles skills and tools someone packaged. A mod changes Claude's own interface. |
+
+
+### Tools and skills
+
+Two words run through this topic. A tool is one action Claude can take; a skill is the know-how for a whole job, which tells Claude which tools to use and in what order.
+
+| A tool — what Claude can DO | A skill — HOW Claude does a job |
+|---|---|
+| One action: search, read, run code, create a file, send. | A SKILL.md of steps, rules and checks for one kind of job. |
+| Built in (web search, code, files) or added by a connector. | Built in (pptx, xlsx), written by you, or from a plugin. |
+| Claude picks one by matching your request to its description. | Loads when your request matches its description. |
+| Each call shows in the reply: the tool, its input, its result. | Tells Claude which tools to use, in what order. |
+| Lumo: Google Drive search_files finds the budget sheet. | Lumo: lumo-brand-voice applies the rules to every post. |
+
+#### Claude's built-in tools
+
+Claude can already do these before you connect anything:
+
+| Tool | What it does |
+|---|---|
+| Web search and fetch | Finds and reads current web pages — competitor news, prices, trends — and cites them. |
+| Code execution | Writes and runs Python on your files: counts, tables, charts. Lab 3's dashboard, Lab 5's analysis and Lab 9's video. |
+| File creation | Makes real .xlsx, .pptx, .docx and .pdf files you download and open. Lab 5. |
+| Artefacts | Builds an interactive page — a dashboard, a tracker — that stays in your workspace. Lab 3. |
+| Project files | Reads the project's context and writes outputs to its files — the brief, the calendar. Every lab. |
+| Connectors | Add more tools from outside apps: Google Drive, Gmail, Calendar and others. Lab 4. |
+
+#### How Claude uses a tool
+
+1. **You ask** — “Compare the Drive budget with the brief.”
+2. **Claude picks a tool** — It matches the job to each tool's description — here, Google Drive.
+3. **It calls the tool** — With inputs it chooses: search_files, query “Lumo Launch”.
+4. **It reads the result** — Two CSV files come back — so it calls read_file_content next.
+5. **It answers, or asks** — Reading just runs. Sending an email waits for your approval.
+
+Every tool call appears as a step in Claude's reply. Click it to see the tool, what Claude passed in and what came back. These are the calls behind Lab 4, Block 1:
+
+*WHAT CLAUDE DID — the tool calls behind Lab 4, Block 1*
+
+```text
+1. Google Drive · search_files("Lumo Launch")
+   → 1 folder with 2 CSV files
+2. Google Drive · read_file_content(lumo-launch-budget.csv)
+   → 5 lines, total S$60,000
+3. Google Drive · read_file_content(lumo-launch-timeline.csv)
+   → 11 milestones; the next is 30 October
+4. Project file · read(lumo-launch-brief.md)
+   → budget table, total S$60,000
+   Claude compares the two → 2 lines disagree
+5. Google Drive · create_file(lumo-research-brief.docx)
+6. Gmail · create_draft("Lumo launch - research and budget check")
+7. Gmail · send_message → waits for your approval
+```
+
+> **Note:** Click any step in Claude's reply to see this for yourself. Tool names can differ slightly between connector versions; the pattern does not.
 
 
 ### Connectors and the context window
 
-A connector lets Claude reach a service outside the chat. These are the ones this course uses:
+A connector adds tools that reach a service outside the chat. These are the ones this course uses:
 
 | Connector | What Claude can do |
 |---|---|
@@ -945,6 +1002,40 @@ A connector lets Claude reach a service outside the chat. These are the ones thi
 1. **Read from the file** — Claude summarised the workbook: 14 facilities in 9 countries, 2023–2025.
 2. **Ready to read** — Headings and bullets, formatted for email.
 3. **Verify** — Spot-check one total against the source file before you forward it.
+
+#### Tool permissions and approval
+
+| Rule | In practice |
+|---|---|
+| Read tools run | Search, read and list change nothing, so they run without asking. |
+| Write tools ask | Send, reply, create an event or delete ask for your approval by default. |
+| See every tool | Customize → Connectors → open a connector to see each tool it adds and what it may do. |
+| On per session | Toggle a connector on from the + menu only for the jobs that need it. |
+| Scope the data | Name the folder, label or dates — “the Lumo Launch folder”, not “my Drive”. |
+| You approve | Read the draft before you click. Claude drafts; the decision stays yours. |
+
+#### Connectors at work: six everyday jobs
+
+Each of these is one prompt once the connectors are on. Lab 4 runs three of them on the Lumo files.
+
+| Everyday job | Tools | The prompt you would send |
+|---|---|---|
+| Meeting prep | Gmail · Calendar | Before my 3pm with Kopi Corner, summarise this month's emails with them and list the open questions. |
+| Inbox triage | Gmail | Find customer emails from the last three days that have no reply, and draft replies for my approval. |
+| Budget check | Drive | Compare the Q4 budget sheet with the brief, line by line, and flag every difference. Do not pick one. |
+| Find a file | Drive | Find the latest signed stockist agreement and tell me its renewal date and notice period. |
+| Book a meeting | Calendar · Gmail | Find 45 minutes next week when the four leads are free, and draft the invite. |
+| Weekly update | Drive · Gmail | Summarise what changed in the Lumo Launch folder this week and draft the email to my manager. |
+
+#### When a tool goes wrong
+
+| What you see | Likely cause | What to do |
+|---|---|---|
+| “Insufficient scope” | Connected without file access | Settings → Connectors → Reconnect, and accept read access. |
+| An answer with no Drive step | Connector off for this session | + → Connectors → switch it on; start with “Using Google Drive…”. |
+| It read the wrong file | The search matched several files | Name the folder and file: Lumo Launch/lumo-launch-budget.csv. |
+| Numbers that look estimated | No code was run | Ask it to use code and show the totals; check one figure yourself. |
+| Slow replies, usage drains fast | Too many connectors switched on | Turn off the ones this job does not need. |
 
 #### Keeping the context window lean
 
@@ -974,13 +1065,13 @@ The fix is housekeeping: one job per task, only the connectors you need, and onl
 
 ### Lab 4 — Connect Google Drive and Gmail
 
-**Objective:** By the end of this lab you can connect Google Drive and Gmail, read campaign files from Drive and send an approved summary.
+**Objective:** By the end of this lab you can connect Google Drive and Gmail and use their tools to reconcile, search, save and draft, sending only what you approve.
 
-**Scenario:** The launch budget and timeline live in a shared Google Drive folder, not on your laptop. You upload the Lab 04 data folder to Drive, connect the Google Drive and Gmail connectors, and have the project read the budget from Drive, reconcile it against the launch brief, save the research brief back to Drive, and email you an approved summary. The budget sheet and the brief disagree on two lines — the project should catch it.
+**Scenario:** The launch budget and timeline live in Google Drive. You connect Drive and Gmail, and the project reconciles the Drive budget against the launch brief — they disagree on two lines — saves the research brief to Drive and emails you an approved summary. Then two everyday jobs: find the next milestones in Drive and draft a reminder in Gmail, reading the tool calls behind each.
 
-**You will build:** Drive and Gmail connected, the research brief saved to Drive, and an approved launch summary emailed to yourself.
+**You will build:** Drive and Gmail connected, the budget reconciled, an approved summary emailed to yourself, a milestone list from Drive and a reminder saved as a Gmail draft.
 
-**Tools:** Claude Projects, Google Drive connector, Gmail connector.
+**Tools:** Claude Projects, Google Drive connector, Gmail connector, tool calls.
 
 #### In the project
 
@@ -1007,14 +1098,26 @@ Click the **+** in the chat composer, hover **Connectors**, and toggle on only G
 
 The connector is linked but was authorised without permission to read files. Fix it in **Settings → Connectors → Google Drive → Reconnect**, and accept the read access Google asks for. Then tell Claude to try again.
 
+**Seeing the tools Claude used**
+
+Every tool Claude calls appears as a step in its reply, such as *Searched Google Drive*. Click the step to see the tool's name, what Claude passed in and what came back.
+
 #### Step-by-step
+
+This lab has three blocks. Block 1 reconciles the budget and emails you an approved summary. Block 2 searches Drive for the milestones due next and asks Claude to list the tools it called. Block 3 searches Gmail and saves a reminder as a draft.
+
+> **Note:** Replace `<YOUR EMAIL>` with your own address in Blocks 1 and 3. Send lab emails only to yourself.
 
 1. Upload the Lab 04 data/Lumo Launch folder to your Google Drive.  
    *Why:* In real work the files are already there; the upload stands in for the shared team drive.
 2. In the project, click + → Connectors and switch on Google Drive and Gmail, signing in to Google.  
    *Why:* Accept the read access Google asks for. A connector that shows Connected without read access fails with "insufficient scope".
-3. Send the lab prompt with your own email address in place of `<YOUR EMAIL>`.  
+3. Send Block 1 with your own email address in place of `<YOUR EMAIL>`.  
    *Why:* No files are attached this time — the project reaches Drive itself.
+
+   **Block 1 — RECONCILE**
+
+   Send this in the project:
 
    *PROMPT — copy into Claude*
 
@@ -1037,7 +1140,7 @@ The connector is linked but was authorised without permission to read files. Fix
    Show me the draft. Do not send it until I approve.
    ```
 
-   > **Note:** Replace `<YOUR EMAIL>` with your own address. Send lab emails only to yourself.
+   Read the budget table and the draft in full before you approve the email.
 
 
 4. Read the budget table Claude produces.  
@@ -1050,10 +1153,64 @@ The connector is linked but was authorised without permission to read files. Fix
    *Why:* Gmail sends only after your explicit approval. Check the figures against the table before you click.
 8. Open your inbox and confirm the email arrived with the Drive link working.  
    *Why:* Close the loop: an email you did not check arrived is an email you hope arrived.
+9. Send Block 2 to find the milestones due from 6 to 20 November.  
+   *Why:* The prompt names no file. Claude must search Drive, then read what it found — two tool calls you never asked for by name.
+
+   **Block 2 — FIND**
+
+   Then send:
+
+   *PROMPT — copy into Claude*
+
+   ```text
+   Search my Google Drive for the Lumo launch timeline.
+
+   1. List every milestone due from 6 to 20 November 2026 in a
+      table: date, milestone, owner and status.
+   2. Then list the tools you called to answer this, in order:
+      the tool's name, what you passed to it, and what it returned.
+   ```
+
+   Click the Drive steps in Claude's reply and compare them with the tool list it gave you.
+
+
+10. Click the Drive steps in Claude's reply and compare them with the tool list it gave you.  
+   *Why:* Each step shows the tool, its input and its result — a search, then a file read. This is how you check where an answer came from.
+11. Check the milestone table.  
+   *Why:* Three milestones, all Not started: 6 November, launch deck and campaign brief (Marketing lead); 13 November, brand-voice skill and social calendar (Social lead); 20 November, creator content approved (Partnerships lead).
+12. Send Block 3 with your own email address in place of `<YOUR EMAIL>`.  
+   *Why:* Two Gmail tools this time — one searches your mail, one creates a draft — plus a Drive read. None of them sends anything.
+
+   **Block 3 — REMIND**
+
+   Then send:
+
+   *PROMPT — copy into Claude*
+
+   ```text
+   Using Gmail and Google Drive:
+
+   1. Search my Gmail for the email with the subject
+      "Lumo launch - research and budget check" and tell me when
+      it arrived.
+   2. From lumo-launch-timeline.csv in Drive, find the milestone for
+      the Shopee and Lazada store pages: its owner and due date.
+   3. Draft an email to <YOUR EMAIL> with the subject
+      "Reminder: store pages due <due date>", reminding its owner
+      of what is due and when.
+
+   Save the reminder as a Gmail draft. Do not send it.
+   ```
+
+   Open **Gmail → Drafts** and check the reminder is there, unsent.
+
+
+13. Open Gmail → Drafts and check the reminder.  
+   *Why:* The store pages belong to the E-commerce lead and are due Friday 27 November 2026. The reminder is a draft, not a sent email, and Claude reported when the Block 1 email arrived.
 
 #### Check
 
-> **Check — you are done when:** Google Drive and Gmail are connected. Claude read both CSV files from the Lumo Launch folder, showed a budget table totalling S$60,000 on both sides, and flagged Instagram (S$18,000 vs S$20,000) and Influencers (S$12,000 vs S$10,000) without choosing between them. lumo-research-brief.docx is in the Drive folder, and the approved summary email arrived in your own inbox with a working link.
+> **Check — you are done when:** Google Drive and Gmail are connected. Claude read both CSV files from the Lumo Launch folder, showed a budget table totalling S$60,000 on both sides, and flagged Instagram (S$18,000 vs S$20,000) and Influencers (S$12,000 vs S$10,000) without choosing between them. lumo-research-brief.docx is in the Drive folder, and the approved summary email arrived in your own inbox with a working link. Block 2 listed the three milestones due from 6 to 20 November with their owners and named the Drive tools it called. Block 3 found the Block 1 email in Gmail and saved a reminder about the E-commerce lead's store pages, due 27 November 2026, as a draft — nothing else was sent.
 
 #### From the class
 
@@ -1082,6 +1239,39 @@ The connector is linked but was authorised without permission to read files. Fix
 3. **The numbers** — 8,000 cans is S$28,000–31,200 at retail, below the S$60,000 spend.
 
 
+### Analysing data with Claude
+
+Ask Claude a question about a CSV or Excel file and it uses its code tool: it writes Python, runs it on the file and reads the result. The work runs in five moves:
+
+1. **Attach the data** — A CSV or Excel file — the 400-row Lumo survey.
+2. **Define the terms** — “Likely to buy” means intent 4 or 5 — say so.
+3. **Claude runs code** — Python reads the file, counts, and draws the chart.
+4. **Check the method** — Click the code step: right column, right filter?
+5. **Take the output** — Tables, a chart, and an .xlsx workbook to download.
+
+The numbers come from code that ran on your file — not from the model's memory.
+
+#### Six questions to ask of your data
+
+| Question type | The prompt you would send |
+|---|---|
+| Segment | Likely to buy by city and by age band — count, base and %. |
+| Compare | Which discovery channel has the highest average purchase intent? |
+| Threshold | What share would pay S$3.50 or more, by city? |
+| Clean | Find duplicate respondent IDs, blanks and impossible values. List them; do not delete. |
+| Trend | Chart responses per week from response_date and tell me if any week is unusual. |
+| Report | Save the tables and one chart as an Excel workbook with a Summary sheet. |
+
+#### Four checks before you trust the numbers
+
+| Check | How |
+|---|---|
+| Define every term | “Likely to buy” must mean intent 4 or 5 — write it in the prompt, or Claude chooses for you. |
+| Ask for the base | A percentage without its count and base cannot be checked: 63% of what? Ask for 152 of 240. |
+| Reconcile the totals | The segments must add back to the whole: 240 + 160 = 400 respondents, 152 + 96 = 248 likely to buy. |
+| Check one figure yourself | Filter the CSV in Excel for one row of the table. If it matches, you can trust the method. |
+
+
 ### Slides, Docs and built-in skills
 
 | Format | What it is |
@@ -1094,15 +1284,15 @@ The connector is linked but was authorised without permission to read files. Fix
 You never name the skill. Ask for a deck or a document; Claude picks the format and the skill that builds it.
 
 
-### Lab 5 — Create the Launch Deck and Campaign Brief
+### Lab 5 — Analyse the Survey, Then Build the Deck and Brief
 
-**Objective:** By the end of this lab you can produce a launch deck in Slides and a campaign brief in Docs from the project's research.
+**Objective:** By the end of this lab you can analyse survey data with Claude's code tool and save it to Excel, then produce a launch deck in Slides and a campaign brief in Docs.
 
-**Scenario:** The launch team meets on Friday and needs two things: a short deck for the room and a campaign brief everyone can work from. You ask the project for both. Claude builds the deck in Slides and the brief in Docs, choosing its built-in skills on its own, using the numbers from your research and dashboard. You check every figure, then download the deck as PowerPoint.
+**Scenario:** Before the deck, the numbers. Claude analyses the 400-row survey by writing and running code, and saves the tables and a chart as an Excel workbook. Then it builds the Friday deck in Slides and the campaign brief in Docs, choosing its built-in skills itself. You check every figure and download the deck as PowerPoint.
 
-**You will build:** An eight-slide launch deck in Slides (downloaded as .pptx) and a campaign brief in Docs.
+**You will build:** A survey analysis workbook (lumo-survey-analysis.xlsx), an eight-slide launch deck in Slides (downloaded as .pptx) and a campaign brief in Docs.
 
-**Tools:** Claude Projects, Slides, Docs, built-in skills.
+**Tools:** Claude Projects, code execution, built-in skills (xlsx, pptx, docx), Slides, Docs.
 
 #### In the project
 
@@ -1110,19 +1300,61 @@ You never name the skill. Ask for a deck or a document; Claude picks the format 
 |---|---|
 | Instructions — HOW | Uses: follow the brand guidelines for anything customer-facing. |
 | Context — WHAT | Uses: the brand kit, for the name, tagline, price and claims. |
-| Folder — WHERE | Uses: lumo-research-brief.docx from Lab 2; save the downloaded .pptx here. |
+| Folder — WHERE | Uses: the survey CSV and lumo-research-brief.docx; save lumo-survey-analysis.xlsx and the .pptx here. |
 | Scheduled — WHEN | Not used — runs when you send the prompt. |
 
 #### Lab files
 
 - Prompt PDF: labs/lab-05-launch-deck-and-brief/lab-05-launch-deck-and-brief.pdf
-
-This lab has no data folder — it works from what the project already holds.
+- labs/lab-05-launch-deck-and-brief/data/lumo-consumer-survey-2026.csv
 
 #### Step-by-step
 
-1. In the project, send the lab prompt.  
+This lab has two blocks. Block 1 has Claude analyse the survey by writing and running code, and save the result as an Excel workbook. Block 2 builds the launch deck and the campaign brief.
+
+> **Note:** You do not name a skill in either block. Ask for a workbook, a deck or a document; Claude picks the format and the built-in skill.
+
+1. In the project, attach lumo-consumer-survey-2026.csv and send Block 1.  
+   *Why:* Everyone analyses the same 400-row survey. Claude's code tool writes Python, runs it on the file and reads the result — you never write the code.
+
+   **Block 1 — ANALYSE**
+
+   Attach lumo-consumer-survey-2026.csv and send:
+
+   *PROMPT — copy into Claude*
+
+   ```text
+   Analyse the attached survey with code. Count "likely to buy" as
+   purchase_intent 4 or 5.
+
+   1. Likely to buy by city, and by age band: count, base and %.
+   2. Willing to pay S$3.50 or more (max_price_sgd), by city.
+   3. Likely to buy among 25-34s in Singapore only.
+   4. One chart: likely-to-buy % by age band.
+   5. Save it all as lumo-survey-analysis.xlsx: a Summary sheet,
+      one sheet per table, and the chart.
+
+   Show the totals so I can check them, then give me three
+   findings in one sentence each.
+   ```
+
+   Click the code step and check the totals before you use any number.
+
+
+2. Click the code step in Claude's reply and read what it ran.  
+   *Why:* Find the line that counts purchase_intent 4 or 5. Checking the method is how you know the numbers were calculated, not guessed.
+3. Check the tables against these figures.  
+   *Why:* Singapore 152 of 240 (63%), Kuala Lumpur 96 of 160 (60%). By age: 18-24 60 of 88 (68%), 25-34 112 of 152 (74%), 35-44 50 of 96 (52%), 45+ 26 of 64 (41%). Would pay S$3.50 or more: Singapore 143 (60%), Kuala Lumpur 85 (53%). 25-34s in Singapore: 72 of 96 (75%).
+4. Download lumo-survey-analysis.xlsx and open it in Excel.  
+   *Why:* The xlsx built-in skill made a real workbook: a Summary sheet, one sheet per table and the chart.
+5. Ask one follow-up question about the data: Which coffee frequency group is most likely to buy?  
+   *Why:* Expect 1-2 times a week at 52 of 76 (68%), with daily drinkers lowest at 90 of 156 (58%). Follow-up questions are cheap — the data is already loaded.
+6. Send Block 2.  
    *Why:* No attachments: the research brief, the dashboard data and the brand kit are all already in the project.
+
+   **Block 2 — BUILD**
+
+   Then send:
 
    *PROMPT — copy into Claude*
 
@@ -1150,25 +1382,25 @@ This lab has no data folder — it works from what the project already holds.
    List the source of each number at the end of the brief.
    ```
 
-   > **Note:** You do not name a skill. Ask for a deck and a document; Claude picks the format and the built-in skill.
+   Check every figure against the research brief and your analysis.
 
 
-2. Open the deck when it appears and page through all eight slides.  
+7. Open the deck when it appears and page through all eight slides.  
    *Why:* Check the charts are real charts — click one; a real chart has editable data behind it.
-3. Check slide 2 and slide 4 against your research.  
+8. Check slide 2 and slide 4 against your research.  
    *Why:* 62% likely to buy, 74% among 25-34s, Instagram 34%; a price ladder from S$3.20 to S$5.60 with Lumo at S$3.90.
-4. Check slide 7.  
+9. Check slide 7.  
    *Why:* The S$60,000 split should carry the two open questions from Lab 4 — Instagram and Influencers — not quietly pick one figure.
-5. Open the campaign brief in Docs and read the "claims we must not make" section.  
+10. Open the campaign brief in Docs and read the "claims we must not make" section.  
    *Why:* It should rule out "healthy" and any claim the product sheet does not support. This section protects every post you write later.
-6. Ask for one change to each, for example: Shorten slide 6 to three bullets.  
+11. Ask for one change to each, for example: Shorten slide 6 to three bullets.  
    *Why:* Slides and Docs are edited in place by conversation, the same way as an artefact.
-7. Download the deck as PowerPoint and open it.  
+12. Download the deck as PowerPoint and open it.  
    *Why:* The download is the file you take into the meeting — check the charts survived.
 
 #### Check
 
-> **Check — you are done when:** The deck has eight slides in the Lumo colours, with real charts for the price ladder and the discovery channels, the survey figures 62%, 74% and 34%, and a budget slide that shows S$60,000 with the Instagram and Influencers lines marked as open questions. The campaign brief in Docs has all nine sections, including "claims we must not make", and lists a source for every number. The deck opens in PowerPoint with its charts intact.
+> **Check — you are done when:** The analysis shows Singapore 152 of 240 (63%) and Kuala Lumpur 96 of 160 (60%) likely to buy, 25-34s at 112 of 152 (74%) and 72 of 96 (75%) among 25-34s in Singapore, and lumo-survey-analysis.xlsx opens in Excel with a Summary sheet, the tables and a chart. The deck has eight slides in the Lumo colours, with real charts for the price ladder and the discovery channels, the survey figures 62%, 74% and 34%, and a budget slide that shows S$60,000 with the Instagram and Influencers lines marked as open questions. The campaign brief in Docs has all nine sections, including "claims we must not make", and lists a source for every number. The deck opens in PowerPoint with its charts intact.
 
 
 ### Agent Skills
@@ -1181,6 +1413,59 @@ An Agent Skill is a folder of instructions Claude loads on demand, so a routine 
 | Instructions | The step-by-step workflow, written in a SKILL.md. | Loaded when the skill is triggered. |
 | Resources | Supporting documents, templates and examples. | Loaded only when the skill needs them. |
 
+#### Inside a real SKILL.md
+
+This is the skill you build in Lab 6. It is plain text: the metadata at the top, then the rules and steps, then the resources it can call on.
+
+*SKILL.md — lumo-brand-voice, as /skill-creator writes it in Lab 6*
+
+```text
+---
+name: lumo-brand-voice
+description: Use when writing or reviewing any customer-facing
+  Lumo Kopi content - social posts, captions, emails, video
+  scripts or ads.
+---
+# Lumo brand voice
+
+## Rules
+- Prices as S$3.90 and S$42.00 - never $3.9 or SGD42.
+- No "healthy", medical or weight-loss claims.
+- At most one Singlish word.
+- #LumoKopi on every post; no more than five hashtags.
+- End with one clear call to action.
+
+## Steps
+1. Draft or rewrite in the Lumo voice.
+2. Remove any claim not in lumo-product-sheet.md.
+3. Run the checklist and show the result.
+
+## Resources
+- examples.md: two before-and-after rewrites
+```
+
+> **Note:** Top: metadata, always in context. Rules and steps: loaded when the skill is used. examples.md: read only when needed.
+
+#### Four kinds of skill
+
+| Kind | Who writes it | How it loads | In this course |
+|---|---|---|---|
+| Built-in | Anthropic | By itself when you ask for a file | pptx, xlsx, docx — Lab 5 |
+| Your own | You, with /skill-creator | When a request matches its description | lumo-brand-voice — Lab 6 |
+| From a plugin | The plugin's author | The same, or by its /plugin:command | marketing:brand-review — Lab 7 |
+| Shared by your team | An admin or a colleague | Provided to everyone in the organisation | Your company's house style |
+
+#### The description decides when it loads
+
+| Description | Verdict | Why |
+|---|---|---|
+| Brand voice. | Too vague | Says nothing about when — Claude rarely loads it. |
+| Rewrites Instagram captions. | Too narrow | Will not load for an email, a video script or an ad. |
+| Use for all writing. | Too broad | Loads for internal notes and meeting minutes too. |
+| Use when writing or reviewing any customer-facing Lumo Kopi content - social posts, captions, emails, video scripts or ads. | Good | Names the job, the brand and every format it covers. |
+
+Lab 6 tests this: Block 3 never names the skill, so only the description can load it.
+
 #### Do, Verify, Save, Update
 
 You never write a skill from a blank page. You do the task once, then save the verified routine:
@@ -1188,7 +1473,30 @@ You never write a skill from a blank page. You do the task once, then save the v
 1. **Do** — Do the task together with Claude once, step by step.
 2. **Verify** — Review and refine until the output is right.
 3. **Save** — Turn it into a skill using the /skill-creator skill.
-4. **Update** — Refine it later and save over it — Claude confirms before replacing.
+4. **Use and update** — Use it on new work, find the gap, and save the fix over it — Claude confirms first.
+
+#### Skills worth writing at work
+
+Any routine you repeat, with rules someone could forget, is a skill waiting to be written.
+
+| Skill | What it does |
+|---|---|
+| weekly-status-report | Every Monday: reads the project folder and inbox, writes five bullets in a fixed format. Uses Drive and Gmail. |
+| meeting-minutes | Turns a transcript into decisions, actions, owners and due dates — the same table every time. |
+| customer-reply | Drafts replies in the house tone; never promises a refund or a price the policy does not allow. |
+| proposal-deck | Builds a client proposal in the company template, using the built-in pptx skill. |
+| expense-check | Checks a claims spreadsheet against the policy limits and flags each breach with its rule. |
+| job-ad-writer | Writes a job ad in the house format, then checks it for biased or exclusionary wording. |
+
+#### When a skill goes wrong
+
+| What you see | Likely cause | What to do |
+|---|---|---|
+| The skill does not load | The description does not mention this job | Add the job and its words to the description. |
+| It loads when it should not | The description is too broad | Narrow it: name the brand, the formats, the audience. |
+| It skips a rule | The rule is vague | Rewrite it as a check: “price written as S$3.90”. |
+| A new kind of job goes wrong | The skill has no rule for it | Update it with /skill-creator — Lab 6, Block 4. |
+| Colleagues get different results | Each keeps a different copy | Share one skill, or package it in a plugin. |
 
 ![Figure 16 — Install a Published Skill](courseware/assets/screenshots/class-install-skill.png)
 
@@ -1201,11 +1509,11 @@ You never write a skill from a blank page. You do the task once, then save the v
 
 ### Lab 6 — Capture the Brand Voice as an Agent Skill
 
-**Objective:** By the end of this lab you can rewrite content in the brand voice, verify it, and save the routine as a skill with /skill-creator.
+**Objective:** By the end of this lab you can capture the brand voice as an Agent Skill with /skill-creator, read its SKILL.md, use it on workplace messages and update it.
 
-**Scenario:** Four channels and two weeks of posts are coming, and they all have to sound like Lumo. You rewrite five off-brand captions with Claude until they are right, then use /skill-creator to turn that verified routine into a lumo-brand-voice skill. From then on, every task in the project — and every colleague — loads the same voice by name.
+**Scenario:** Every post and customer email has to sound like Lumo. You rewrite five off-brand captions until they are right, save the routine as a lumo-brand-voice skill with /skill-creator and read its SKILL.md. Then you use it on three waiting messages, spot the gap it leaves, and update the skill so every future reply closes it.
 
-**You will build:** A lumo-brand-voice Agent Skill, tested on a new caption.
+**You will build:** A lumo-brand-voice Agent Skill, read in its SKILL.md, used on three workplace messages, then updated with a customer-reply section and retested.
 
 **Tools:** Claude Projects, Agent Skills, /skill-creator.
 
@@ -1214,25 +1522,26 @@ You never write a skill from a blank page. You do the task once, then save the v
 | Part | In this lab |
 |---|---|
 | Instructions — HOW | Uses: the never-say-healthy rule becomes a check inside the skill. |
-| Context — WHAT | Uses: lumo-brand-guidelines.md is the source the skill is written from. |
-| Folder — WHERE | Uses: attach lumo-sample-captions.txt; the skill saves to Customize → Skills. |
+| Context — WHAT | Uses: the brand guidelines the skill is written from, and the product sheet its replies may quote. |
+| Folder — WHERE | Uses: attach the captions, then the customer messages; the skill saves to Customize → Skills. |
 | Scheduled — WHEN | Not used — runs when you send the prompt. |
 
 #### Lab files
 
 - Prompt PDF: labs/lab-06-brand-voice-skill/lab-06-brand-voice-skill.pdf
 - labs/lab-06-brand-voice-skill/data/lumo-sample-captions.txt
+- labs/lab-06-brand-voice-skill/data/lumo-customer-messages.txt
 
 #### Step-by-step
 
-This lab has three blocks, sent at different times. Block 1 does the work once so you can verify it. Block 2 saves it as a skill: type /skill-creator in the composer, then paste the block. Block 3 tests the saved skill.
+This lab has five blocks, sent at different times. Block 1 does the work once so you can verify it. Block 2 saves it as a skill: type /skill-creator in the composer, then paste the block. Block 3 uses the saved skill on three workplace messages without naming it. Block 4 updates the skill, again after /skill-creator, and Block 5 tests the update in a fresh task.
 
-> **Note:** Block 2 begins with you typing /skill-creator in the composer — it is not part of the pasted text.
+> **Note:** Blocks 2 and 4 begin with you typing /skill-creator in the composer — it is not part of the pasted text.
 
 1. Open lumo-sample-captions.txt and read the five captions.  
    *Why:* Each breaks at least one brand rule — a wrong price format, a health claim, too much slang, too many hashtags.
 2. In the project, attach the file and send Block 1.  
-   *Why:* This is the Do step of Do · Verify · Save. You never write a skill from a blank page.
+   *Why:* This is the Do step of Do · Verify · Save · Update. You never write a skill from a blank page.
 
    **Block 1 — DO**
 
@@ -1283,37 +1592,80 @@ This lab has three blocks, sent at different times. Block 1 does the work once s
    before-and-after examples as a resource.
    ```
 
-   Approve the skill when Claude shows it to you, then open **Customize → Skills** and find it.
+   Approve the skill when Claude shows it to you, then open **Customize → Skills** and read its SKILL.md.
 
 
 5. Read the skill Claude proposes, especially its description, and approve it.  
    *Why:* The description is the one part always in context. It decides when the skill loads, so it must say WHEN to use it.
-6. Open Customize → Skills and find lumo-brand-voice.  
-   *Why:* Your own skills are listed here. Built-in skills such as pptx are not — they show in the context panel when they load.
-7. Start a new task and send Block 3.  
-   *Why:* A fresh task proves the skill works without the earlier conversation — which is exactly how later tasks will use it.
+6. Open Customize → Skills, open lumo-brand-voice and read its SKILL.md.  
+   *Why:* Find the four parts: the name and description at the top, the rules and steps below them, and the examples file beside it. The whole skill is plain text you can read and edit.
+7. Start a new task, attach lumo-customer-messages.txt and send Block 3.  
+   *Why:* Three messages waiting for a reply — the same file for everyone. The prompt does not name the skill, so if it loads, its description did its job.
 
-   **Block 3 — TEST**
+   **Block 3 — USE**
 
-   Start a new task in the project and send:
+   Start a new task in the project, attach lumo-customer-messages.txt and send:
 
    *PROMPT — copy into Claude*
 
    ```text
-   Use lumo-brand-voice to write an Instagram caption announcing
-   that Lumo Cold Kopi 12-packs are available on Shopee from
-   1 December. It's super healthy and the best kopi in Singapore!
+   Draft replies to messages 1 and 2 in the attached file, and
+   rewrite the flyer line in message 3 so it is ready to print.
    ```
 
-   The skill should load by itself, remove both unprovable claims and run its checklist.
+   The prompt never names the skill. Check the reply's steps: lumo-brand-voice should have loaded by itself.
 
 
-8. Check the caption: no "healthy", no "best kopi in Singapore", S$ prices, #LumoKopi present.  
-   *Why:* Both claims were traps. A skill that removes them has learned the rule, not just the examples.
+8. Check that lumo-brand-voice loaded, then read the flyer line and the café reply.  
+   *Why:* The flyer line must lose "super healthy" and "best kopi in Singapore" and show S$3.90. The café asks for a wholesale price that is not in the product sheet — the reply must not invent one.
+9. Read the reply to message 1 closely.  
+   *Why:* Does it promise a refund or a new pack? The skill has no rule for customer replies yet. Fix that gap once, in the skill, not in every prompt.
+10. Type /skill-creator in the composer, then paste Block 4 and approve the change.  
+   *Why:* This is the Update step. Claude shows the change and confirms before it replaces the saved skill.
+
+   **Block 4 — UPDATE**
+
+   Type /skill-creator in the composer, then paste this:
+
+   *PROMPT — copy into Claude*
+
+   ```text
+   Update the lumo-brand-voice skill. Add a section for replies to
+   customers and stockists:
+   - thank them, and apologise once if something went wrong;
+   - never promise a refund, replacement, discount or any price
+     that is not in lumo-product-sheet.md;
+   - say the team will reply within two working days;
+   - sign off "- The Lumo Kopi team".
+
+   Show me the change before you save over the skill.
+   ```
+
+   Read the change Claude proposes, then approve it.
+
+
+11. Start a new task, attach the file again and send Block 5.  
+   *Why:* A fresh task proves that the updated skill, not the earlier conversation, made the difference.
+
+   **Block 5 — RETEST**
+
+   Start a new task, attach lumo-customer-messages.txt again and send:
+
+   *PROMPT — copy into Claude*
+
+   ```text
+   Reply to message 1 in the attached file.
+   ```
+
+   The reply should follow the new rules without you repeating any of them.
+
+
+12. Check the new reply to message 1.  
+   *Why:* No refund or replacement promised, a reply within two working days, and signed "- The Lumo Kopi team". One edit to the skill now changes every future reply, for you and for anyone who uses it.
 
 #### Check
 
-> **Check — you are done when:** lumo-brand-voice appears under Customize → Skills with a description that says when to use it. In a fresh task, Block 3 loaded the skill without being asked to find it, and the caption it returned drops "healthy" and "best kopi in Singapore", includes #LumoKopi, uses at most five hashtags and ends with one call to action, followed by the checklist results.
+> **Check — you are done when:** lumo-brand-voice appears under Customize → Skills, and its SKILL.md shows a name, a description that says when to use it, the brand rules and the checklist. In a fresh task, Block 3 loaded the skill without naming it: the flyer line drops "super healthy" and "best kopi in Singapore" and shows S$3.90, and the café reply does not invent a wholesale price. After Block 4 the skill has a customer-reply section, and the Block 5 reply to message 1 promises no refund, says the team will reply within two working days and signs off "- The Lumo Kopi team".
 
 
 ### Skills, plugins and mods
@@ -1374,7 +1726,9 @@ This lab has three blocks. Blocks 1 and 2 are commands from the Marketing plugin
    *Why:* One install brings several skills and commands at once — the difference between a plugin and a skill.
 3. In the project composer, type /marketing and look at the commands it offers.  
    *Why:* Plugin commands carry the plugin's name as a prefix. That is how you tell them from a skill you wrote yourself.
-4. Send Block 1 to stress-test the plan with /marketing:campaign-plan.  
+4. Open the Marketing plugin in Customize → Plugins, list the skills it contains, and open brand-review.  
+   *Why:* A plugin skill is the same kind of SKILL.md you wrote in Lab 6 — a name, a description, instructions — packaged with others. Compare its description with yours.
+5. Send Block 1 to stress-test the plan with /marketing:campaign-plan.  
    *Why:* The plugin's skill works with your project context: the campaign brief and research brief are already there.
 
    **Block 1 — PLAN**
@@ -1396,9 +1750,9 @@ This lab has three blocks. Blocks 1 and 2 are commands from the Marketing plugin
    Read its answer in full before you send Block 2.
 
 
-5. Read the risks and KPIs it proposes, and check the budget is unchanged at S$60,000.  
+6. Read the risks and KPIs it proposes, and check the budget is unchanged at S$60,000.  
    *Why:* A plugin is someone else's judgement. Keep what fits your goal; question what does not.
-6. Send Block 2 to review the deck copy with /marketing:brand-review.  
+7. Send Block 2 to review the deck copy with /marketing:brand-review.  
    *Why:* Two tools on one job: the plugin reviews, and your lumo-brand-voice skill holds the house rules it checks against.
 
    **Block 2 — REVIEW**
@@ -1416,9 +1770,9 @@ This lab has three blocks. Blocks 1 and 2 are commands from the Marketing plugin
    Compare its findings with what your lumo-brand-voice skill would flag.
 
 
-7. Open Customize and look at the Mods section.  
+8. Open Customize and look at the Mods section.  
    *Why:* Mods change Claude's interface itself — a panel, a status line, a slash command or a hook. You can install one, or ask Claude to make one.
-8. Send Block 3 and read what the mod will do before you let Claude install it.  
+9. Send Block 3 and read what the mod will do before you let Claude install it.  
    *Why:* You describe the behaviour in plain English and Claude writes the mod. Check it only suggests — a mod that could post would need your approval rules too.
 
    **Block 3 — MOD**
@@ -1446,7 +1800,7 @@ This lab has three blocks. Blocks 1 and 2 are commands from the Marketing plugin
    Open the **Next Lumo post** panel and check its suggestion against the brand kit.
 
 
-9. Open the Next Lumo post panel beside the chat and read its suggestion.  
+10. Open the Next Lumo post panel beside the chat and read its suggestion.  
    *Why:* No calendar yet, so it suggests a post from the research brief's top theme. Check the brand voice, S$3.90 and no "healthy". After Lab 8 it shows the calendar's next post.
 
 #### Check
@@ -1883,6 +2237,7 @@ Across ten labs you took one product launch from an empty project to a researche
 - **Start one real Project** — Give your next campaign a project with instructions, context and a folder.
 - **Split one job into tasks** — Next time you research competitors, give each one its own task.
 - **Capture your brand voice** — Turn your real brand guide into a skill your whole team shares.
+- **Analyse one dataset** — Attach a real export, define your terms, and check the code and the totals.
 - **Schedule one routine** — Pick the post or report you produce every week and schedule the draft.
 - **Watch for the new Projects** — When your account gets the lead agent and threads, the Threads edition of this course shows the same labs on it.
 
@@ -1894,6 +2249,7 @@ Across ten labs you took one product launch from an empty project to a researche
 | Agent Skill | A folder containing a SKILL.md of instructions that Claude loads on demand when the task matches its description. |
 | Artefact | A self-contained output Claude builds — a document, dashboard or tool — shown beside the chat rather than inside it. |
 | Claude Project | A workspace for one long-running body of work, with its own instructions, context files, working folder and scheduled tasks. |
+| Code execution | Claude's built-in tool for writing and running code on your files — how it analyses data, draws charts and builds files. |
 | Connector | An integration that lets Claude reach an outside service such as Google Drive, Gmail or Calendar. |
 | Context | Reference material a project reads but never edits — files, a folder, a Google Drive folder or a GitHub repository. |
 | Instructions | Standing rules you write once that every session in a project follows — how Claude must behave. |
@@ -1908,3 +2264,5 @@ Across ten labs you took one product launch from an empty project to a researche
 | Scheduled task | A prompt a project runs automatically on a timetable. |
 | Session | One conversation with Claude, with its own context window. A project holds many sessions. |
 | Task | One job you start inside a project. Several tasks can run at once. |
+| Tool | One action Claude can take — search, read, run code, create a file, send. Built in, or added by a connector. |
+| Tool call | One use of a tool, shown as a step in Claude's reply with its input and its result. |

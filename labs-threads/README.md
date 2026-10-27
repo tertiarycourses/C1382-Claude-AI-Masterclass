@@ -1,6 +1,6 @@
 # Claude AI Masterclass — Labs
 
-**Threads Edition** · v5.2 · 27 October 2026. For the redesigned Claude Projects beta — a project with a Goal, a lead agent and parallel threads.
+**Threads Edition** · v6.0 · 28 October 2026. For the redesigned Claude Projects beta — a project with a Goal, a lead agent and parallel threads.
 Not sure? If your Projects page shows a Goal and threads, use Threads; otherwise Classic. The other edition: [Classic Projects Edition labs](../labs/README.md).
 
 Lumo Kopi Co. is a fictitious Singapore coffee brand about to launch Lumo Cold Kopi — a ready-to-drink oat-milk kopi cold brew in a 240 ml can — in Singapore on 1 December 2026 and Kuala Lumpur in January 2027. You are its marketing team. All brands, figures, survey answers and documents in this course are synthetic and used for training only.
@@ -33,8 +33,8 @@ with a one-click **Copy** button for each block.
 | 02 | 01 Claude Projects and Market Research | Run Market Research in Parallel Threads | [PDF](lab-02-market-research-threads/lab-02-market-research-threads.pdf) | [3 files](lab-02-market-research-threads/data/) |
 | 03 | 01 Claude Projects and Market Research | Build the Market Insights Live Artefact | [PDF](lab-03-market-insights-artefact/lab-03-market-insights-artefact.pdf) | [2 files](lab-03-market-insights-artefact/data/) |
 | 04 | 02 Connectors, Skills and Plugins | Connect Google Drive and Gmail | [PDF](lab-04-connect-drive-and-gmail/lab-04-connect-drive-and-gmail.pdf) | [2 files](lab-04-connect-drive-and-gmail/data/) |
-| 05 | 02 Connectors, Skills and Plugins | Create the Launch Deck and Campaign Brief | [PDF](lab-05-launch-deck-and-brief/lab-05-launch-deck-and-brief.pdf) | — |
-| 06 | 02 Connectors, Skills and Plugins | Capture the Brand Voice as an Agent Skill | [PDF](lab-06-brand-voice-skill/lab-06-brand-voice-skill.pdf) | [1 file](lab-06-brand-voice-skill/data/) |
+| 05 | 02 Connectors, Skills and Plugins | Analyse the Survey, Then Build the Deck and Brief | [PDF](lab-05-launch-deck-and-brief/lab-05-launch-deck-and-brief.pdf) | [1 file](lab-05-launch-deck-and-brief/data/) |
+| 06 | 02 Connectors, Skills and Plugins | Capture the Brand Voice as an Agent Skill | [PDF](lab-06-brand-voice-skill/lab-06-brand-voice-skill.pdf) | [2 files](lab-06-brand-voice-skill/data/) |
 | 07 | 02 Connectors, Skills and Plugins | Add the Marketing Plugin and a Mod | [PDF](lab-07-marketing-plugin/lab-07-marketing-plugin.pdf) | — |
 | 08 | 03 Content Production and Scheduled Work | Create and Schedule Social Posts in Parallel Threads | [PDF](lab-08-social-posts-threads/lab-08-social-posts-threads.pdf) | [1 file](lab-08-social-posts-threads/data/) |
 | 09 | 03 Content Production and Scheduled Work | Produce a 15-Second Launch Video | [PDF](lab-09-launch-video/lab-09-launch-video.pdf) | [5 files](lab-09-launch-video/data/) |
@@ -45,9 +45,9 @@ with a one-click **Copy** button for each block.
 - **Lab 01.** By the end of this lab you can create a Claude Project with a goal, instructions, context and memory.
 - **Lab 02.** By the end of this lab you can hand a multi-subject research job to the lead agent and verify the merged brief.
 - **Lab 03.** By the end of this lab you can turn research data into an interactive Live Artefact dashboard and save it.
-- **Lab 04.** By the end of this lab you can connect Google Drive and Gmail, read campaign files from Drive and send an approved summary.
-- **Lab 05.** By the end of this lab you can produce a launch deck in Slides and a campaign brief in Docs from the project's research.
-- **Lab 06.** By the end of this lab you can rewrite content in the brand voice, verify it, and save the routine as a skill with /skill-creator.
+- **Lab 04.** By the end of this lab you can connect Google Drive and Gmail and use their tools to reconcile, search, save and draft, sending only what you approve.
+- **Lab 05.** By the end of this lab you can analyse survey data with Claude's code tool and save it to Excel, then produce a launch deck in Slides and a campaign brief in Docs.
+- **Lab 06.** By the end of this lab you can capture the brand voice as an Agent Skill with /skill-creator, read its SKILL.md, use it on workplace messages and update it.
 - **Lab 07.** By the end of this lab you can install a plugin, use its namespaced commands alongside your own skill, and build a mod that suggests the next social post.
 - **Lab 08.** By the end of this lab you can produce a two-week, four-platform social calendar with one thread per channel, and schedule the daily post.
 - **Lab 09.** By the end of this lab you can script, storyboard and render a vertical launch video from supplied brand assets.

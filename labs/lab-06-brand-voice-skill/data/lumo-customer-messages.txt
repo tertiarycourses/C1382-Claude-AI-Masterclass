@@ -1,0 +1,11 @@
+Lumo Kopi Co. - messages waiting for a reply (training data, all fictitious)
+Reply in the Lumo brand voice. Do not send anything - drafts only.
+
+Message 1 - customer email (Shopee order LK-SH-1042):
+Hi, my 12-pack arrived today and two of the cans were dented. I paid $42 for it! Can I get a refund or a new pack?
+
+Message 2 - enquiry from a cafe (Kopi Corner, Tampines):
+Hello, we run a small cafe and would like to stock Lumo Cold Kopi. What is your wholesale price for 48 cans a month, and can you deliver weekly?
+
+Message 3 - flyer line from the sales team, to check before printing:
+Lumo Cold Kopi - super healthy and the best kopi in Singapore! Only $3.9 a can.
