@@ -1,6 +1,6 @@
 # Claude AI Masterclass — Labs
 
-**Classic Projects Edition** · v5.1 · 27 October 2026. For Claude Projects as most accounts show them today — a Cowork project with Instructions, Context, Folder and Scheduled panels.
+**Classic Projects Edition** · v5.2 · 27 October 2026. For Claude Projects as most accounts show them today — a Cowork project with Instructions, Context, Folder and Scheduled panels.
 Not sure? If your Projects page shows a Goal and threads, use Threads; otherwise Classic. The other edition: [Threads Edition labs](../labs-threads/README.md).
 
 Lumo Kopi Co. is a fictitious Singapore coffee brand about to launch Lumo Cold Kopi — a ready-to-drink oat-milk kopi cold brew in a 240 ml can — in Singapore on 1 December 2026 and Kuala Lumpur in January 2027. You are its marketing team. All brands, figures, survey answers and documents in this course are synthetic and used for training only.
@@ -35,10 +35,10 @@ with a one-click **Copy** button for each block.
 | 04 | 02 Connectors, Skills and Plugins | Connect Google Drive and Gmail | [PDF](lab-04-connect-drive-and-gmail/lab-04-connect-drive-and-gmail.pdf) | [2 files](lab-04-connect-drive-and-gmail/data/) |
 | 05 | 02 Connectors, Skills and Plugins | Create the Launch Deck and Campaign Brief | [PDF](lab-05-launch-deck-and-brief/lab-05-launch-deck-and-brief.pdf) | — |
 | 06 | 02 Connectors, Skills and Plugins | Capture the Brand Voice as an Agent Skill | [PDF](lab-06-brand-voice-skill/lab-06-brand-voice-skill.pdf) | [1 file](lab-06-brand-voice-skill/data/) |
-| 07 | 02 Connectors, Skills and Plugins | Add the Marketing Plugin | [PDF](lab-07-marketing-plugin/lab-07-marketing-plugin.pdf) | — |
-| 08 | 03 Content Production and Scheduled Work | Create Two Weeks of Social Media Posts | [PDF](lab-08-social-posts/lab-08-social-posts.pdf) | [1 file](lab-08-social-posts/data/) |
+| 07 | 02 Connectors, Skills and Plugins | Add the Marketing Plugin and a Mod | [PDF](lab-07-marketing-plugin/lab-07-marketing-plugin.pdf) | — |
+| 08 | 03 Content Production and Scheduled Work | Create and Schedule Two Weeks of Social Posts | [PDF](lab-08-social-posts/lab-08-social-posts.pdf) | [1 file](lab-08-social-posts/data/) |
 | 09 | 03 Content Production and Scheduled Work | Produce a 15-Second Launch Video | [PDF](lab-09-launch-video/lab-09-launch-video.pdf) | [5 files](lab-09-launch-video/data/) |
-| 10 | 03 Content Production and Scheduled Work | Schedule the Posts and Review the Project | [PDF](lab-10-schedule-and-review/lab-10-schedule-and-review.pdf) | — |
+| 10 | 03 Content Production and Scheduled Work | Schedule the Weekly Report and Review the Project | [PDF](lab-10-schedule-and-review/lab-10-schedule-and-review.pdf) | — |
 
 ## Lab objectives
 
@@ -48,10 +48,10 @@ with a one-click **Copy** button for each block.
 - **Lab 04.** By the end of this lab you can connect Google Drive and Gmail, read campaign files from Drive and send an approved summary.
 - **Lab 05.** By the end of this lab you can produce a launch deck in Slides and a campaign brief in Docs from the project's research.
 - **Lab 06.** By the end of this lab you can rewrite content in the brand voice, verify it, and save the routine as a skill with /skill-creator.
-- **Lab 07.** By the end of this lab you can install a plugin and use its namespaced commands alongside your own skill.
-- **Lab 08.** By the end of this lab you can produce a two-week, four-platform social calendar using the brand-voice skill.
+- **Lab 07.** By the end of this lab you can install a plugin, use its namespaced commands alongside your own skill, and build a mod that suggests the next social post.
+- **Lab 08.** By the end of this lab you can produce a two-week, four-platform social calendar using the brand-voice skill, and schedule the daily post.
 - **Lab 09.** By the end of this lab you can script, storyboard and render a vertical launch video from supplied brand assets.
-- **Lab 10.** By the end of this lab you can schedule recurring project tasks, keep the project memory file current and review the project.
+- **Lab 10.** By the end of this lab you can schedule a weekly report beside the daily post, keep the project memory file current and review the project.
 
 ## What each lab folder holds
 

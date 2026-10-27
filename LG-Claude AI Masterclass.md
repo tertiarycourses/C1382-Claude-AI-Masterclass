@@ -1,6 +1,6 @@
 # Claude AI Masterclass — Learner Guide
 
-**Classic Projects Edition**  |  **Course Code:** C1382  |  **Conducted by:** Tertiary Infotech Academy Pte Ltd (UEN 201200696W)  |  **Version v5.1 · 27 October 2026**
+**Classic Projects Edition**  |  **Course Code:** C1382  |  **Conducted by:** Tertiary Infotech Academy Pte Ltd (UEN 201200696W)  |  **Version v5.2 · 27 October 2026**
 
 ## Contents
 
@@ -31,14 +31,14 @@
   - [Agent Skills](#agent-skills)
   - [Lab 6 — Capture the Brand Voice as an Agent Skill](#lab-6--capture-the-brand-voice-as-an-agent-skill)
   - [Skills, plugins and mods](#skills-plugins-and-mods)
-  - [Lab 7 — Add the Marketing Plugin](#lab-7--add-the-marketing-plugin)
+  - [Lab 7 — Add the Marketing Plugin and a Mod](#lab-7--add-the-marketing-plugin-and-a-mod)
 - [Topic 03 — Content Production and Scheduled Work](#topic-03--content-production-and-scheduled-work)
   - [Social content for four platforms](#social-content-for-four-platforms)
-  - [Lab 8 — Create Two Weeks of Social Media Posts](#lab-8--create-two-weeks-of-social-media-posts)
+  - [Lab 8 — Create and Schedule Two Weeks of Social Posts](#lab-8--create-and-schedule-two-weeks-of-social-posts)
   - [The video pipeline](#the-video-pipeline)
   - [Lab 9 — Produce a 15-Second Launch Video](#lab-9--produce-a-15-second-launch-video)
   - [Scheduled tasks](#scheduled-tasks)
-  - [Lab 10 — Schedule the Posts and Review the Project](#lab-10--schedule-the-posts-and-review-the-project)
+  - [Lab 10 — Schedule the Weekly Report and Review the Project](#lab-10--schedule-the-weekly-report-and-review-the-project)
 - [Wrap-Up](#wrap-up)
 - [Glossary](#glossary)
 
@@ -84,6 +84,65 @@ On completion of this course, you will be able to:
 - A Google account with Google Drive and Gmail, used for the connector labs.
 - The course labs downloaded from https://github.com/tertiarycourses/C1382-Claude-AI-Masterclass — each lab folder holds a prompt PDF and, where needed, a data folder.
 - The prompts page open in a browser, so you can copy each prompt with one click: https://tertiarycourses.github.io/C1382-Claude-AI-Masterclass/prompts/
+
+#### Claude plans
+
+Free lets you try Claude; Cowork, scheduled tasks and full Projects need Pro or Max.
+
+| Plan | Price and what it adds |
+|---|---|
+| Free | $0. Chat, Slides, Docs, connectors and skills, up to five projects. Sonnet and Haiku. |
+| Pro | $17/mo billed annually · $20 monthly. Cowork, Projects, scheduled tasks and Opus. |
+| Max | From $100/mo — 5× or 20× Pro's usage, priority at busy times, $100–$200/mo API credits. |
+| Team · Enterprise | Team $20/seat annual ($25 monthly), premium seats $100. Enterprise $20/seat + usage. |
+
+Usage resets every five hours, with weekly limits on paid plans. US$ prices as of 27 October 2026 — verify at claude.com/pricing.
+
+![Figure 1 — Check Your Plan and Usage](courseware/assets/screenshots/class-account-menu.png)
+
+*Figure 1 — Check Your Plan and Usage. Click your name at the bottom of the sidebar — the plan shows beside it (here, Max).*
+
+1. **Usage** — How much of your five-hour and weekly limits you have used.
+2. **View all plans** — Compare Free, Pro, Max, Team and Enterprise, and upgrade.
+3. **Settings** — Your profile, connectors and capabilities. Shortcut: Ctrl + comma.
+
+#### Claude models
+
+Four families, smallest to most capable; all read up to 1M tokens. API prices are US$ per million tokens, input · output.
+
+| Model | What it is | Use it for | API price | On plans |
+|---|---|---|---|---|
+| Haiku 5.5 | Fastest, most cost-efficient | Quick, high-volume jobs: tagging, short replies | $0.10 / $0.50 | All plans |
+| Sonnet 5.5 | High performance for coding and agents | Everyday drafting, research and analysis | $2 / $10 | All plans |
+| Opus 5.5 | Daily driver for agentic and enterprise work | Multi-step projects, parallel work, careful reviews | $4 / $20 | Pro and above |
+| Fable 5.1 | Most capable, for long-running agents | The hardest, longest jobs | $10 / $50 | Max; Pro via usage credits |
+
+Pick the model from the model menu. Bigger models think harder and use more of your plan — save Fable for the jobs that need it.
+
+![Figure 2 — Pick a Model in the App](courseware/assets/screenshots/class-model-menu.png)
+
+*Figure 2 — Pick a Model in the App. The model menu sits under the message box of every new session.*
+
+1. **Fable 5.1** — For your toughest challenges — uses the most of your plan.
+2. **Opus 5.5** — Complex work and everyday tasks.
+3. **Sonnet 5.5** — Efficient for most jobs — a sensible default.
+4. **Haiku 5.5** — Fastest, for quick answers.
+
+![Figure 3 — Effort: How Hard Claude Thinks](courseware/assets/screenshots/class-effort-menu.png)
+
+*Figure 3 — Effort: How Hard Claude Thinks. Model menu → Effort. Medium is recommended for most work.*
+
+1. **Low · Medium** — Quick, everyday work. Medium is the recommended default.
+2. **High · Extra** — Harder problems: more thorough, but slower and uses your limits faster.
+3. **Max** — Five times or more the usage — save it for the hardest job.
+
+![Figure 4 — Permission Mode: Manual or Auto](courseware/assets/screenshots/class-permission-mode.png)
+
+*Figure 4 — Permission Mode: Manual or Auto. The menu beside the model sets how freely Claude acts in a session.*
+
+1. **Manual** — Claude asks before it uses a new tool or opens a new site.
+2. **Auto** — Claude runs on its own and pauses to ask only if something looks unsafe.
+3. **Which to use** — Manual while you learn a new connector; Auto once you trust the job.
 
 #### Verify your setup
 
@@ -141,6 +200,59 @@ How this changes the way you work:
 | Outputs scattered across conversations. | Scheduled tasks that belong to the project. |
 | Nothing for a colleague to pick up. | Hand the folder to a colleague and they are ready. |
 
+#### Projects and sessions
+
+The project is the room; a session is one working day in it. A session is one conversation with Claude; a project is the workspace that holds many of them and loads the same set-up into each.
+
+| A session — one piece of work | A project — the whole goal |
+|---|---|
+| One conversation with Claude: a chat, or a task in Cowork. | A lasting workspace that holds many sessions. |
+| Has its own context window, which fills up as you work. | Its instructions, context and folder load into every session. |
+| Ends when the job is done; the next session starts blank. | Stays until you delete it — for weeks or months. |
+| Remembers only what was said inside it. | What one session decides, the next reads from the memory file. |
+| Lumo: “Draft the Instagram launch post.” | Lumo: “Lumo Cold Kopi Launch.” |
+
+**How Sessions Sit Inside a Project**
+
+- **Project** — The lasting workspace for one goal, with its instructions, context, folder and scheduled tasks.
+- **Session** — One conversation with Claude, with its own context window — in Cowork, a task you start in the project.
+- **Project set-up** — The instructions, context and folder, loaded into every session you start in the project.
+- **Scheduled task** — A session the project starts by itself on a timetable.
+- **Memory file** — The file in the folder that carries decisions from one session to the next.
+
+Close a session and its chat ends, but the project's instructions, context, folder and memory file are still there for the next one.
+
+#### Four questions a project answers
+
+The four panels on the project page, each answering one question.
+
+| Part | Answers | What it means |
+|---|---|---|
+| Instructions | HOW | How Claude must work: brand voice, prices in S$, ask before sending — rules every task follows. |
+| Context | WHAT | What Claude needs to know: brand guidelines, product sheet, launch brief — read, never edited. |
+| Folder | WHERE | Where Claude works: the real folder on your computer it reads data from and saves outputs to. |
+| Scheduled | WHEN | When work runs without you: Monday 9am the week's post drafts, Friday the weekly report. |
+
+The memory file in the folder keeps what each session decides for the next.
+
+![Figure 5 — The Project Page in the App](courseware/assets/screenshots/class-add-folder.png)
+
+*Figure 5 — The Project Page in the App. A project from the class: the goal under its name, the project's panels on the right.*
+
+1. **Instructions · Context** — HOW and WHAT — click Add to write the rules or attach reference files.
+2. **Add folder** — WHERE — under the message box, pick the folder Claude reads from and saves to.
+3. **Memory · Scheduled** — What Claude has learned about the project, and WHEN tasks run on their own.
+4. **New session** — Type in the box to start a session; earlier sessions are listed beneath it.
+
+![Figure 6 — The + Menu: What a Session Can Use](courseware/assets/screenshots/class-plus-menu.png)
+
+*Figure 6 — The + Menu: What a Session Can Use. Click + in the message box to bring files and tools into the session.*
+
+1. **Files and folders** — Upload a file, or add a folder, for this session.
+2. **Skills · Connectors · Plugins** — Choose what the session may use — the brand-voice skill, Gmail, a plugin.
+3. **Record a skill** — Capture a routine you show Claude as a new skill.
+4. **Research · Memory** — Deeper web research; the tick shows the session uses project memory.
+
 #### When to use a project
 
 | Use a project for | Why |
@@ -173,6 +285,18 @@ A one-off question that is done in one reply? Use an ordinary chat.
 
 Start a new project from Projects in Cowork. The instructions and context are added afterwards, from the project page.
 
+#### Instructions or context?
+
+Quick test: a sentence that starts Always, Never or Write in… is an instruction. A document is context.
+
+| Instructions — how to behave | Context — what to know |
+|---|---|
+| Short standing rules you write in the Instructions panel. | Reference documents Claude reads but never edits. |
+| Followed by every session in the project. | Files you add in the Context panel. |
+| Like the house rules pinned on the office wall. | Like the reference binders on the office shelf. |
+| Keep them short: they are loaded into every session. | Add them once; you never re-attach them again. |
+| Lumo: “Prices in S$. No health claims. Ask before sending.” | Lumo: brand guidelines, product sheet, launch brief. |
+
 #### Instructions, context and memory compared
 
 These three are easy to confuse, and the difference matters: when an output is wrong, it tells you which one to fix.
@@ -184,6 +308,20 @@ These three are easy to confuse, and the difference matters: when an output is w
 | Lumo example | Prices in S$; no health claims | Brand guidelines, launch brief | Launch date moved to 8 December |
 | Edit it in | The Instructions panel | The Context panel | lumo-project-memory.md in the folder |
 | When output is wrong | Tighten the rule | Add the missing file | Correct the line in the file |
+
+#### An analogy: the project room
+
+Picture the project as a room your team works in for the whole launch.
+
+| In Claude | In the office | What it means | Lumo example |
+|---|---|---|---|
+| Project | The project room | Stays set up for weeks | Lumo Cold Kopi Launch |
+| Session | One working day in the room | Starts fresh; the room is still set up | Draft the Instagram post |
+| Instructions | House rules on the wall | How every session must behave | Prices in S$; no health claims |
+| Context | Binders on the shelf | What Claude reads, never edits | Brand guidelines, product sheet |
+| Folder | The desk | Where work is done and left | Survey CSV in, posts out |
+| Scheduled | The room's recurring calendar | Work that runs on a timetable | Monday 9am: the week's posts |
+| Memory file | The team logbook | Decisions kept between sessions | Launch price confirmed at S$3.90 |
 
 
 ### Creating the project
@@ -359,6 +497,15 @@ Chat and Cowork are now one app: Claude. A marketing team works there — and a 
 
 **Tools:** Claude desktop app (Cowork), Claude Projects.
 
+#### In the project
+
+| Part | In this lab |
+|---|---|
+| Instructions — HOW | Set up: paste Block 2 into the Instructions panel — S$ prices, brand guidelines, no health claims, approval first. |
+| Context — WHAT | Set up: add the brand kit in the Context panel — guidelines, product sheet and launch brief. |
+| Folder — WHERE | Set up: point the project at your Lumo Launch folder; lumo-project-memory.md starts here. |
+| Scheduled — WHEN | Not yet — Lab 8 adds the first scheduled task. |
+
 #### Lab files
 
 - Prompt PDF: labs/lab-01-set-up-the-launch-project/lab-01-set-up-the-launch-project.pdf
@@ -482,6 +629,15 @@ Start four tasks in the project at once, one subject each, each saving its own f
 **You will build:** Four research files and lumo-research-brief.docx merged from them, in the project folder.
 
 **Tools:** Claude Projects in Cowork, parallel tasks, web search.
+
+#### In the project
+
+| Part | In this lab |
+|---|---|
+| Instructions — HOW | Uses: save every output to the folder, and flag any figure two sources disagree on. |
+| Context — WHAT | Uses: the launch brief, so every task knows the product, price and audience. |
+| Folder — WHERE | Adds: copy in the three CSVs; four research files and lumo-research-brief.docx are saved here. |
+| Scheduled — WHEN | Not used — you start the four tasks yourself, now. |
 
 #### Lab files
 
@@ -646,6 +802,15 @@ So: bake the data in, or download the HTML and run it yourself.
 
 **Tools:** Claude Projects, Live Artefacts.
 
+#### In the project
+
+| Part | In this lab |
+|---|---|
+| Instructions — HOW | Uses: S$ prices with two decimals on every tile and chart. |
+| Context — WHAT | Uses: the product sheet, for Lumo's own price beside the competitors. |
+| Folder — WHERE | Uses: the survey and competitor CSVs in the folder; save the HTML copy here too. |
+| Scheduled — WHEN | Not used — runs when you send the prompt. |
+
 #### Lab files
 
 - Prompt PDF: labs/lab-03-market-insights-artefact/lab-03-market-insights-artefact.pdf
@@ -697,6 +862,42 @@ So: bake the data in, or download the HTML and run it yourself.
 
 > **Check — you are done when:** The Market Insights artefact shows 400 respondents, 62% likely to buy, Instagram as the top channel and a S$4.30 competitor median. The city filter changes the respondent count to 240 (Singapore) and 160 (Kuala Lumpur) and both survey charts follow it. The price ladder runs from S$3.20 to S$5.60 with Lumo highlighted at S$3.90. The artefact is saved and an HTML copy is downloaded.
 
+#### From the class
+
+![Figure 7 — From the Class: Lumo Social Trends](courseware/assets/screenshots/class-artefact-social-trends.png)
+
+*Figure 7 — From the Class: Lumo Social Trends. A Live Artefact built in class from the social trends research.*
+
+1. **Filters** — Rank by engagement, views or posts; filter by platform and trend.
+2. **Themes ranked** — Taste tests and first-sip reactions lead at 7.4%, and are rising.
+3. **Pick a bar** — The right-hand card shows that theme's numbers and a draft post idea.
+4. **Spot the gap** — The summary cards show '—'. Ask Claude to fix them — always check the numbers.
+
+![Figure 8 — From the Class: Who Is Likely to Buy?](courseware/assets/screenshots/class-artefact-customer-intent.png)
+
+*Figure 8 — From the Class: Who Is Likely to Buy?. A Live Artefact on the consumer survey, filtered here to Kuala Lumpur.*
+
+1. **Filters** — City and age band; Jump to opens the primary and secondary audiences.
+2. **Headline** — 60.0% of 160 KL respondents are likely to buy — 2 points below the overall average.
+3. **Price tolerance** — A third of likely buyers would pay S$3.90 or more.
+4. **Explore** — Click any city and age cell to open that segment; small samples are flagged.
+
+![Figure 9 — From the Class: Lumo Pricing Explorer](courseware/assets/screenshots/class-artefact-pricing-explorer.png)
+
+*Figure 9 — From the Class: Lumo Pricing Explorer. Drag the price and every card recalculates who would still buy.*
+
+1. **Price slider** — Drag it, or pick S$3.50 (12-pack) or S$3.90 (single can).
+2. **Against competitors** — Lumo's S$3.90 can is 9.3% below the S$4.30 competitor median.
+3. **The chart** — Listed and pack prices per can, with both medians as dashed lines.
+
+![Figure 10 — All Your Artefacts in One Place](courseware/assets/screenshots/class-artifacts-gallery.png)
+
+*Figure 10 — All Your Artefacts in One Place. Artifacts in the sidebar lists everything you have built, across every project.*
+
+1. **Artifacts** — Open, search, sort and filter all your artefacts.
+2. **Lock or globe** — A lock means private; a globe means shared by link.
+3. **Pinned** — The Lumo project and its sessions stay pinned in the sidebar.
+
 
 ## Topic 02 — Connectors, Skills and Plugins
 
@@ -728,6 +929,22 @@ A connector lets Claude reach a service outside the chat. These are the ones thi
 | Social and ads tools | Where your workspace has them, connectors for scheduling and ad platforms reach the same way — always with approval. |
 | Approval by default | Claude asks for explicit approval before it sends, replies to or forwards an email. |
 | Where to manage them | Individually from the + menu; account-wide under Customize → Connectors. |
+
+![Figure 11 — A Connector at Work: Gmail](courseware/assets/screenshots/class-gmail-send-prompt.png)
+
+*Figure 11 — A Connector at Work: Gmail. One plain request — Claude chose the Gmail connector's Send email action.*
+
+1. **Ask in plain English** — Say what to send and to whom; no menus to find.
+2. **Watch the tool call** — 'Using Gmail: Send email message' names the connector and action. Click › for detail.
+3. **Stay in control** — Ask for a draft first when the email goes to anyone but you.
+
+![Figure 12 — The Result in Gmail](courseware/assets/screenshots/class-gmail-result.png)
+
+*Figure 12 — The Result in Gmail. The summary arrived seconds later, written from the project's sustainability workbook.*
+
+1. **Read from the file** — Claude summarised the workbook: 14 facilities in 9 countries, 2023–2025.
+2. **Ready to read** — Headings and bullets, formatted for email.
+3. **Verify** — Spot-check one total against the source file before you forward it.
 
 #### Keeping the context window lean
 
@@ -764,6 +981,15 @@ The fix is housekeeping: one job per task, only the connectors you need, and onl
 **You will build:** Drive and Gmail connected, the research brief saved to Drive, and an approved launch summary emailed to yourself.
 
 **Tools:** Claude Projects, Google Drive connector, Gmail connector.
+
+#### In the project
+
+| Part | In this lab |
+|---|---|
+| Instructions — HOW | Uses: never send without approval — Claude drafts the email, you approve it. |
+| Context — WHAT | Uses: the launch brief's budget, compared line by line with the Drive sheet. |
+| Folder — WHERE | Reaches out: the Lumo Launch folder in Google Drive and your Gmail, by connector. |
+| Scheduled — WHEN | Not used — runs when you send the prompt. |
 
 #### Lab files
 
@@ -829,6 +1055,32 @@ The connector is linked but was authorised without permission to read files. Fix
 
 > **Check — you are done when:** Google Drive and Gmail are connected. Claude read both CSV files from the Lumo Launch folder, showed a budget table totalling S$60,000 on both sides, and flagged Instagram (S$18,000 vs S$20,000) and Influencers (S$12,000 vs S$10,000) without choosing between them. lumo-research-brief.docx is in the Drive folder, and the approved summary email arrived in your own inbox with a working link.
 
+#### From the class
+
+![Figure 13 — Lab 4 in Class: Reading from Google Drive](courseware/assets/screenshots/class-drive-read.png)
+
+*Figure 13 — Lab 4 in Class: Reading from Google Drive. Claude states its plan, then calls the Google Drive connector.*
+
+1. **Plan first** — Open the Lumo Launch folder, read both CSVs, compare the budget with the brief, then email.
+2. **The tool call** — 'Using Google Drive: Read file content' — the connector at work.
+3. **Watch it** — Each tool call shows its time; click › to see what was read.
+
+![Figure 14 — Following the Progress Panel](courseware/assets/screenshots/class-progress-panel.png)
+
+*Figure 14 — Following the Progress Panel. The progress panel ticks off each step and lists what the session used.*
+
+1. **Steps** — Find the folder → compare budget and brief → prepare the email.
+2. **Current step** — The orange dot marks the step in progress.
+3. **Used in this session** — The connectors it called: Gmail and Google Drive.
+
+![Figure 15 — The Lab 4 Email](courseware/assets/screenshots/class-email-draft.png)
+
+*Figure 15 — The Lab 4 Email. The research and budget check, written into Gmail from the Drive files.*
+
+1. **From the brief** — Price position, audience and sales goal, quoted from the research brief.
+2. **FLAG** — Conflicting Instagram figures are flagged, not hidden — resolve each FLAG.
+3. **The numbers** — 8,000 cans is S$28,000–31,200 at retail, below the S$60,000 spend.
+
 
 ### Slides, Docs and built-in skills
 
@@ -851,6 +1103,15 @@ You never name the skill. Ask for a deck or a document; Claude picks the format 
 **You will build:** An eight-slide launch deck in Slides (downloaded as .pptx) and a campaign brief in Docs.
 
 **Tools:** Claude Projects, Slides, Docs, built-in skills.
+
+#### In the project
+
+| Part | In this lab |
+|---|---|
+| Instructions — HOW | Uses: follow the brand guidelines for anything customer-facing. |
+| Context — WHAT | Uses: the brand kit, for the name, tagline, price and claims. |
+| Folder — WHERE | Uses: lumo-research-brief.docx from Lab 2; save the downloaded .pptx here. |
+| Scheduled — WHEN | Not used — runs when you send the prompt. |
 
 #### Lab files
 
@@ -929,6 +1190,14 @@ You never write a skill from a blank page. You do the task once, then save the v
 3. **Save** — Turn it into a skill using the /skill-creator skill.
 4. **Update** — Refine it later and save over it — Claude confirms before replacing.
 
+![Figure 16 — Install a Published Skill](courseware/assets/screenshots/class-install-skill.png)
+
+*Figure 16 — Install a Published Skill. Ask Claude to install a skill from GitHub into the project.*
+
+1. **The request** — 'Install this skill in the project level', then the npx skills add command.
+2. **Project level** — The skill is available in this project, beside the brand-voice skill you write in Lab 6.
+3. **Check the source** — Read a third-party skill's SKILL.md first — it runs with your access.
+
 
 ### Lab 6 — Capture the Brand Voice as an Agent Skill
 
@@ -939,6 +1208,15 @@ You never write a skill from a blank page. You do the task once, then save the v
 **You will build:** A lumo-brand-voice Agent Skill, tested on a new caption.
 
 **Tools:** Claude Projects, Agent Skills, /skill-creator.
+
+#### In the project
+
+| Part | In this lab |
+|---|---|
+| Instructions — HOW | Uses: the never-say-healthy rule becomes a check inside the skill. |
+| Context — WHAT | Uses: lumo-brand-guidelines.md is the source the skill is written from. |
+| Folder — WHERE | Uses: attach lumo-sample-captions.txt; the skill saves to Customize → Skills. |
+| Scheduled — WHEN | Not used — runs when you send the prompt. |
 
 #### Lab files
 
@@ -1047,7 +1325,7 @@ A skill is one routine. A plugin is the whole setup — install the Marketing pl
 | Changes | How a task is done | A whole toolkit | Claude's own interface |
 | Contains | One SKILL.md + resources | Skills, tools, agents, hooks | A panel, command, hook or status line |
 | You get it by | Writing it with /skill-creator | Installing from Discover | Asking Claude to make one |
-| Lumo example | lumo-brand-voice | Marketing plugin | A launch-countdown panel |
+| Lumo example | lumo-brand-voice | Marketing plugin | A Next Lumo post panel |
 
 #### Mods
 
@@ -1059,15 +1337,24 @@ A skill is one routine. A plugin is the whole setup — install the Marketing pl
 - **Where to find them** — Under Customize, alongside Skills, Connectors and Plugins. Ask Claude to make one for you.
 
 
-### Lab 7 — Add the Marketing Plugin
+### Lab 7 — Add the Marketing Plugin and a Mod
 
-**Objective:** By the end of this lab you can install a plugin and use its namespaced commands alongside your own skill.
+**Objective:** By the end of this lab you can install a plugin, use its namespaced commands alongside your own skill, and build a mod that suggests the next social post.
 
-**Scenario:** You wrote one skill yourself; now you install a toolkit somebody else packaged. Anthropic's Marketing plugin bundles several marketing skills behind namespaced commands. You install it, use /marketing:campaign-plan to stress-test the launch plan, and run /marketing:brand-review on the deck copy — then compare a plugin with the skill you wrote, and see where mods fit.
+**Scenario:** You wrote one skill yourself; now you install a toolkit somebody else packaged. Anthropic's Marketing plugin bundles several marketing skills behind namespaced commands. You install it, use /marketing:campaign-plan to stress-test the launch plan, and run /marketing:brand-review on the deck copy — then compare a plugin with the skill you wrote. Last, you build a mod of your own: a Next Lumo post panel beside the chat that suggests what to post next.
 
-**You will build:** The Marketing plugin installed, a campaign plan review and a brand review of the launch copy.
+**You will build:** The Marketing plugin installed, a campaign plan review, a brand review of the launch copy, and a Next Lumo post mod.
 
-**Tools:** Claude Projects, plugins, Customize.
+**Tools:** Claude Projects, plugins, mods, Customize.
+
+#### In the project
+
+| Part | In this lab |
+|---|---|
+| Instructions — HOW | Uses: plugin commands follow the same project rules. |
+| Context — WHAT | Uses: the brand guidelines, for /marketing:brand-review. |
+| Folder — WHERE | Uses: the research brief, campaign brief and deck; the Next Lumo post mod reads the folder. |
+| Scheduled — WHEN | Not used — the mod suggests a post; nothing runs on a timer. |
 
 #### Lab files
 
@@ -1077,7 +1364,7 @@ This lab has no data folder — it works from what the project already holds.
 
 #### Step-by-step
 
-This lab has two blocks, each a command from the Marketing plugin. Install the plugin first, then send Block 1 and, after reading its answer, Block 2.
+This lab has three blocks. Blocks 1 and 2 are commands from the Marketing plugin: install it first, then send Block 1 and, after reading its answer, Block 2. Block 3 asks Claude to build a mod.
 
 > **Note:** Install the plugin first: Customize → Plugins → Browse, find Marketing, click Install. Then type /marketing in the composer to see its commands.
 
@@ -1130,11 +1417,41 @@ This lab has two blocks, each a command from the Marketing plugin. Install the p
 
 
 7. Open Customize and look at the Mods section.  
-   *Why:* Mods change Claude's interface itself — a panel, a status line, a slash command or a hook. You will not build one today; know where they live.
+   *Why:* Mods change Claude's interface itself — a panel, a status line, a slash command or a hook. You can install one, or ask Claude to make one.
+8. Send Block 3 and read what the mod will do before you let Claude install it.  
+   *Why:* You describe the behaviour in plain English and Claude writes the mod. Check it only suggests — a mod that could post would need your approval rules too.
+
+   **Block 3 — MOD**
+
+   Then send:
+
+   *PROMPT — copy into Claude*
+
+   ```text
+   Make me a mod: a panel called "Next Lumo post" that stays
+   beside the chat in this project.
+
+   - If social-calendar.csv is in the project, show the next post
+     due from today: date, platform, format, hook and call to action.
+   - If there is no calendar yet, suggest one next post instead:
+     use the top content theme in lumo-research-brief.docx and the
+     lumo-brand-voice skill, and say which platform and day suit it.
+   - Add a Refresh button and show when it last updated.
+   - It only suggests: never post, publish or send anything.
+
+   Tell me what the mod will do and where it will appear before
+   you install it.
+   ```
+
+   Open the **Next Lumo post** panel and check its suggestion against the brand kit.
+
+
+9. Open the Next Lumo post panel beside the chat and read its suggestion.  
+   *Why:* No calendar yet, so it suggests a post from the research brief's top theme. Check the brand voice, S$3.90 and no "healthy". After Lab 8 it shows the calendar's next post.
 
 #### Check
 
-> **Check — you are done when:** The Marketing plugin is installed and its /marketing: commands appear in the composer. /marketing:campaign-plan returned the gaps, three launch risks and two-week KPIs with targets while keeping the S$60,000 budget and the 1 December date. /marketing:brand-review reviewed the deck copy. You can explain the difference between lumo-brand-voice (a skill you wrote), the Marketing plugin (a packaged bundle) and a mod (a change to Claude's interface).
+> **Check — you are done when:** The Marketing plugin is installed and its /marketing: commands appear in the composer. /marketing:campaign-plan returned the gaps, three launch risks and two-week KPIs with targets while keeping the S$60,000 budget and the 1 December date. /marketing:brand-review reviewed the deck copy. You can explain the difference between lumo-brand-voice (a skill you wrote), the Marketing plugin (a packaged bundle) and a mod (a change to Claude's interface). The Next Lumo post panel sits beside the chat and suggests one on-brand post — S$ prices, no health claim — without posting anything.
 
 
 ## Topic 03 — Content Production and Scheduled Work
@@ -1175,15 +1492,24 @@ Every post loads lumo-brand-voice, so four formats still sound like one brand.
 5. **Check and approve** — You check claims, prices and dates before anything is scheduled.
 
 
-### Lab 8 — Create Two Weeks of Social Media Posts
+### Lab 8 — Create and Schedule Two Weeks of Social Posts
 
-**Objective:** By the end of this lab you can produce a two-week, four-platform social calendar using the brand-voice skill.
+**Objective:** By the end of this lab you can produce a two-week, four-platform social calendar using the brand-voice skill, and schedule the daily post.
 
-**Scenario:** Launch fortnight needs ten posts across Instagram, TikTok, LinkedIn and Facebook. Each platform has its own format, so the prompt gives Claude a spec for each. It loads lumo-brand-voice, drafts every platform's posts to its spec, and saves one dated calendar that you check before anything is scheduled.
+**Scenario:** Launch fortnight needs ten posts across Instagram, TikTok, LinkedIn and Facebook. Each platform has its own format, so the prompt gives Claude a spec for each. It loads lumo-brand-voice, drafts every platform's posts to its spec, and saves one dated calendar. Once you have checked it, you create a scheduled task that emails you each day's post at 9:00am as a draft.
 
-**You will build:** social-calendar.csv with ten dated posts across four platforms, plus lumo-social-posts.docx with the full copy.
+**You will build:** social-calendar.csv with ten dated posts across four platforms, lumo-social-posts.docx with the full copy, and a weekday 9:00am scheduled task that emails each day's post as a draft.
 
-**Tools:** Claude Projects in Cowork, Agent Skills.
+**Tools:** Claude Projects in Cowork, Agent Skills, scheduled tasks, Gmail connector.
+
+#### In the project
+
+| Part | In this lab |
+|---|---|
+| Instructions — HOW | Uses: brand voice, S$ prices, and never publish without your approval. |
+| Context — WHAT | Uses: the brand kit — every post is checked against its prices and claims. |
+| Folder — WHERE | Adds: social-calendar.csv and lumo-social-posts.docx, saved to the folder. |
+| Scheduled — WHEN | NEW: Today's Lumo post, weekdays at 9:00am — emails you each day's post as a draft. |
 
 #### Lab files
 
@@ -1192,8 +1518,16 @@ Every post loads lumo-brand-voice, so four formats still sound like one brand.
 
 #### Step-by-step
 
+This lab has two blocks. Block 1 creates the calendar. Block 2 is pasted into the Create scheduled task dialog, once you have checked the calendar.
+
+> **Note:** Attach social-calendar-template.csv from the Lab 08 data folder. Replace `<YOUR EMAIL>` in Block 2.
+
 1. In the project, attach social-calendar-template.csv and send the lab prompt.  
    *Why:* One task with four precise specs. In the Threads edition each platform gets its own thread; here the specs keep one task on track.
+
+   **Block 1 — CREATE**
+
+   Start a new task in the project and send:
 
    *PROMPT — copy into Claude*
 
@@ -1221,7 +1555,7 @@ Every post loads lumo-brand-voice, so four formats still sound like one brand.
    checklist result for every post, and list any post that failed.
    ```
 
-   > **Note:** Attach social-calendar-template.csv from the Lab 08 data folder.
+   Check the calendar in the next steps before you schedule anything.
 
 
 2. Watch Claude work through the four platforms.  
@@ -1235,11 +1569,49 @@ Every post loads lumo-brand-voice, so four formats still sound like one brand.
 6. Spot-check three posts against the campaign brief's "claims we must not make".  
    *Why:* Parallel production is fast; a human check on the claims is what makes it safe to publish.
 7. Open lumo-social-posts.docx and confirm the copy matches the calendar.  
-   *Why:* The calendar is what Lab 10's scheduled task reads every morning.
+   *Why:* The calendar is what the scheduled task you create next reads every morning.
+8. Open Scheduled tasks from the sidebar (or the project's Scheduled panel), choose New task, then Set up manually.  
+   *Why:* Create with Claude asks you questions instead; setting it up manually shows you every field.
+
+   **Block 2 — SCHEDULE**
+
+   Paste into the Instructions field of a new scheduled task named "Today's Lumo post":
+
+   *PROMPT — copy into Claude*
+
+   ```text
+   Take today's row from social-calendar.csv in the project folder,
+   polish the post with lumo-brand-voice, and check every price and
+   claim against the brand kit. Email it to <YOUR EMAIL> as a draft
+   with the subject "Today's Lumo post - <date>".
+
+   Never publish anything and never post to social media. If there
+   is no row for today, email "No Lumo post scheduled today".
+   ```
+
+   Pick the **Lumo Cold Kopi Launch** project, set **Frequency** to weekdays at 9:00am, and save. Permissions defaults to *Automatically approve* — which is why the task only drafts.
+
+
+9. Name it Today's Lumo post and paste Block 2 into Instructions, with your own email.  
+   *Why:* The task runs in the project, so it inherits the instructions, context, folder and the brand-voice skill — the prompt stays short.
+10. Pick the Lumo Cold Kopi Launch project, set Frequency to weekdays at 9:00am, check Permissions, and save.  
+   *Why:* Frequency defaults to Manual — a task left on Manual never runs. Permissions defaults to Automatically approve, so the task must only draft.
+11. Confirm the task appears under Scheduled with the right days and time, and use Run now if it is offered. Then open the Next Lumo post panel from Lab 7 and click Refresh.  
+   *Why:* A test run's email shows exactly what arrives each morning. The panel now reads the calendar and shows the 1 December post.
 
 #### Check
 
-> **Check — you are done when:** social-calendar.csv has ten rows dated on the ten weekdays from 1 to 14 December 2026 — Instagram 3, TikTok 3, LinkedIn 2, Facebook 2 — with the 1 December launch post an Instagram Reel and TikTok on 2 December. Every post passed the lumo-brand-voice checklist, none uses "healthy", every price is written S$3.90 or S$42.00, and lumo-social-posts.docx carries the same copy.
+> **Check — you are done when:** social-calendar.csv has ten rows dated on the ten weekdays from 1 to 14 December 2026 — Instagram 3, TikTok 3, LinkedIn 2, Facebook 2 — with the 1 December launch post an Instagram Reel and TikTok on 2 December. Every post passed the lumo-brand-voice checklist, none uses "healthy", every price is written S$3.90 or S$42.00, and lumo-social-posts.docx carries the same copy. Today's Lumo post is listed under Scheduled for weekdays at 9:00am; it drafts and emails only, and nothing was published.
+
+#### From the class
+
+![Figure 17 — From the Class: Two Weeks of Posts](courseware/assets/screenshots/class-social-posts-grid.png)
+
+*Figure 17 — From the Class: Two Weeks of Posts. The Lab 8 posts laid out by date — every one a draft, not published.*
+
+1. **One calendar** — Dated posts from 1 to 14 December across the four platforms.
+2. **One voice** — The brand-voice skill keeps every hook and caption consistent.
+3. **Review** — Expand or download any post; each is marked DRAFT, NOT PUBLISHED.
 
 
 ### The video pipeline
@@ -1273,6 +1645,15 @@ Claude does not edit video by hand — it writes and runs the code that renders 
 **You will build:** lumo-launch-15s.mp4 (1080 × 1920, 15 seconds), with its script and storyboard.
 
 **Tools:** Claude Projects in Cowork, code execution.
+
+#### In the project
+
+| Part | In this lab |
+|---|---|
+| Instructions — HOW | Uses: brand voice for the script; nothing is published. |
+| Context — WHAT | Uses: the brand kit, for the tagline, price and call to action. |
+| Folder — WHERE | Adds: attach the video assets; the script, storyboard and lumo-launch-15s.mp4 are saved here. |
+| Scheduled — WHEN | Not used — runs when you send the prompt. |
 
 #### Lab files
 
@@ -1368,15 +1749,24 @@ Speed is only useful if what goes out is true and fair. Keep these rules on ever
 | Keep the source | Keep the research files, so every number in a post can be traced back. |
 
 
-### Lab 10 — Schedule the Posts and Review the Project
+### Lab 10 — Schedule the Weekly Report and Review the Project
 
-**Objective:** By the end of this lab you can schedule recurring project tasks, keep the project memory file current and review the project.
+**Objective:** By the end of this lab you can schedule a weekly report beside the daily post, keep the project memory file current and review the project.
 
-**Scenario:** The launch needs a post drafted every weekday morning and a report every Monday, and nobody should have to remember either. You create both as scheduled tasks on the project, then do the housekeeping a real project needs: record a changed plan in the memory file, and review what the project now holds.
+**Scenario:** Lab 8 scheduled the daily post. The launch also needs a report every Monday, and nobody should have to remember it. You create it as a second scheduled task on the project, then do the housekeeping a real project needs: record a changed plan in the memory file, and review what the project now holds.
 
-**You will build:** Two scheduled tasks on the project, an updated memory file and a project review.
+**You will build:** A weekly-report scheduled task beside Lab 8's daily post, an updated memory file and a project review.
 
 **Tools:** Claude Projects in Cowork, scheduled tasks, Gmail connector.
+
+#### In the project
+
+| Part | In this lab |
+|---|---|
+| Instructions — HOW | Reviews: which instructions are now out of date. |
+| Context — WHAT | Reviews: which context files the launch-date change affects. |
+| Folder — WHERE | Updates: lumo-project-memory.md records the 8 December Singapore launch. |
+| Scheduled — WHEN | NEW: Weekly launch report, Mondays at 8:00am — beside Lab 8's daily post. |
 
 #### Lab files
 
@@ -1386,42 +1776,18 @@ This lab has no data folder — it works from what the project already holds.
 
 #### Step-by-step
 
-This lab has four blocks. Blocks 1 and 2 are pasted into the Instructions field of the Create scheduled task dialog, not typed into the chat. Block 3 updates the project's memory file. Block 4 asks the project to review itself.
+This lab has three blocks. Block 1 is pasted into the Instructions field of the Create scheduled task dialog, not typed into the chat. Block 2 updates the project's memory file. Block 3 asks the project to review itself.
 
-> **Note:** Replace `<YOUR EMAIL>` in Blocks 1 and 2. Copy social-calendar.csv from Lab 8 into the project folder if Claude saved it elsewhere.
+> **Note:** Replace `<YOUR EMAIL>` in Block 1. Copy social-calendar.csv from Lab 8 into the project folder if Claude saved it elsewhere.
 
 1. Open Scheduled tasks from the sidebar (or the project's Scheduled panel), choose New task, then Set up manually.  
-   *Why:* Create with Claude asks you questions instead; setting it up manually shows you every field.
-2. Name it Today's Lumo post and paste Block 1 into Instructions, with your own email.  
-   *Why:* The task runs in the project, so it inherits the instructions, context, folder and the brand-voice skill — the prompt stays short.
+   *Why:* You did this in Lab 8 for the daily post; this time the timetable is weekly.
+2. Name it Weekly launch report and paste Block 1 into Instructions, with your own email.  
+   *Why:* The task runs in the project, so it inherits the instructions, context and folder — the prompt stays short.
 
-   **Block 1 — DAILY POST TASK**
+   **Block 1 — WEEKLY REPORT TASK**
 
-   Paste into the Instructions field of a new scheduled task named "Today's Lumo post":
-
-   *PROMPT — copy into Claude*
-
-   ```text
-   Take today's row from social-calendar.csv in the project folder,
-   polish the post with lumo-brand-voice, and check every price and
-   claim against the brand kit. Email it to <YOUR EMAIL> as a draft
-   with the subject "Today's Lumo post - <date>".
-
-   Never publish anything and never post to social media. If there
-   is no row for today, email "No Lumo post scheduled today".
-   ```
-
-   Pick the **Lumo Cold Kopi Launch** project, set **Frequency** to weekdays at 9:00am, and save. Permissions defaults to *Automatically approve* — which is why the task only drafts.
-
-
-3. Pick the Lumo Cold Kopi Launch project, set Frequency to weekdays at 9:00am, check Permissions, and save.  
-   *Why:* Frequency defaults to Manual — a task left on Manual never runs. Permissions defaults to Automatically approve, so the task must only draft.
-4. Create a second task, Weekly launch report, with Block 2, Mondays at 8:00am.  
-   *Why:* Two tasks, two timetables, one project. This is where you would add a monthly competitor scan next.
-
-   **Block 2 — WEEKLY REPORT TASK**
-
-   Paste into a second scheduled task named "Weekly launch report":
+   Paste into the Instructions field of a new scheduled task named "Weekly launch report":
 
    *PROMPT — copy into Claude*
 
@@ -1435,12 +1801,14 @@ This lab has four blocks. Blocks 1 and 2 are pasted into the Instructions field 
    Pick the project, set **Frequency** to weekly, Mondays at 8:00am, and save.
 
 
-5. Confirm both tasks appear under Scheduled, with the right days and times. Use Run now if it is offered.  
-   *Why:* A task scheduled at the wrong time is a silent failure. A test run's email shows exactly what arrives each morning.
-6. Start a new task in the project and send Block 3.  
-   *Why:* Expect the calendar, Task 1, the deck's title slide and timeline, and the brief. The memory file is how one fact reaches every later task.
+3. Pick the Lumo Cold Kopi Launch project, set Frequency to weekly, Mondays at 8:00am, and save.  
+   *Why:* Frequency defaults to Manual — a task left on Manual never runs.
+4. Confirm both tasks appear under Scheduled: Today's Lumo post and Weekly launch report.  
+   *Why:* Two tasks, two timetables, one project. This is where you would add a monthly competitor scan next.
+5. Start a new task in the project and send Block 2.  
+   *Why:* Expect the calendar, Today's Lumo post, the deck's title slide and timeline, and the brief. The memory file is how one fact reaches every later task.
 
-   **Block 3 — MEMORY**
+   **Block 2 — MEMORY**
 
    Start a new task in the project and send:
 
@@ -1457,12 +1825,12 @@ This lab has four blocks. Blocks 1 and 2 are pasted into the Instructions field 
    Open **lumo-project-memory.md** in the folder and check the new line.
 
 
-7. Open lumo-project-memory.md and check the new launch-date line. Edit it if the wording is wrong.  
+6. Open lumo-project-memory.md and check the new launch-date line. Edit it if the wording is wrong.  
    *Why:* Claude writes the file, but you own it. Delete anything you would not want every future task to believe.
-8. Send Block 4 at the end of the lab.  
+7. Send Block 3 at the end of the lab.  
    *Why:* A project that can list its own files and what each is for is one a colleague can pick up tomorrow.
 
-   **Block 4 — REVIEW**
+   **Block 3 — REVIEW**
 
    Send this at the end of the lab:
 
@@ -1478,12 +1846,12 @@ This lab has four blocks. Blocks 1 and 2 are pasted into the Instructions field 
    Compare its list with the folder on your computer.
 
 
-9. Open Settings → Usage and see how much of your plan today's labs used.  
+8. Open Settings → Usage and see how much of your plan today's labs used.  
    *Why:* Parallel tasks finish faster but use more in total — worth knowing before you schedule work every day.
 
 #### Check
 
-> **Check — you are done when:** Two scheduled tasks are listed on the project — Today's Lumo post on weekdays at 9:00am and Weekly launch report on Mondays at 8:00am — both drafting and emailing only, with nothing published. lumo-project-memory.md records the 8 December Singapore launch, Claude listed what depends on it, and the project review matches the files in your Lumo Launch folder.
+> **Check — you are done when:** Two scheduled tasks are listed on the project — Today's Lumo post from Lab 8 on weekdays at 9:00am and Weekly launch report on Mondays at 8:00am — both drafting and emailing only, with nothing published. lumo-project-memory.md records the 8 December Singapore launch, Claude listed what depends on it, and the project review matches the files in your Lumo Launch folder.
 
 
 ## Wrap-Up
@@ -1527,6 +1895,8 @@ Across ten labs you took one product launch from an empty project to a researche
 | Artefact | A self-contained output Claude builds — a document, dashboard or tool — shown beside the chat rather than inside it. |
 | Claude Project | A workspace for one long-running body of work, with its own instructions, context files, working folder and scheduled tasks. |
 | Connector | An integration that lets Claude reach an outside service such as Google Drive, Gmail or Calendar. |
+| Context | Reference material a project reads but never edits — files, a folder, a Google Drive folder or a GitHub repository. |
+| Instructions | Standing rules you write once that every session in a project follows — how Claude must behave. |
 | Live Artefact | An artefact that persists in your workspace, keeps its state, and can refresh its data when reopened. |
 | MCP | Model Context Protocol — the open standard connectors use to expose tools and data to Claude. |
 | Memory | What a project keeps between tasks. In a classic project, the memory file you ask Claude to maintain; in the new Projects, editable memory in settings. |
@@ -1536,4 +1906,5 @@ Across ten labs you took one product launch from an empty project to a researche
 | Project folder | The folder on your computer a Cowork project works in: Claude reads data there and writes its outputs back. |
 | SKILL.md | The Markdown file at the heart of an Agent Skill: name, description and instructions. |
 | Scheduled task | A prompt a project runs automatically on a timetable. |
+| Session | One conversation with Claude, with its own context window. A project holds many sessions. |
 | Task | One job you start inside a project. Several tasks can run at once. |
